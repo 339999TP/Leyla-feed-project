@@ -17,95 +17,56 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{background:var(--paper);color:var(--ink);font-family:var(--sans);
-       line-height:1.5;-webkit-font-smoothing:antialiased}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
   a{color:inherit}
   button{font-family:var(--mono);cursor:pointer}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
-
   .wrap{max-width:760px;margin:0 auto;padding:0 18px}
-
-  header{border-bottom:1px solid var(--line-strong);background:var(--paper);
-         position:sticky;top:0;z-index:5}
-  .head-in{display:flex;align-items:baseline;justify-content:space-between;
-           gap:16px;padding:20px 0 14px}
-  .brand .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;
-           text-transform:uppercase;color:var(--muted)}
-  .brand h1{font-family:var(--serif);font-weight:600;font-size:30px;margin:2px 0 0;
-           letter-spacing:-.01em}
-  .gen{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;
-       white-space:nowrap;line-height:1.6}
-
-  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;
-            padding:0 0 14px}
+  header{border-bottom:1px solid var(--line-strong);background:var(--paper);position:sticky;top:0;z-index:5}
+  .head-in{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:20px 0 14px}
+  .brand .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+  .brand h1{font-family:var(--serif);font-weight:600;font-size:30px;margin:2px 0 0;letter-spacing:-.01em}
+  .gen{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;white-space:nowrap;line-height:1.6}
+  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 0 14px}
   .chips{display:flex;flex-wrap:wrap;gap:7px;flex:1;min-width:0}
-  .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);
-        background:var(--panel);border-radius:999px;padding:5px 11px 5px 9px;
-        font-family:var(--mono);font-size:12px;color:var(--ink);transition:.15s}
+  .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);background:var(--panel);border-radius:999px;padding:5px 11px 5px 9px;font-family:var(--mono);font-size:12px;color:var(--ink);transition:.15s}
   .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c,#999);flex:none}
-  .chip[aria-pressed="false"]{color:var(--muted);background:transparent;
-        border-style:dashed;opacity:.7}
-  .chip[aria-pressed="false"] .dot{background:transparent;
-        box-shadow:inset 0 0 0 1.5px var(--line-strong)}
+  .chip[aria-pressed="false"]{color:var(--muted);background:transparent;border-style:dashed;opacity:.7}
+  .chip[aria-pressed="false"] .dot{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line-strong)}
   .chip:hover{border-color:var(--ink)}
   .spacer{flex:1}
-  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;
-       overflow:hidden}
-  .seg button{background:var(--panel);border:0;padding:6px 12px;font-size:12px;
-       color:var(--muted)}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;overflow:hidden}
+  .seg button{background:var(--panel);border:0;padding:6px 12px;font-size:12px;color:var(--muted)}
   .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-  .refresh{border:1px solid var(--line-strong);background:var(--panel);border-radius:7px;
-       padding:6px 13px;font-size:12px;color:var(--ink);display:inline-flex;
-       align-items:center;gap:7px}
+  .refresh{border:1px solid var(--line-strong);background:var(--panel);border-radius:7px;padding:6px 13px;font-size:12px;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
   .refresh:hover{border-color:var(--ink)}
   .refresh.spin svg{animation:spin .7s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-
   main{padding:22px 0 60px}
-  .count{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);
-        text-transform:uppercase;margin:0 0 14px}
-
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
-        padding:16px 17px;margin:0 0 12px;transition:.15s}
-  .card:hover{border-color:var(--line-strong);transform:translateY(-1px);
-        box-shadow:0 6px 22px -16px rgba(0,0,0,.35)}
-  .meta{font-family:var(--mono);font-size:11px;color:var(--muted);
-        display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 7px}
-  .meta .src{text-transform:uppercase;letter-spacing:.05em;color:var(--ink);
-        font-weight:500}
+  .count{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin:0 0 14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 17px;margin:0 0 12px;transition:.15s}
+  .card:hover{border-color:var(--line-strong);transform:translateY(-1px);box-shadow:0 6px 22px -16px rgba(0,0,0,.35)}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 7px}
+  .meta .src{text-transform:uppercase;letter-spacing:.05em;color:var(--ink);font-weight:500}
   .meta .tt{display:inline-flex;align-items:center;gap:5px;color:var(--c,#666)}
   .meta .tt .dot{width:7px;height:7px;border-radius:50%;background:var(--c,#666)}
-  .card h2{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.28;
-        margin:0 0 6px;letter-spacing:-.005em}
+  .card h2{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.28;margin:0 0 6px;letter-spacing:-.005em}
   .card h2 a{text-decoration:none}
   .card h2 a:hover{text-decoration:underline;text-underline-offset:3px}
   .card p{margin:0 0 13px;font-size:14.5px;color:#2b3036}
-
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;
-        border-top:1px dashed var(--line);padding-top:11px}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px dashed var(--line);padding-top:11px}
   .gauge{display:flex;align-items:center;gap:9px;min-width:0}
   .ticks{display:flex;gap:3px}
-  .tick{width:20px;height:6px;border-radius:2px;background:var(--line);
-        box-shadow:inset 0 0 0 1px var(--line-strong)}
+  .tick{width:20px;height:6px;border-radius:2px;background:var(--line);box-shadow:inset 0 0 0 1px var(--line-strong)}
   .tick.on{background:var(--c,#666);box-shadow:none}
-  .stage{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
-        text-transform:uppercase;color:var(--c,#444);white-space:nowrap}
+  .stage{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--c,#444);white-space:nowrap}
   .sig{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
   .sig b{color:var(--ink);font-weight:500}
-
-  .empty{border:1px dashed var(--line-strong);border-radius:12px;padding:34px 22px;
-        text-align:center;color:var(--muted);font-size:14px}
-  .empty b{color:var(--ink);font-family:var(--serif);font-weight:600;font-size:17px;
-        display:block;margin-bottom:6px}
-
-  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
-        background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;
-        padding:9px 15px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s}
+  .empty{border:1px dashed var(--line-strong);border-radius:12px;padding:34px 22px;text-align:center;color:var(--muted);font-size:14px}
+  .empty b{color:var(--ink);font-family:var(--serif);font-weight:600;font-size:17px;display:block;margin-bottom:6px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;padding:9px 15px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  footer{border-top:1px solid var(--line);padding:16px 0 40px;font-family:var(--mono);
-        font-size:11px;color:var(--muted);line-height:1.7}
-
+  footer{border-top:1px solid var(--line);padding:16px 0 40px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7}
   @media (max-width:560px){
     .brand h1{font-size:24px}
     .head-in{padding-top:16px}
@@ -132,30 +93,22 @@
         <button id="sortTop" aria-pressed="false">Top</button>
       </div>
       <button class="refresh" id="refresh" aria-label="Refresh feed">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
         Refresh
       </button>
     </div>
   </div>
 </header>
-
 <main>
   <div class="wrap">
     <p class="count" id="count"></p>
     <div id="feed"></div>
   </div>
 </main>
-
 <footer><div class="wrap" id="footer"></div></footer>
 <div class="toast" id="toast"></div>
 
 <script>
-// Fallback data so the page works when feed.json fails to load.
-// This gets overwritten by live feed when it loads successfully.
-const EMBEDDED_FEED = {“generated”:”2026-08-30T10:16:32.103737Z”,”topics”:[“Nuclear fusion”,”Superconductors”,”Dark matter”,”Exoplanet imaging telescopes”,”Early life and archaea”],”items”:[{“id”:”1aee6dd1ec2a2d983af6e68dd68560d10e408cf8da97f271f1435b8a938834b0”,”title”:”Exoplanet System Architecture: Sculpting the Inner Regions”,”url”:”https://arxiv.org/abs/2608.22649v1”,”source”:”arXiv:astro-ph.EP”,”source_type”:”academic”,”topic”:”Exoplanet imaging telescopes”,”stage”:”discovery”,”significance”:4,”summary”:”In this study, we seek to improve our understanding of the competing roles of disk-driven and planet-planet dynamical migration in sculpting planetary system architecture in the inner 1.5 a”,”published”:”2026-08-23T23:15:29”,”added”:”2026-08-30T00:23:55.515127Z”},{“id”:”84806e2e27f6c6a108b3c52cdd0dfc356d4287ebb20c08f16ab6dc24c30ff1d6”,”title”:”How will NASA's Roman Space Telescope see exoplanets?”,”url”:”https://www.scientificamerican.com/article/how-will-nasas-roman-space-telescope-see-exoplanets/”,”source”:”Scientific American”,”source_type”:”news”,”topic”:”Exoplanet imaging telescopes”,”stage”:”discovery”,”significance”:4,”summary”:”NASA's newest major observatory will include the most advanced planet-imaging tech ever flown in space.”,”published”:”2026-08-28T10:45:00”,”added”:”2026-08-30T00:22:37.660854Z”},{“id”:”e4bd56d3df71391557be2585b18f326ce49a429751ebb725a3b170c5a219e4f2”,”title”:”NASA Starshade Would Enable Astronomers To Directly Image Rocky Exoworlds”,”url”:”https://www.universetoday.com/articles/nasa-starshade-would-enable-astronomers-to-directly-image-rocky-exoworlds”,”source”:”Universe Today”,”source_type”:”news”,”topic”:”Exoplanet imaging telescopes”,”stage”:”discovery”,”significance”:4,”summary”:”Innovative NASA-funded orbital starshade could help capture first direct images from extrasolar earths.”,”published”:”2026-08-24T07:16:54”,”added”:”2026-08-30T00:22:37.660847Z”},{“id”:”ee15de74ccf53f01d64e7f25ce7a24a34c61f4dfbd7e1feaa3bd33f77b8ce9f5”,”title”:”Scientists Melted A Diamond and Cracked a Secret of Ice Giants”,”url”:”https://www.universetoday.com/articles/scientists-melted-a-diamond-and-cracked-a-secret-of-ice-giants”,”source”:”Universe Today”,”source_type”:”news”,”topic”:”Exoplanet imaging telescopes”,”stage”:”discovery”,”significance”:4,”summary”:”Some of the strangest weather in the solar system doesn't happen on Earth, or even Jupiter's Great Red Spot - it happens in the interior of the Ice Giants like Neptune and Uranus.”,”published”:”2026-08-27T19:24:01”,”added”:”2026-08-30T00:22:37.660839Z”}]};
-
 const STAGES = ["discovery","lab","prototype","commercial","scaled"];
 const TOPIC_COLORS = {
   "Nuclear fusion":"#c4432b",
@@ -167,10 +120,7 @@ const TOPIC_COLORS = {
 const PALETTE = ["#c4432b","#1e88a8","#6c4cc4","#2e8b6b","#b07a1e","#3341b0","#8a6d3b"];
 function colorFor(t,i){return TOPIC_COLORS[t] || PALETTE[i % PALETTE.length];}
 
-// localStorage with a memory fallback (some sandboxes block it).
-const store = (()=>{ try{ const k="__t"; localStorage.setItem(k,"1");
-  localStorage.removeItem(k); return localStorage; }catch(e){
-  const m={}; return {getItem:k=>k in m?m[k]:null, setItem:(k,v)=>m[k]=String(v)};}})();
+const store = (()=>{ try{ const k="__t"; localStorage.setItem(k,"1"); localStorage.removeItem(k); return localStorage; }catch(e){ const m={}; return {getItem:k=>k in m?m[k]:null, setItem:(k,v)=>m[k]=String(v)};}})();
 
 let DATA = null;
 let unfollowed = new Set();
@@ -283,8 +233,8 @@ async function loadFeed(isManual){
     if(isManual){ const d=data.items.length-before;
       toast(d>0?`Feed updated · ${d} new`:"Feed up to date"); }
   }catch(e){
-    if(!DATA) apply(EMBEDDED_FEED);
-    if(isManual) toast("Couldn't reach feed.json — showing last loaded");
+    if(!DATA) apply({generated:null,topics:["Nuclear fusion","Superconductors","Dark matter","Exoplanet imaging telescopes","Early life and archaea"],items:[]});
+    if(isManual) toast("Could not reach feed.json — showing sample");
   }finally{ setTimeout(()=>btn.classList.remove("spin"),400); }
 }
 
@@ -301,4 +251,3 @@ loadFeed(false);
 </script>
 </body>
 </html>
-<!-- Updated Sun Aug 30 01:41:05 BST 2026 -->
