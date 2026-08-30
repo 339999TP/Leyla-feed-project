@@ -268,29 +268,42 @@ async function loadFeed(isManual){
   if(isManual) btn.classList.add("spin");
   else document.getElementById("feed").innerHTML=`<div class="loading">Loading frontier feed</div>`;
   try{
-    // Build path: if on GitHub Pages (path contains repo name), use full path; else relative
-    const currentPath=window.location.pathname;
-    const paths=currentPath.includes("/Leyla")
-      ?["/Leyla-feed-project/feed.json","/feed.json","./feed.json"]
-      :["/feed.json","./feed.json"];
-    let res=null;
+    // Try multiple paths to find feed.json
+    const paths=[
+      window.location.pathname.includes("/Leyla")?"/Leyla-feed-project/feed.json":null,
+      "/feed.json",
+      "./feed.json"
+    ].filter(Boolean);
+
+    let data=null;
     for(let p of paths){
       try{
-        res=await fetch(p+"?ts="+Date.now(),{cache:"no-store"});
-        if(res.ok) break;
-      }catch(e){}
+        const res=await fetch(p+"?ts="+Date.now(),{cache:"no-store"});
+        if(res.ok){
+          data=await res.json();
+          console.log("Loaded feed from:",p,"items:",data.items.length);
+          break;
+        }
+      }catch(e){
+        console.log("Failed to load from",p,e.message);
+      }
     }
-    if(!res || !res.ok) throw new Error("Feed not found");
-    const data=await res.json();
+
+    if(!data) throw new Error("Could not load feed.json from any path");
+
     const before=DATA?DATA.items.length:0;
     apply(data);
-    if(isManual){ const d=data.items.length-before;
-      toast(d>0?`Feed updated · ${d} new`:"Feed up to date"); }
+    if(isManual){
+      const d=data.items.length-before;
+      toast(d>0?`Feed updated · ${d} new`:"Feed up to date");
+    }
   }catch(e){
     console.error("Feed load error:",e);
     if(!DATA) apply({generated:null,topics:["Nuclear fusion","Superconductors","Dark matter","Exoplanet imaging telescopes","Early life and archaea"],items:[]});
-    if(isManual) toast("Could not reach feed.json");
-  }finally{ if(isManual) setTimeout(()=>btn.classList.remove("spin"),400); }
+    if(isManual) toast("Could not reach feed.json: "+e.message);
+  }finally{
+    if(isManual) setTimeout(()=>btn.classList.remove("spin"),400);
+  }
 }
 
 function setSort(s){ sort=s; store.setItem("radar.sort",s);
@@ -303,14 +316,22 @@ function setLayout(l){ layout=l; store.setItem("radar.layout",l);
   document.getElementById("layoutColumns").setAttribute("aria-pressed",l==="columns");
   renderFeed(); }
 
+// Initialize immediately with loading state
+document.getElementById("feed").innerHTML=`<div class="loading">Loading frontier feed</div>`;
+
+// Setup event handlers
 document.getElementById("sortLatest").onclick=()=>setSort("latest");
 document.getElementById("sortTop").onclick=()=>setSort("top");
 document.getElementById("layoutFeed").onclick=()=>setLayout("feed");
 document.getElementById("layoutColumns").onclick=()=>setLayout("columns");
 document.getElementById("refresh").onclick=()=>loadFeed(true);
-setSort(sort);
-setLayout(layout);
-loadFeed(false);
+
+// Load feed immediately and only after it loads, set up the UI
+(async()=>{
+  await loadFeed(false);
+  setSort(sort);
+  setLayout(layout);
+})();
 </script>
 </body>
 </html>
