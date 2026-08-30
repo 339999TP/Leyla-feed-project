@@ -92,13 +92,22 @@ Just give it a name — Claude writes the keywords and description, finds and
 validates relevant sources (arXiv categories, PubMed queries, RSS feeds), adds it
 all to `config.yaml`, and seeds the feed so the topic shows up right away.
 
-- **On the site:** click **+ Add topic** in the chip row, type a name, and it opens
-  the GitHub Actions page. Click **Run workflow**, paste the name into the *topic*
-  box, and run it. (You need repo access to run workflows.)
+- **On the site (seamless):** click **+ Add topic** in the chip row and pick a topic
+  from the list. That's it — the feed rebuilds itself in a minute or two. This is
+  powered by a small Cloudflare Worker that safely triggers the pipeline; deploy it
+  once with the steps in [`worker/README.md`](worker/README.md), then set
+  `ADD_TOPIC_ENDPOINT` in `docs/index.html`. Until that's wired up, the button falls
+  back to opening the Actions tab.
+  - You can only pick **recognised topics** from the curated allowlist in
+    [`docs/topics.json`](docs/topics.json). This is a deliberate safety measure — only
+    short, vetted terms ever reach the pipeline, so there's no prompt-injection
+    surface. To offer more topics, append to that file.
 - **From the Actions tab:** research-radar → **Run workflow** → type a topic name
-  in the *topic* field.
+  in the *topic* field. (Must be a term in `docs/topics.json`.)
 - **Locally:** `python radar.py --add-topic "Quantum computing"` (uses your Claude
   API key), then commit and push the updated `config.yaml` + `feed.json`.
+
+Architecture notes for maintainers live in [`CLAUDE.md`](CLAUDE.md).
 
 Or edit `config.yaml` by hand for full control:
 

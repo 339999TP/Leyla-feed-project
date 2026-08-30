@@ -41,6 +41,8 @@ jobs:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           # Passed via env (not interpolated into the shell) to avoid injection.
           ADD_TOPIC: ${{ github.event.inputs.topic }}
+          # Only allow topics from docs/topics.json (belt-and-braces with the worker).
+          RADAR_ENFORCE_ALLOWLIST: "1"
         run: |
           if [ -n "$ADD_TOPIC" ]; then
             echo "Adding topic: $ADD_TOPIC"

@@ -957,11 +957,36 @@ def backfill_topic(cfg, topic_name, force_mock=False):
     print(f"  feed: +{n_added} new items -> {path}")
 
 
+def load_allowlist(cfg):
+    """Curated topics.json used to gate what --add-topic will accept when
+    RADAR_ENFORCE_ALLOWLIST is set (defense in depth behind the worker)."""
+    site_dir = cfg["delivery"].get("site_dir", "./site")
+    for p in (os.path.join(site_dir, "topics.json"),
+              os.path.join("docs", "topics.json")):
+        if os.path.exists(p):
+            try:
+                with open(p, encoding="utf-8") as f:
+                    return [str(t).strip() for t in json.load(f).get("topics", [])]
+            except Exception:  # noqa: BLE001
+                return []
+    return []
+
+
 def add_topic(cfg, config_path, name, force_mock=False):
     name = (name or "").strip()
     if not name:
         print("  ! --add-topic requires a topic name")
         return
+    # Defense in depth: when enforced (the Action sets this), only exact
+    # allowlist terms are accepted, so no arbitrary text reaches the LLM.
+    if os.environ.get("RADAR_ENFORCE_ALLOWLIST"):
+        allow = load_allowlist(cfg)
+        match = next((a for a in allow if a.lower() == name.lower()), None)
+        if not match:
+            print(f"  ! '{name}' is not in the topic allowlist (docs/topics.json); "
+                  f"refusing because RADAR_ENFORCE_ALLOWLIST is set")
+            return
+        name = match  # normalize to the canonical allowlist spelling
     existing = {t["name"].strip().lower() for t in cfg.get("topics", [])}
     if name.lower() in existing:
         print(f"  topic '{name}' already exists; nothing to do")
