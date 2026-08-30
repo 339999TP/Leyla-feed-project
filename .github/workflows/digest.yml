@@ -5,7 +5,12 @@ name: research-radar
 on:
   schedule:
     - cron: "0 7 * * 1"
-  workflow_dispatch: {}      # manual "Run workflow" button in the Actions tab
+  workflow_dispatch:         # manual "Run workflow" button in the Actions tab
+    inputs:
+      topic:
+        description: "Add a new topic (Claude generates keywords + sources, then seeds the feed). Leave blank for a normal run."
+        required: false
+        default: ""
 
 permissions:
   contents: write            # lets the job commit the updated feed.json
@@ -34,12 +39,28 @@ jobs:
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-        run: python radar.py --config config.yaml
+          # Passed via env (not interpolated into the shell) to avoid injection.
+          ADD_TOPIC: ${{ github.event.inputs.topic }}
+        run: |
+          if [ -n "$ADD_TOPIC" ]; then
+            echo "Adding topic: $ADD_TOPIC"
+            python radar.py --config config.yaml --add-topic "$ADD_TOPIC"
+          else
+            python radar.py --config config.yaml
+          fi
 
       - name: Commit feed
+        env:
+          ADD_TOPIC: ${{ github.event.inputs.topic }}
         run: |
           git config user.name  radar-bot
           git config user.email radar-bot@users.noreply.github.com
-          git add docs/feed.json radar_seen.sqlite || true
-          git commit -m "feed $(date -u +%FT%H:%MZ)" || echo "nothing to commit"
+          # config.yaml is committed too, so a newly added topic persists.
+          git add docs/feed.json radar_seen.sqlite config.yaml || true
+          if [ -n "$ADD_TOPIC" ]; then
+            MSG="add topic: $ADD_TOPIC ($(date -u +%FT%H:%MZ))"
+          else
+            MSG="feed $(date -u +%FT%H:%MZ)"
+          fi
+          git commit -m "$MSG" || echo "nothing to commit"
           git push || echo "push skipped"

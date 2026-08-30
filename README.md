@@ -87,7 +87,20 @@ This makes it update itself and gives you a URL to open anywhere.
 
 ## 5. (Optional) Customize topics and sources
 
-You can track any science/tech topics you care about by editing `config.yaml`:
+**Add a new topic the easy way (Claude does the setup):**
+Just give it a name — Claude writes the keywords and description, finds and
+validates relevant sources (arXiv categories, PubMed queries, RSS feeds), adds it
+all to `config.yaml`, and seeds the feed so the topic shows up right away.
+
+- **On the site:** click **+ Add topic** in the chip row, type a name, and it opens
+  the GitHub Actions page. Click **Run workflow**, paste the name into the *topic*
+  box, and run it. (You need repo access to run workflows.)
+- **From the Actions tab:** research-radar → **Run workflow** → type a topic name
+  in the *topic* field.
+- **Locally:** `python radar.py --add-topic "Quantum computing"` (uses your Claude
+  API key), then commit and push the updated `config.yaml` + `feed.json`.
+
+Or edit `config.yaml` by hand for full control:
 
 **Add a new topic:**
 ```yaml

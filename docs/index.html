@@ -34,6 +34,9 @@
   .chip[aria-pressed="false"]{color:var(--muted);background:transparent;border-style:dashed;opacity:.7}
   .chip[aria-pressed="false"] .dot{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line-strong)}
   .chip:hover{border-color:var(--ink)}
+  .chip-add{border-style:dashed;color:var(--accent);border-color:var(--accent);gap:5px}
+  .chip-add .plus{font-size:14px;line-height:1;font-weight:600}
+  .chip-add:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
   .spacer{flex:1}
   .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;overflow:hidden}
   .seg button{background:var(--panel);border:0;padding:6px 12px;font-size:12px;color:var(--muted)}
@@ -151,6 +154,28 @@ const TOPIC_COLORS = {
 const PALETTE = ["#c4432b","#1e88a8","#6c4cc4","#2e8b6b","#b07a1e","#3341b0","#8a6d3b"];
 function colorFor(t,i){return TOPIC_COLORS[t] || PALETTE[i % PALETTE.length];}
 
+// "Add topic" triggers the GitHub Actions workflow (the page is static, so the
+// LLM keyword/source generation runs there, not in the browser).
+const REPO = "339999TP/Leyla-feed-project";
+const WORKFLOW_FILE = "digest.yml";
+function addTopicFlow(){
+  const name=(window.prompt(
+    "Name a topic to start tracking — e.g. Quantum computing, CRISPR gene editing.\n\n"+
+    "Claude will generate keywords, find sources, and seed the feed. This runs on "+
+    "GitHub Actions (you'll need access to run the workflow)."
+  )||"").trim();
+  if(!name) return;
+  const url=`https://github.com/${REPO}/actions/workflows/${WORKFLOW_FILE}`;
+  let copied=false;
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(name); copied=true;
+    }
+  }catch(e){}
+  window.open(url,"_blank","noopener");
+  toast(`Opening GitHub Actions — click “Run workflow”, paste “${name}” into the topic box${copied?" (copied)":""}.`);
+}
+
 const store = (()=>{ try{ const k="__t"; localStorage.setItem(k,"1"); localStorage.removeItem(k); return localStorage; }catch(e){ const m={}; return {getItem:k=>k in m?m[k]:null, setItem:(k,v)=>m[k]=String(v)};}})();
 
 let DATA = null;
@@ -194,6 +219,12 @@ function renderChips(){
       renderChips(); renderFeed(); };
     box.appendChild(b);
   });
+  const add=document.createElement("button");
+  add.type="button"; add.className="chip chip-add";
+  add.innerHTML=`<span class="plus" aria-hidden="true">+</span>Add topic`;
+  add.title="Track a new topic — Claude generates keywords and finds sources";
+  add.onclick=addTopicFlow;
+  box.appendChild(add);
 }
 
 function gauge(it,color){
