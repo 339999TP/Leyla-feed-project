@@ -308,9 +308,16 @@ SIGNIFICANCE (only count actual discoveries/events):
   1 = REJECT - not a discovery/event
 Heavily prefer empirical discoveries over theory. When unsure, score lower.
 
+SUMMARY: Write a 1-2 sentence plain-English description of the BREAKTHROUGH ITSELF.
+Describe WHAT was discovered/achieved and WHY it matters. Not just the article headline.
+Example: "Jupiter moon Io shows active volcanism; NASA's Juno probe made the first
+thermal images proving sustained geological activity at an icy moon."
+Do NOT just extract the first sentence. Synthesize the discovery from the full text.
+Max 30 words.
+
 Return ONLY JSON array, no prose:
 [{"i":0,"topic":"<topic or none>","relevant":true,"stage":"discovery",
-  "significance":4,"summary":"<25 words: concrete discovery/event, plain English"}]
+  "significance":4,"summary":"<30 words: WHAT breakthrough, WHY matters, plain English"}]
 """
 
 

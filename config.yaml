@@ -29,13 +29,16 @@ delivery:
     to_addrs: [you@example.com]
     # password is read from the EMAIL_PASSWORD environment variable.
 
-# --- SOURCES: curated for breakthroughs & discovery announcements, not papers ---
-# Focuses on where discoveries get announced (news), not academic preprints.
-# arXiv/PubMed disabled by default; re-enable only if monitoring trending announcements.
+# --- SOURCES: curated for genuine breakthroughs and discovery announcements ---
+# Combines news (fast announcements) + arXiv (landmark papers only, heavily filtered by Claude)
+# arXiv disabled for routine papers; enabled for high-impact categories only.
 sources:
-  arxiv_categories: []    # Disabled: preprints ≠ breakthroughs. Most never confirm.
+  arxiv_categories:       # Only categories likely to have landmark results
+    - physics.plasm-ph    # fusion / plasma — lots of milestone announcements
+    - cond-mat.supr-con   # superconductors — high-visibility breakthroughs
+    - astro-ph.EP         # exoplanets — direct imaging, discovery announcements
 
-  pubmed_queries: []      # Disabled: preprints ≠ breakthroughs.
+  pubmed_queries: []      # Disabled: biology breakthroughs announced in news first
 
   rss:                    # Curated sources that announce actual discoveries & events
     # Major journals: announce breakthroughs *and* accept confirmed results
