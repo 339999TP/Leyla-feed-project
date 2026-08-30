@@ -82,6 +82,18 @@
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;padding:9px 15px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   footer{border-top:1px solid var(--line);padding:16px 0 40px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7}
+  @media (max-width:640px){
+    /* Header is too tall on phones to stay sticky — it would cover the feed */
+    header{position:static}
+    .column-title{position:static}
+    /* Stop the chips from collapsing into a narrow column with the sort/layout
+       controls floating over them: give chips their own full-width row so the
+       segmented controls wrap cleanly onto the next line. */
+    .controls{gap:10px}
+    .chips{flex:1 0 100%}
+    .chip{white-space:nowrap}
+    .seg,.refresh{flex:0 0 auto}
+  }
   @media (max-width:560px){
     .brand h1{font-size:24px}
     .head-in{padding-top:16px}
