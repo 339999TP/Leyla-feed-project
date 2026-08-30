@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30T15:40:01.429193Z",
+  "generated": "2026-08-30T15:43:34.194710Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -11,6 +11,32 @@
     "Extremely Large Telescope"
   ],
   "items": [
+    {
+      "id": "62b3a08dceae7404e19cc34bdceda820455d8fd0a71297e2829739dba8ada7b9",
+      "title": "A new recipe unlocks “impossible” nanocrystals for LEDs, implants, and superconductors",
+      "url": "https://www.sciencedaily.com/releases/2026/08/260827010510.htm",
+      "source": "Latest Science News -- ScienceDaily",
+      "source_type": "news",
+      "topic": "Superconductors",
+      "stage": "lab",
+      "significance": 3,
+      "summary": "Lab breakthrough: metal-nitride nanocrystals now synthesizable at practical scale; enables flexible superconducting and electronic devices.",
+      "published": "2026-08-30T11:45:32",
+      "added": "2026-08-30T15:43:34.192183Z"
+    },
+    {
+      "id": "d32346afb8023ad53590ce90e61047b00b2e6e6ade611944b16f9ad6108e3529",
+      "title": "Astronomers discover hot watery exoplanet destined to be swallowed by its star",
+      "url": "https://www.space.com/astronomy/exoplanets/astronomers-discover-hot-watery-exoplanet-destined-to-be-swallowed-by-its-star",
+      "source": "Latest from Space.com",
+      "source_type": "news",
+      "topic": "Exoplanet imaging telescopes",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "Water-rich exoplanet discovered orbiting extremely close to its star, doomed to eventual collision. Reveals planetary formation and evolution in extreme environments.",
+      "published": "2026-08-26T18:00:00",
+      "added": "2026-08-30T15:43:34.191940Z"
+    },
     {
       "id": "f953fabccbbcb452e83110a85d4843ce337fb5b36a6906cf279e9d0079e14cb1",
       "title": "NASA’s Roman Telescope Takes Aim at Cosmic Mysteries",
@@ -189,7 +215,7 @@
       "topic": "Superconductors",
       "stage": "lab",
       "significance": 4,
-      "summary": "Vacuum fluctuations used to enhance superconductivity for first time, demonstrating new method to control quantum states in superconductors.",
+      "summary": "First lab demonstration of quantum vacuum fluctuations enhancing superconductivity; new method to control superconducting material properties.",
       "published": "2026-08-24T20:50:01",
       "added": "2026-08-30T11:45:28.163182Z"
     },
@@ -202,7 +228,7 @@
       "topic": "Nuclear fusion",
       "stage": "lab",
       "significance": 3,
-      "summary": "Researchers confirmed fusion implosions tolerate significant design flaws before performance fails, improving target design understanding for future fusion power plants.",
+      "summary": "Lab finding shows inertial fusion fuel targets tolerate imperfections up to a threshold; informs practical design of future fusion reactors.",
       "published": "2026-08-24T23:00:01",
       "added": "2026-08-30T11:45:28.163130Z"
     },
@@ -213,9 +239,9 @@
       "source": "Physics News - Physics News, Material Sciences, Science News, Physics",
       "source_type": "news",
       "topic": "Superconductors",
-      "stage": "discovery",
+      "stage": "lab",
       "significance": 3,
-      "summary": "Nickel-based materials regain superconductivity under strong magnetic fields, opening path to superconductors working in extreme conditions.",
+      "summary": "Nickel-based material regains superconductivity under strong magnetic fields; widens range of conditions where superconducting electronics could operate.",
       "published": "2026-08-26T14:40:04",
       "added": "2026-08-30T11:45:28.163043Z"
     },
@@ -228,7 +254,7 @@
       "topic": "Dark matter",
       "stage": "discovery",
       "significance": 3,
-      "summary": "SuperCDMS detector begins collecting first data hunting for light dark matter particles using ultracold crystals deep underground.",
+      "summary": "SuperCDMS begins first scientific data collection hunting lightweight dark matter particles using ultra-sensitive underground detector.",
       "published": "2026-08-27T15:40:06",
       "added": "2026-08-30T11:45:28.162981Z"
     },
@@ -304,9 +330,9 @@
       "source": "arXiv:astro-ph.EP",
       "source_type": "academic",
       "topic": "Exoplanet imaging telescopes",
-      "stage": "prototype",
+      "stage": "lab",
       "significance": 3,
-      "summary": "First on-sky demonstration of nano-printed PIAACMC coronagraph on MagAO-X; achieves sub-diffraction-limit imaging of binary companions at 0.8–5 lambda/D separations.",
+      "summary": "New coronagraph mask design achieves sub-diffraction-limit imaging; detects binary companions at extremely tight separations on Magellan telescope.",
       "published": "2026-08-25T09:55:40",
       "added": "2026-08-30T11:45:28.161740Z"
     },
@@ -317,9 +343,9 @@
       "source": "arXiv:astro-ph.EP",
       "source_type": "academic",
       "topic": "Exoplanet imaging telescopes",
-      "stage": "prototype",
-      "significance": 4,
-      "summary": "First light of NIRC2-Pol near-infrared polarimetry on Keck II; new coronagraphic and spectropolarimetric modes now operational for exoplanet and circumstellar disk imaging.",
+      "stage": "lab",
+      "significance": 3,
+      "summary": "Keck II telescope upgraded with new infrared polarimetry imaging modes; first light reveals spiral arms in AB Aurigae disk with unprecedented clarity.",
       "published": "2026-08-25T15:03:53",
       "added": "2026-08-30T11:45:28.161675Z"
     },
@@ -431,12 +457,12 @@
       "id": "f8e3915e61386a54f3365927329ba1e0663798396fb1af0433aad996f1005e37",
       "title": "A ghostly ribbon of stars reveals hidden dark matter",
       "url": "https://www.sciencedaily.com/releases/2026/08/260823015000.htm",
-      "source": "Latest Science News -- ScienceDaily",
+      "source": "Astronomy News -- ScienceDaily",
       "source_type": "news",
       "topic": "Dark matter",
       "stage": "discovery",
-      "significance": 3,
-      "summary": "First stellar stream found around distant galaxy; its shape reveals dark matter distribution, opening new way to map invisible matter beyond Milky Way.",
+      "significance": 4,
+      "summary": "First stellar stream around distant galaxy used to map dark matter distribution; opens new method to study invisible matter's structure and abundance.",
       "published": "2026-08-24T12:19:34",
       "added": "2026-08-30T11:39:32.083173Z"
     },
@@ -473,9 +499,9 @@
       "source": "Physics World",
       "source_type": "news",
       "topic": "Superconductors",
-      "stage": "lab",
+      "stage": "discovery",
       "significance": 3,
-      "summary": "Researchers discovered re-entrant superconductivity in 2D material: magnetic field suppresses then restores superconducting state, revealing unexpected physics.",
+      "summary": "Re-entrant superconductivity observed in 2D material for first time—magnetic field can destroy and restore superconductivity unexpectedly.",
       "published": "2026-08-28T11:00:10",
       "added": "2026-08-30T11:39:32.083004Z"
     },
@@ -501,7 +527,7 @@
       "topic": "Nuclear fusion",
       "stage": "lab",
       "significance": 3,
-      "summary": "Scientists recreated diamond-rain physics from ice giant interiors in the lab, revealing insights that could triple fusion energy output.",
+      "summary": "Lab experiment mimics diamond-rain process in ice giants for first time; physics may improve fusion energy output by threefold.",
       "published": "2026-08-26T19:27:47",
       "added": "2026-08-30T11:39:32.082891Z"
     },
@@ -669,8 +695,8 @@
       "source_type": "academic",
       "topic": "Exoplanet imaging telescopes",
       "stage": "discovery",
-      "significance": 3,
-      "summary": "JWST's NIRCam coronagraph imaged five debris disk systems in infrared, revealing scattered light and water ice signatures with unprecedented resolution and sensitivity.",
+      "significance": 4,
+      "summary": "James Webb Space Telescope's NIRCam directly imaged five debris disk systems at high resolution, revealing water ice and dust grain structures never seen before.",
       "published": "2026-08-27T17:55:03",
       "added": "2026-08-30T11:39:32.082110Z"
     },
@@ -917,7 +943,7 @@
       "topic": "Superconductors",
       "stage": "lab",
       "significance": 3,
-      "summary": "New ultrathin superconducting material Nb₂Pd₃Te₅ synthesized and shown to remain superconducting in open air, a practical advance for handling delicate superconducting devices.",
+      "summary": "New ultrathin air-stable superconductor Nb₂Pd₃Te₅ created; stays superconducting in open air—practical step toward robust superconducting electronics.",
       "published": "2026-08-26T03:26:58",
       "added": "2026-08-30T11:39:32.080891Z"
     },
@@ -954,9 +980,9 @@
       "source": "arXiv:cond-mat.supr-con",
       "source_type": "academic",
       "topic": "Superconductors",
-      "stage": "prototype",
+      "stage": "lab",
       "significance": 3,
-      "summary": "Researchers electrically control oxygen movement in high-temperature superconductor junctions, tuning properties post-fabrication; enables programmable weak links and nanocryotrons.",
+      "summary": "Electrical control of oxygen vacancies in high-temperature superconductor enables post-fabrication tuning of device properties; demonstrated in Y-shaped junction.",
       "published": "2026-08-26T17:21:54",
       "added": "2026-08-30T11:39:32.080707Z"
     },
