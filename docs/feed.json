@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30T16:01:17.109920Z",
+  "generated": "2026-08-30T16:03:18.557079Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -20,7 +20,7 @@
       "topic": "Early life and archaea",
       "stage": "discovery",
       "significance": 3,
-      "summary": "Ancient seafloor rocks in Morocco show chemosynthetic microbial activity hundreds of feet underwater in darkness; reveals deep-ocean microbial ecosystems were far more widespread than thought.",
+      "summary": "Ancient seafloor rocks in Morocco show microbial mat structures (wrinkles) formed in darkness hundreds of feet below ocean surface—reveals deep-ocean chemosynthetic ecosystems were more widespread than thought.",
       "published": "2026-06-26T20:45:50",
       "added": "2026-08-30T16:01:17.108140Z"
     },
@@ -293,7 +293,7 @@
       "topic": "Early life and archaea",
       "stage": "discovery",
       "significance": 3,
-      "summary": "Rare meteorite contains salty fluids, organic compounds, and amino acids from ancient asteroid; reveals how space rocks delivered life's building blocks to early Earth.",
+      "summary": "Meteorite recovered from New Jersey contains ancient salty fluids, organic compounds, and amino acids from a primitive asteroid—evidence that space rocks delivered life's building blocks to early Earth.",
       "published": "2026-08-08T14:58:54",
       "added": "2026-08-30T11:45:28.162923Z"
     },
