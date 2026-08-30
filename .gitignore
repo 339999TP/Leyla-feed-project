@@ -1,0 +1,37 @@
+# Configuration
+config.yaml
+
+# Environment variables
+.env
+.env.local
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+.Python
+build/
+dist/
+
+# Database (seen-store, shouldn't commit)
+radar_seen.sqlite
+*.db
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Editor backups
+*~
+
+# Claude Code local config
+.claude/

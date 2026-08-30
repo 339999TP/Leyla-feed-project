@@ -18,6 +18,7 @@ import argparse
 import datetime as dt
 import warnings
 import hashlib
+import html
 import json
 import os
 import re
@@ -26,6 +27,7 @@ import sqlite3
 import sys
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from urllib.parse import urlparse
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -335,6 +337,17 @@ def build_score_prompt(batch, topics):
     )
 
 
+def get_env(name, default=None):
+    """Safely get environment variable with informative error message."""
+    value = os.environ.get(name, default)
+    if value is None:
+        raise ValueError(
+            f"Environment variable {name} is not set. "
+            f"See README for setup instructions."
+        )
+    return value
+
+
 def parse_json_array(text):
     text = text.strip()
     text = re.sub(r"^```(json)?", "", text).strip()
@@ -344,9 +357,10 @@ def parse_json_array(text):
 
 
 def call_anthropic(prompt, model):
+    api_key = get_env("LLM_API_KEY")
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
-        headers={"x-api-key": os.environ["LLM_API_KEY"],
+        headers={"x-api-key": api_key,
                  "anthropic-version": "2023-06-01",
                  "content-type": "application/json"},
         json={"model": model or "claude-3-5-sonnet-latest", "max_tokens": 1500,
@@ -360,7 +374,7 @@ def call_anthropic(prompt, model):
 def call_openai(prompt, model):
     r = requests.post(
         "https://api.openai.com/v1/chat/completions",
-        headers={"Authorization": f"Bearer {os.environ['LLM_API_KEY']}",
+        headers={"Authorization": f"Bearer {get_env('LLM_API_KEY')}",
                  "Content-Type": "application/json"},
         json={"model": model or "gpt-4o-mini",
               "messages": [{"role": "user", "content": prompt}]},
@@ -489,6 +503,16 @@ def clean_summary(s):
     return s
 
 
+def validate_url(url):
+    """Ensure URL uses safe protocol (http/https only)."""
+    if not url:
+        return ""
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https", ""):
+        raise ValueError(f"Unsafe URL protocol: {parsed.scheme}")
+    return url
+
+
 def to_record(it):
     summary = it.get("llm_summary") or it["summary"][:280]
     title = it["title"]
@@ -502,7 +526,7 @@ def to_record(it):
     return {
         "id": item_key(it),
         "title": title,
-        "url": it["url"],
+        "url": validate_url(it["url"]),
         "source": it["source"],
         "source_type": it.get("source_type", ""),
         "topic": it["topic"],
@@ -544,22 +568,35 @@ def email_new(records, cfg):
     em = cfg["delivery"].get("email", {})
     if not em.get("enabled") or not records:
         return
+    # Validate required email config
+    required_fields = ["from_addr", "to_addrs", "smtp_host", "username"]
+    for field in required_fields:
+        if field not in em:
+            raise ValueError(f"Email config missing required field: {field}")
     rows = ""
     for r in records:
         stars = "\u2605" * r["significance"] + "\u2606" * (5 - r["significance"])
-        rows += (f'<div style="margin:12px 0"><a href="{r["url"]}">{r["title"]}</a>'
-                 f'<br><small>{r["topic"]} \u00b7 {stars} \u00b7 '
-                 f'{STAGE_LABEL.get(r["stage"], r["stage"])} \u00b7 {r["source"]}'
-                 f'</small><br>{r["summary"]}</div>')
+        # Escape all dynamic content to prevent HTML injection
+        safe_url = html.escape(r["url"], quote=True)
+        safe_title = html.escape(r["title"])
+        safe_topic = html.escape(r["topic"])
+        safe_stage = html.escape(STAGE_LABEL.get(r["stage"], r["stage"]))
+        safe_source = html.escape(r["source"])
+        safe_summary = html.escape(r["summary"])
+        rows += (f'<div style="margin:12px 0"><a href="{safe_url}">{safe_title}</a>'
+                 f'<br><small>{safe_topic} \u00b7 {stars} \u00b7 '
+                 f'{safe_stage} \u00b7 {safe_source}'
+                 f'</small><br>{safe_summary}</div>')
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Research radar \u2014 {len(records)} new"
     msg["From"] = em["from_addr"]
     msg["To"] = ", ".join(em["to_addrs"])
     msg.attach(MIMEText("New items in your radar.", "plain"))
     msg.attach(MIMEText(f"<div>{rows}</div>", "html"))
+    email_password = get_env("EMAIL_PASSWORD")
     with smtplib.SMTP(em["smtp_host"], em.get("smtp_port", 587)) as s:
         s.starttls()
-        s.login(em["username"], os.environ["EMAIL_PASSWORD"])
+        s.login(em["username"], email_password)
         s.send_message(msg)
     print(f"  emailed {len(records)} new items to {msg['To']}")
 
