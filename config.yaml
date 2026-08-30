@@ -36,10 +36,10 @@ delivery:
     enabled: false          # true = email the full digest every run
     smtp_host: smtp.gmail.com
     smtp_port: 587
-    username: you@example.com
-    from_addr: you@example.com
-    to_addrs: [you@example.com]
-    # password is read from the EMAIL_PASSWORD environment variable.
+    username: leyla.spratley@gmail.com
+    from_addr: leyla.spratley@gmail.com
+    to_addrs: [leyla.spratley@gmail.com]
+    # password is read from the EMAIL_PASSWORD environment variable (Gmail App Password).
     #
     # BREAKTHROUGH ALERTS: fire an email the moment a truly massive result lands,
     # even if the regular digest email above is disabled. Set the score at/above
@@ -47,7 +47,7 @@ delivery:
     # or remove to turn alerts off. Requires the EMAIL_PASSWORD secret + a real
     # SMTP host/username/to_addrs above.
     alert_significance: 5
-    # alert_to_addrs: [you@example.com]   # optional; defaults to to_addrs
+    # alert_to_addrs: [leyla.spratley@gmail.com]   # optional; defaults to to_addrs
 
 # --- SOURCES: Add your own RSS feeds here! ---
 # Sources can be: arXiv categories, PubMed queries, or RSS feed URLs
