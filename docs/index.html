@@ -44,12 +44,18 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   main{padding:22px 0 60px}
   .count{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin:0 0 14px}
-  .columns{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-  .column{display:flex;flex-direction:column;gap:12px}
-  .column-title{font-family:var(--serif);font-weight:600;font-size:14px;padding:0 8px;color:var(--ink);position:sticky;top:70px;z-index:2;background:var(--paper);padding:8px}
-  @media (max-width:1400px){.columns{grid-template-columns:repeat(3,1fr)}}
-  @media (max-width:900px){.columns{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:560px){.columns{grid-template-columns:1fr}}
+  .columns{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;width:100vw;margin-left:calc(-50vw + 50%)}
+  .column{display:flex;flex-direction:column;gap:8px;min-width:0;padding:0 6px}
+  .column-title{font-family:var(--serif);font-weight:600;font-size:13px;padding:6px 4px;color:var(--ink);position:sticky;top:70px;z-index:2;background:var(--paper);line-height:1.2}
+  .column .card{padding:10px 12px;margin:0}
+  .column .card h2{font-size:15px;margin:0 0 4px}
+  .column .card p{font-size:13px;margin:0 0 8px}
+  .column .meta{font-size:10px}
+  .column .foot{gap:8px;padding-top:8px}
+  @media (max-width:2000px){.columns{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:1600px){.columns{grid-template-columns:repeat(3,1fr);gap:16px}.column{padding:0}}
+  @media (max-width:900px){.columns{grid-template-columns:repeat(2,1fr);gap:16px}.column{padding:0}.column .card{padding:16px 17px}.column .card h2{font-size:19px}.column .card p{font-size:14.5px}.column .meta{font-size:11px}}
+  @media (max-width:560px){.columns{grid-template-columns:1fr;width:auto;margin-left:0}.column{padding:0}.column .card{padding:16px 17px}.column .card h2{font-size:19px}.column .card p{font-size:14.5px}.column .meta{font-size:11px}}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 17px;margin:0 0 12px;transition:.15s}
   .card:hover{border-color:var(--line-strong);transform:translateY(-1px);box-shadow:0 6px 22px -16px rgba(0,0,0,.35)}
   .meta{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 7px}

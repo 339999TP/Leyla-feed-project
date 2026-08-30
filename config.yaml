@@ -50,22 +50,47 @@ sources:
     # - "cancer immunotherapy"
 
   rss:                    # Add any mainstream science/news RSS feeds here
-    # Major journals
+    # Top-tier journals & research
     - https://www.nature.com/nature.rss
+    - https://www.nature.com/articles/index.rss
     - https://www.science.org/rss/news_current.xml
+    - https://www.science.org/rss/research.xml
 
-    # Science news & journalism
-    - https://www.sciencedaily.com/rss/matter_energy/physics.xml
-    - https://www.sciencedaily.com/rss/matter_energy/nuclear_energy.xml
-    - https://www.sciencedaily.com/rss/space_time/dark_matter.xml
-    - https://www.sciencedaily.com/rss/space_time/extrasolar_planets.xml
-    - https://www.sciencedaily.com/rss/fossils_ruins/origin_of_life.xml
+    # Dedicated science news outlets
     - https://www.quantamagazine.org/feed/
     - https://www.scientificamerican.com/platform/syndication/rss/
     - https://www.space.com/feeds/all
     - https://www.universetoday.com/feed/
     - https://physicsworld.com/feed/
     - https://www.symmetrymagazine.org/feed
+    - https://www.eurekalert.org/rss.xml
+
+    # Broad science coverage (ScienceDaily categories)
+    - https://www.sciencedaily.com/rss/all.xml
+    - https://www.sciencedaily.com/rss/matter_energy/physics.xml
+    - https://www.sciencedaily.com/rss/matter_energy/nuclear_energy.xml
+    - https://www.sciencedaily.com/rss/matter_energy/materials_science.xml
+    - https://www.sciencedaily.com/rss/space_time/dark_matter.xml
+    - https://www.sciencedaily.com/rss/space_time/extrasolar_planets.xml
+    - https://www.sciencedaily.com/rss/space_time/astronomy.xml
+    - https://www.sciencedaily.com/rss/fossils_ruins/origin_of_life.xml
+
+    # Tech & science journalism
+    - https://arstechnica.com/feed/
+    - https://feeds.arstechnica.com/arstechnica/index
+    - https://www.wired.com/feed/rss.xml
+    - https://feeds.bloomberg.com/markets/news.rss
+
+    # Physics & materials
+    - https://physicstoday.scitation.org/rss/landing
+    - https://www.technologyreview.com/feed.rss
+
+    # Research aggregators
+    - https://www.reddit.com/r/science/.rss
+
+    # Specialized mission/observatory news
+    - https://www.nasa.gov/news/all_news.rss
+    - https://www.esa.int/rss/latest_news.xml
 
     # Add your own RSS feeds here! Examples:
     # - https://www.example.com/science/rss  (must be valid RSS)

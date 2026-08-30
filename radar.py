@@ -314,16 +314,22 @@ SIGNIFICANCE (only count actual discoveries/events):
 Heavily prefer empirical discoveries over theory. When unsure, score lower.
 Require NEWS ANNOUNCEMENT or official statement for significance 3+.
 
-SUMMARY (CRITICAL): Write a 1-2 sentence plain-English description of the BREAKTHROUGH ITSELF.
-- Describe WHAT was discovered/achieved and WHY it matters to this field.
-- Make it readable to an educated layperson, not jargon-heavy.
-- Do NOT just extract the title or first sentence. Synthesize across the text.
-- Examples:
-  "First direct image of an exoplanet in a young star system; James Webb captured the
-   infrared signature of a young, massive planet orbiting another star for the first time."
-  "Fusion reactor achieved net energy output; NIF achieved ignition and sustained fusion
-   reactions producing more energy than was input into the fuel."
-- Max 30 words. If you cannot write a clear summary, mark relevant=false.
+SUMMARY (CRITICAL - THIS IS NOT AN ABSTRACT):
+Write a 1-2 sentence summary of the DISCOVERY/EVENT ITSELF, not the paper's methodology.
+- WHAT: Name the actual breakthrough result (e.g., "Room-temperature superconductor",
+  "First exoplanet image", "Fusion net energy gain confirmed")
+- WHY IT MATTERS: The real-world impact (e.g., "solves 40-year problem", "enables
+  new observations impossible before", "proves commercial viability")
+
+DO NOT write like a technical abstract with methods/theory. DO extract the human-readable
+discovery. DO NOT copy the title verbatim. Assume reader has no background.
+
+WRONG: "We present a novel photometric method to detect exoplanets using Fourier analysis
+of stellar variability across K2 and TESS datasets"
+RIGHT: "First exoplanet image around young star; James Webb's infrared imaging directly
+captured light from massive planet at 10 AU"
+
+Max 30 words. If result is unclear or methodology-focused, mark relevant=false.
 
 Return ONLY JSON array, no prose:
 [{"i":0,"topic":"<topic or none>","relevant":true,"stage":"discovery",
