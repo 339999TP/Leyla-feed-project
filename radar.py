@@ -19,10 +19,12 @@ import datetime as dt
 import warnings
 import hashlib
 import html
+import ipaddress
 import json
 import os
 import re
 import smtplib
+import socket
 import sqlite3
 import sys
 from email.mime.multipart import MIMEMultipart
@@ -183,15 +185,40 @@ def fetch_rss(urls, max_results):
     return items
 
 
+def _is_public_url(url):
+    """SSRF guard: allow only http(s) URLs whose host resolves to public IPs.
+    Blocks localhost, private ranges, and cloud metadata (169.254.x.x)."""
+    try:
+        p = urlparse(url)
+        if p.scheme not in ("http", "https") or not p.hostname:
+            return False
+        for res in socket.getaddrinfo(p.hostname, None):
+            ip = ipaddress.ip_address(res[4][0])
+            if (ip.is_private or ip.is_loopback or ip.is_link_local
+                    or ip.is_reserved or ip.is_multicast or ip.is_unspecified):
+                return False
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def fetch_fulltext(url, timeout=12):
     """Fetch an article/paper page and extract readable body text.
     Returns extracted text (best-effort) or '' on failure. Used to give the
     LLM more than a truncated RSS blurb so it can summarize the actual finding."""
+    if not _is_public_url(url):
+        return ""
     try:
-        r = requests.get(url, headers={"User-Agent": UA_STR}, timeout=timeout)
-        if not r.ok or "html" not in r.headers.get("content-type", "").lower():
+        r = requests.get(url, headers={"User-Agent": UA_STR}, timeout=timeout,
+                         stream=True)
+        # Re-validate after redirects so an allowed host can't 302 to an internal one.
+        if not r.ok or not _is_public_url(r.url):
             return ""
-        html_text = r.text
+        if "html" not in r.headers.get("content-type", "").lower():
+            return ""
+        # Bounded read so a huge page can't exhaust memory.
+        raw = r.raw.read(2_000_000, decode_content=True)
+        html_text = raw.decode(r.encoding or "utf-8", errors="replace")
         # Drop scripts, styles, and other non-content blocks
         html_text = re.sub(r"(?is)<(script|style|nav|header|footer|aside|form)[^>]*>.*?</\1>", " ", html_text)
         # Prefer <article> or <main> body if present
@@ -370,10 +397,20 @@ Write a 1-2 sentence summary of the DISCOVERY/EVENT ITSELF, not the paper's meth
 DO NOT write like a technical abstract with methods/theory. DO extract the human-readable
 discovery. DO NOT copy the title verbatim. Assume reader has no background.
 
+READABILITY (STRICT): Write for a curious non-specialist, like a good popular-science
+headline. Use plain everyday words. Do NOT use unexplained jargon, chemical formulas,
+acronyms, or math notation. If a technical term is unavoidable, explain it in plain words.
+Prefer "a material that conducts electricity with zero resistance" over "quasi-1D pair
+density modulation". If you cannot explain the result in plain language, mark relevant=false.
+
 WRONG: "We present a novel photometric method to detect exoplanets using Fourier analysis
 of stellar variability across K2 and TESS datasets"
 RIGHT: "First exoplanet image around young star; James Webb's infrared imaging directly
 captured light from massive planet at 10 AU"
+
+WRONG: "Air-stable 2D superconductor Nb2Pd3Te5 with quasi-1D pair density modulation"
+RIGHT: "New ultrathin material stays superconducting in open air -- a step toward practical,
+easy-to-handle superconducting electronics"
 
 Max 30 words. If result is unclear or methodology-focused, mark relevant=false.
 
@@ -414,7 +451,32 @@ def parse_json_array(text):
     text = re.sub(r"^```(json)?", "", text).strip()
     text = re.sub(r"```$", "", text).strip()
     m = re.search(r"\[.*\]", text, re.DOTALL)
-    return json.loads(m.group(0)) if m else json.loads(text)
+    if m:
+        try:
+            return json.loads(m.group(0))
+        except json.JSONDecodeError:
+            pass
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    # Fallback: model returned objects not wrapped in an array (NDJSON or
+    # run-together objects). Decode them one at a time so a stray format
+    # doesn't cost us the whole batch.
+    decoder = json.JSONDecoder()
+    objs, idx, n = [], 0, len(text)
+    while idx < n:
+        while idx < n and text[idx] in " \t\r\n,":
+            idx += 1
+        if idx >= n:
+            break
+        try:
+            obj, end = decoder.raw_decode(text, idx)
+        except json.JSONDecodeError:
+            break
+        objs.append(obj)
+        idx = end
+    return objs
 
 
 def call_anthropic(prompt, model):
@@ -630,9 +692,20 @@ def merge_feed(site_dir, records, topics, cap=400):
                 existing = json.load(f).get("items", [])
         except Exception:  # noqa: BLE001
             existing = []
-    have = {r.get("id") for r in existing}
-    # Exact dedup
-    added = [r for r in records if r["id"] not in have]
+    existing_by_id = {r.get("id"): r for r in existing}
+    added = []
+    for r in records:
+        prev = existing_by_id.get(r["id"])
+        if prev:
+            # Same item seen again: refresh scored fields (e.g. improved summary)
+            # but keep the original discovery/added timestamps and position.
+            prev.update({
+                "topic": r["topic"], "stage": r["stage"],
+                "significance": r["significance"], "summary": r["summary"],
+                "url": r["url"], "source": r["source"],
+            })
+            continue
+        added.append(r)
     # Semantic dedup: if new item is same topic + similar title to recent item, skip it
     for new in added[:]:
         for existing_item in existing[:50]:  # Check only recent 50 items

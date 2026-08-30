@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Radar — frontier feed</title>
+<title>Leyla's Research Radar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -34,6 +34,20 @@
   .chip[aria-pressed="false"]{color:var(--muted);background:transparent;border-style:dashed;opacity:.7}
   .chip[aria-pressed="false"] .dot{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line-strong)}
   .chip:hover{border-color:var(--ink)}
+  .chip.add{border-style:dashed;color:var(--muted);cursor:pointer;font-weight:600}
+  .chip.add:hover{color:var(--ink);border-color:var(--ink)}
+  .chip .x{margin-left:2px;opacity:.55;font-size:11px;cursor:pointer;padding:0 2px}
+  .chip .x:hover{opacity:1;color:var(--accent,#c4432b)}
+  .legend{margin:0 0 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-family:var(--mono);font-size:12.5px}
+  .legend>summary{cursor:pointer;padding:11px 15px;color:var(--muted);list-style:none;font-weight:600}
+  .legend>summary::-webkit-details-marker{display:none}
+  .legend>summary::before{content:"\25B8 ";color:var(--muted)}
+  .legend[open]>summary::before{content:"\25BE "}
+  .legend .body{padding:2px 16px 15px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .legend h4{margin:6px 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+  .legend ol,.legend ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.7}
+  .legend b{color:var(--ink)}
+  @media (max-width:560px){.legend .body{grid-template-columns:1fr;gap:12px}}
   .spacer{flex:1}
   .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;overflow:hidden}
   .seg button{background:var(--panel);border:0;padding:6px 12px;font-size:12px;color:var(--muted)}
@@ -44,7 +58,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   main{padding:22px 0 60px}
   .count{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin:0 0 14px}
-  .columns{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;width:100vw;margin-left:calc(-50vw + 50%)}
+  .columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;width:100vw;margin-left:calc(-50vw + 50%)}
   .column{display:flex;flex-direction:column;gap:8px;min-width:0;padding:0 6px}
   .column-title{font-family:var(--serif);font-weight:600;font-size:13px;padding:6px 4px;color:var(--ink);position:sticky;top:70px;z-index:2;background:var(--paper);line-height:1.2}
   .column .card{padding:10px 12px;margin:0}
@@ -52,9 +66,8 @@
   .column .card p{font-size:13px;margin:0 0 8px}
   .column .meta{font-size:10px}
   .column .foot{gap:8px;padding-top:8px}
-  @media (max-width:2000px){.columns{grid-template-columns:repeat(4,1fr)}}
-  @media (max-width:1600px){.columns{grid-template-columns:repeat(3,1fr);gap:16px}.column{padding:0}}
-  @media (max-width:900px){.columns{grid-template-columns:repeat(2,1fr);gap:16px}.column{padding:0}.column .card{padding:16px 17px}.column .card h2{font-size:19px}.column .card p{font-size:14.5px}.column .meta{font-size:11px}}
+  @media (max-width:1600px){.columns{gap:16px}.column{padding:0}}
+  @media (max-width:900px){.columns{gap:16px}.column{padding:0}.column .card{padding:16px 17px}.column .card h2{font-size:19px}.column .card p{font-size:14.5px}.column .meta{font-size:11px}}
   @media (max-width:560px){.columns{grid-template-columns:1fr;width:auto;margin-left:0}.column{padding:0}.column .card{padding:16px 17px}.column .card h2{font-size:19px}.column .card p{font-size:14.5px}.column .meta{font-size:11px}}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 17px;margin:0 0 12px;transition:.15s}
   .card:hover{border-color:var(--line-strong);transform:translateY(-1px);box-shadow:0 6px 22px -16px rgba(0,0,0,.35)}
@@ -82,9 +95,15 @@
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;padding:9px 15px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   footer{border-top:1px solid var(--line);padding:16px 0 40px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7}
+  @media (max-width:900px){
+    .column-title{position:static;top:auto}
+  }
   @media (max-width:560px){
     .brand h1{font-size:24px}
-    .head-in{padding-top:16px}
+    .head-in{padding-top:16px;flex-wrap:wrap;gap:4px}
+    .gen{text-align:left;white-space:normal;width:100%}
+    .controls{gap:7px}
+    .chips{flex:1 1 100%}
     .tick{width:15px}
     .foot{flex-direction:column;align-items:flex-start;gap:9px}
   }
@@ -96,8 +115,8 @@
   <div class="wrap">
     <div class="head-in">
       <div class="brand">
-        <div class="eyebrow">Research radar</div>
-        <h1>Frontier feed</h1>
+        <div class="eyebrow">Breakthroughs &amp; discoveries</div>
+        <h1>Leyla's Research Radar</h1>
       </div>
       <div class="gen" id="gen"></div>
     </div>
@@ -120,6 +139,31 @@
 </header>
 <main>
   <div class="wrap">
+    <details class="legend">
+      <summary>What do the ratings mean?</summary>
+      <div class="body">
+        <div>
+          <h4>Maturity stage</h4>
+          <ol>
+            <li><b>Discovery</b> — a brand-new finding or observation</li>
+            <li><b>Lab</b> — demonstrated under controlled conditions</li>
+            <li><b>Prototype</b> — early real-world device or test</li>
+            <li><b>Commercial</b> — in production / deployed</li>
+            <li><b>Scaled</b> — widespread, mature technology</li>
+          </ol>
+        </div>
+        <div>
+          <h4>Significance (1&ndash;5)</h4>
+          <ul>
+            <li><b>1 Incremental</b> — small step</li>
+            <li><b>2 Notable</b> — worth knowing</li>
+            <li><b>3 Significant</b> — solid advance</li>
+            <li><b>4 Major breakthrough</b> — field-shifting</li>
+            <li><b>5 Landmark</b> — historic result</li>
+          </ul>
+        </div>
+      </div>
+    </details>
     <p class="count" id="count"></p>
     <div id="feed"></div>
   </div>
@@ -143,13 +187,17 @@ const store = (()=>{ try{ const k="__t"; localStorage.setItem(k,"1"); localStora
 
 let DATA = null;
 let unfollowed = new Set();
+let CUSTOM = [];
 let sort = "latest";
 let layout = "feed";
 try{ unfollowed = new Set(JSON.parse(store.getItem("radar.unfollowed")||"[]")); }catch(e){}
+try{ CUSTOM = JSON.parse(store.getItem("radar.custom")||"[]"); }catch(e){}
 sort = store.getItem("radar.sort") || "latest";
 layout = store.getItem("radar.layout") || "feed";
 
-function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function esc(s){return (s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+// Only allow http(s) links; blocks javascript:/data: URIs from feed content.
+function safeUrl(u){ return /^https?:\/\//i.test(u||"") ? u : "#"; }
 function relTime(iso){
   if(!iso) return "";
   const d=new Date(iso.replace(/Z?$/,"Z")); if(isNaN(d)) return "";
@@ -165,23 +213,62 @@ function topics(){
   if(!DATA) return [];
   const set = new Set((DATA.topics)||[]);
   DATA.items.forEach(it=>set.add(it.topic));
+  CUSTOM.forEach(c=>set.add(c.name));
   return [...set].filter(Boolean);
+}
+function itemMatchesKeywords(it,kws){
+  const hay=((it.title||"")+" "+(it.summary||"")).toLowerCase();
+  return kws.some(k=>k && hay.includes(k.toLowerCase()));
+}
+// An item's native topic plus any custom topics whose keywords match its text.
+function itemTopics(it){
+  const ts=[it.topic];
+  CUSTOM.forEach(c=>{ if(itemMatchesKeywords(it,c.keywords)) ts.push(c.name); });
+  return ts.filter(Boolean);
+}
+function addTopic(){
+  const name=(prompt("New topic name (e.g. Quantum computing):")||"").trim();
+  if(!name) return;
+  if(topics().some(t=>t.toLowerCase()===name.toLowerCase())){ toast("That topic already exists"); return; }
+  const kw=(prompt("Keywords to match (comma-separated) — filters items already in the feed:\ne.g. qubit, quantum computer, error correction")||"").trim();
+  const keywords=kw.split(",").map(s=>s.trim()).filter(Boolean);
+  if(!keywords.length){ toast("Add at least one keyword"); return; }
+  CUSTOM.push({name,keywords});
+  store.setItem("radar.custom",JSON.stringify(CUSTOM));
+  unfollowed.delete(name);
+  renderChips(); renderFeed();
+  const n=(DATA.items||[]).filter(it=>itemMatchesKeywords(it,keywords)).length;
+  toast(`Added "${name}" · ${n} matching item${n===1?"":"s"}`);
+}
+function removeTopic(name){
+  CUSTOM=CUSTOM.filter(c=>c.name!==name);
+  store.setItem("radar.custom",JSON.stringify(CUSTOM));
+  renderChips(); renderFeed();
 }
 
 function renderChips(){
   const box=document.getElementById("chips"); box.innerHTML="";
   topics().forEach((t,i)=>{
     const on=!unfollowed.has(t);
+    const isCustom=CUSTOM.some(c=>c.name===t);
     const b=document.createElement("button");
     b.className="chip"; b.setAttribute("aria-pressed",on?"true":"false");
     b.style.setProperty("--c",colorFor(t,i));
-    b.innerHTML=`<span class="dot"></span>${esc(t)}`;
+    b.innerHTML=`<span class="dot"></span>${esc(t)}`+(isCustom?`<span class="x" title="Remove topic">\u2715</span>`:"");
     b.title=on?`Following ${t} — click to unfollow`:`Click to follow ${t}`;
-    b.onclick=()=>{ if(unfollowed.has(t)) unfollowed.delete(t); else unfollowed.add(t);
+    b.onclick=(e)=>{
+      if(e.target.classList.contains("x")){ removeTopic(t); return; }
+      if(unfollowed.has(t)) unfollowed.delete(t); else unfollowed.add(t);
       store.setItem("radar.unfollowed",JSON.stringify([...unfollowed]));
       renderChips(); renderFeed(); };
     box.appendChild(b);
   });
+  const add=document.createElement("button");
+  add.className="chip add";
+  add.textContent="\uFF0B Add topic";
+  add.title="Create a custom topic from keywords (filters items already in the feed)";
+  add.onclick=addTopic;
+  box.appendChild(add);
 }
 
 function gauge(it,color){
@@ -205,17 +292,17 @@ function card(it,i){
   return `<article class="card">
     <div class="meta">
       <span class="src">${esc(it.source)}</span>
-      <span>${esc(relTime(it.added||it.published))}</span>
+      <span>${esc(relTime(it.published||it.added))}</span>
       <span class="tt" style="--c:${color}"><span class="dot"></span>${esc(it.topic)}</span>
     </div>
-    <h2><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a></h2>
+    <h2><a href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)}</a></h2>
     <p>${esc(it.summary)}</p>
     <div class="foot">${gauge(it,color)}${sig(it.significance)}</div>
   </article>`;
 }
 
 function renderFeed(){
-  const items=(DATA.items||[]).filter(it=>!unfollowed.has(it.topic));
+  const items=(DATA.items||[]).filter(it=>itemTopics(it).some(t=>!unfollowed.has(t)));
   items.sort((a,b)=> sort==="top"
     ? (b.significance-a.significance) || ((b.added||"")<(a.added||"")?1:-1)
     : ((b.added||b.published||"")<(a.added||a.published||"")?1:-1));
@@ -223,15 +310,20 @@ function renderFeed(){
     `${items.length} item${items.length===1?"":"s"} · ${sort==="top"?"by significance":"newest first"}`;
   const feed=document.getElementById("feed");
   if(!items.length){
-    const allOff = topics().length && topics().every(t=>unfollowed.has(t));
-    feed.innerHTML=`<div class="empty"><b>${allOff?"Every topic is unfollowed":"Loading..."}</b>${
-      allOff?"Follow a topic above to fill the feed.":""}</div>`;
+    let title, msg;
+    if(!DATA){ title="Loading\u2026"; msg=""; }
+    else if(topics().length && topics().every(t=>unfollowed.has(t))){
+      title="Every topic is unfollowed"; msg="Follow a topic above to fill the feed.";
+    } else if(!(DATA.items||[]).length){
+      title="No items yet"; msg="The next scheduled run will populate the feed."; }
+    else { title="Nothing matches your followed topics"; msg="Follow more topics above, or switch sort/layout."; }
+    feed.innerHTML=`<div class="empty"><b>${title}</b>${msg}</div>`;
     return;
   }
   if(layout==="columns"){
     const byTopic={};
     topics().forEach(t=>byTopic[t]=[]);
-    items.forEach(it=>{if(byTopic[it.topic]) byTopic[it.topic].push(it);});
+    items.forEach(it=>{ itemTopics(it).forEach(t=>{ if(byTopic[t]) byTopic[t].push(it); }); });
     let html=`<div class="columns">`;
     topics().forEach((t,i)=>{
       const topicItems=byTopic[t]||[];

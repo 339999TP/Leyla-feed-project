@@ -14,7 +14,7 @@ lookback_days: 7
 # true = cheaper + tighter; false = catches more, costs more LLM calls.
 keyword_prefilter: true
 
-max_per_source: 60
+max_per_source: 150
 
 llm:
   provider: anthropic     # mock | anthropic | openai | gemini
@@ -41,13 +41,17 @@ sources:
     - physics.plasm-ph    # fusion / plasma
     - cond-mat.supr-con   # superconductors
     - astro-ph.EP         # exoplanets
+    - astro-ph.IM         # astronomical instrumentation (imaging telescopes)
+    - q-bio.PE            # populations & evolution (early life / archaea)
     # Add more arXiv categories above for additional topics
     # Examples: astro-ph.CO (dark matter), q-bio.PE (evolution), hep-ph (particle physics)
 
-  pubmed_queries: []      # Disabled by default; add queries if you want biology/medical breakthroughs
-    # Examples:
-    # - "CRISPR gene editing breakthrough"
-    # - "cancer immunotherapy"
+  pubmed_queries:         # Biology coverage (esp. early life / archaea, which RSS barely covers)
+    - "archaea evolution"
+    - "origin of life"
+    - "last universal common ancestor"
+    - "prebiotic chemistry"
+    - "Asgard archaea"
 
   rss:                    # Add any mainstream science/news RSS feeds here
     # Top-tier journals & research
@@ -92,6 +96,53 @@ sources:
     - https://www.nasa.gov/news/all_news.rss
     - https://www.esa.int/rss/latest_news.xml
 
+    # Broad science aggregators (Phys.org)
+    - https://phys.org/rss-feed/
+    - https://phys.org/rss-feed/physics-news/
+    - https://phys.org/rss-feed/space-news/
+    - https://phys.org/rss-feed/biology-news/
+    - https://phys.org/rss-feed/earth-news/
+    - https://phys.org/rss-feed/chemistry-news/
+
+    # More science news outlets
+    - https://scitechdaily.com/feed/
+    - https://www.livescience.com/feeds/all
+    - https://newatlas.com/index.rss
+    - https://www.sciencefocus.com/feed
+    - https://bigthink.com/feed/
+    - https://theconversation.com/us/science/articles.atom
+    - https://spectrum.ieee.org/rss/fulltext
+
+    # Physics & astronomy specialist
+    - https://physics.aps.org/feed
+    - https://www.chemistryworld.com/rss/news
+    - https://home.cern/api/news/news/feed.rss
+    - https://astronomy.com/feed/
+    - https://skyandtelescope.org/feed/
+    - https://www.jpl.nasa.gov/feeds/news/
+
+    # Observatories & telescopes (exoplanet imaging, first light)
+    - https://www.eso.org/public/rss/news/
+    - https://esawebb.org/rss/news/
+    - https://webbtelescope.org/rss/news
+    - https://hubblesite.org/rss/news
+
+    # Astrobiology / early life
+    - https://astrobiology.com/feed
+    - https://www.sciencedaily.com/rss/plants_animals/microbes_and_more.xml
+    - https://www.sciencedaily.com/rss/fossils_ruins/evolution.xml
+    - https://www.sciencedaily.com/rss/fossils_ruins/early_climate.xml
+
+    # More ScienceDaily physics/space categories
+    - https://www.sciencedaily.com/rss/matter_energy/quantum_physics.xml
+    - https://www.sciencedaily.com/rss/space_time/cosmology.xml
+    - https://www.sciencedaily.com/rss/space_time/space_exploration.xml
+
+    # More research communities
+    - https://www.reddit.com/r/physics/.rss
+    - https://www.reddit.com/r/space/.rss
+    - https://www.reddit.com/r/askscience/.rss
+
     # Add your own RSS feeds here! Examples:
     # - https://www.example.com/science/rss  (must be valid RSS)
     # - https://news.example.org/physics/feed.xml
@@ -133,13 +184,13 @@ topics:
 
   - name: Exoplanet imaging telescopes
     description: Direct imaging of exoplanets - coronagraphs, ELTs, space telescopes, starshades
-    keywords: [exoplanet, direct imaging, coronagraph, high-contrast imaging, extremely large telescope, habitable worlds observatory, starshade, Roman telescope]
+    keywords: [exoplanet, direct imaging, coronagraph, high-contrast imaging, extremely large telescope, habitable worlds observatory, starshade, Roman telescope, JWST, exoplanet atmosphere, biosignature, protoplanetary disk, planet formation]
     min_stage: discovery
     min_significance: 3
 
   - name: Early life and archaea
     description: Origin of life, archaea evolution, LUCA, prebiotic chemistry, extremophiles
-    keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent]
+    keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent, early life, ancient life, microbial fossil, methanogen, Asgard archaea, eukaryogenesis, early Earth]
     min_stage: discovery
     min_significance: 3
 
