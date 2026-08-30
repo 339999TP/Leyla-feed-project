@@ -80,6 +80,11 @@ def load_config(path):
     cfg.setdefault("delivery", {})
     cfg["delivery"].setdefault("site_dir", "./site")
     cfg["delivery"].setdefault("email", {"enabled": False})
+    cfg.setdefault("feed", {})
+    # Cards older than retention_days age out -- but only within a topic that has
+    # at least keep_min cards, so a sparse topic never empties. 0 = never expire.
+    cfg["feed"].setdefault("retention_days", 0)
+    cfg["feed"].setdefault("keep_min", 5)
     for t in cfg.get("topics", []):
         t.setdefault("keywords", [])
         t.setdefault("min_stage", "discovery")
@@ -728,7 +733,36 @@ def semantic_similarity(t1, t2):
     # If 60%+ of shorter title words overlap, likely same discovery
     return overlap / min(len(w1), len(w2))
 
-def merge_feed(site_dir, records, topics, cap=400):
+def _item_ts(r):
+    """Best available timestamp for a feed item: published, else added."""
+    return (r.get("published") or r.get("added") or "")
+
+
+def expire_old(items, retention_days, keep_min):
+    """Drop cards older than retention_days -- but only inside a topic that still
+    has >= keep_min cards. Sparse topics keep everything so they never empty out.
+    Within a topic, the newest keep_min cards are always retained regardless of age.
+    """
+    if not retention_days or retention_days <= 0:
+        return items
+    cutoff = (utcnow() - dt.timedelta(days=retention_days)).isoformat()
+    by_topic = {}
+    for it in items:
+        by_topic.setdefault(it.get("topic"), []).append(it)
+    keep = set()
+    for topic, group in by_topic.items():
+        group_sorted = sorted(group, key=_item_ts, reverse=True)
+        # Always keep the newest keep_min in the topic.
+        for it in group_sorted[:keep_min]:
+            keep.add(id(it))
+        # Beyond that, keep only cards newer than the cutoff.
+        for it in group_sorted[keep_min:]:
+            if _item_ts(it) >= cutoff:
+                keep.add(id(it))
+    return [it for it in items if id(it) in keep]
+
+
+def merge_feed(site_dir, records, topics, cap=400, feed_cfg=None):
     """Append new records to the growing feed.json, newest first, deduped."""
     os.makedirs(site_dir, exist_ok=True)
     path = os.path.join(site_dir, "feed.json")
@@ -762,6 +796,8 @@ def merge_feed(site_dir, records, topics, cap=400):
                     break
     items = (added + existing)
     items.sort(key=lambda r: r.get("added", ""), reverse=True)
+    fc = feed_cfg or {}
+    items = expire_old(items, fc.get("retention_days", 0), fc.get("keep_min", 5))
     items = items[:cap]
     data = {
         "generated": utcnow().isoformat() + "Z",
@@ -920,7 +956,8 @@ def run(cfg, force_mock=False):
     print("Delivering...")
     records = [to_record(it) for it in passed]
     site_dir = cfg["delivery"].get("site_dir", "./site")
-    path, n_added = merge_feed(site_dir, records, topics)
+    path, n_added = merge_feed(site_dir, records, topics,
+                                feed_cfg=cfg.get("feed"))
     print(f"  feed: +{n_added} new items -> {path}")
     email_new(records, cfg)
     email_alert(records, cfg)
@@ -1114,7 +1151,8 @@ def backfill_topic(cfg, topic_name, force_mock=False):
 
     records = [to_record(it) for it in passed]
     site_dir = cfg["delivery"].get("site_dir", "./site")
-    path, n_added = merge_feed(site_dir, records, topics)
+    path, n_added = merge_feed(site_dir, records, topics,
+                                feed_cfg=cfg.get("feed"))
     print(f"  feed: +{n_added} new items -> {path}")
 
 

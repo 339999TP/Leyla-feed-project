@@ -16,6 +16,14 @@ keyword_prefilter: true
 
 max_per_source: 150
 
+# Feed retention. Old cards age out after retention_days -- but only inside a
+# topic that still has at least keep_min cards, so a sparse topic never empties.
+# The newest keep_min cards in each topic are always kept regardless of age.
+# retention_days: 0 = keep everything forever.
+feed:
+  retention_days: 60
+  keep_min: 5
+
 llm:
   provider: anthropic     # mock | anthropic | openai | gemini
   model: claude-haiku-4-5-20251001 # cheapest Claude; fine for triage. Sonnet = claude-sonnet-4-5
