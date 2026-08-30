@@ -84,6 +84,7 @@ def load_config(path):
         t.setdefault("keywords", [])
         t.setdefault("min_stage", "discovery")
         t.setdefault("min_significance", 1)
+        t.setdefault("milestone_only", False)
     return cfg
 
 
@@ -387,6 +388,23 @@ SIGNIFICANCE (only count actual discoveries/events):
 Heavily prefer empirical discoveries over theory. When unsure, score lower.
 Require NEWS ANNOUNCEMENT or official statement for significance 3+.
 
+SUPERCONDUCTORS -- SPECIAL PRIORITY:
+Room-temperature superconductivity is the holy grail. Give the TOP of the range to
+any result that reaches, or moves meaningfully closer to, superconductivity at
+ambient (room) temperature or ambient pressure -- e.g. a new material/alloy/hydride
+with a higher critical temperature, a verified higher-Tc record, or a route that
+lowers the pressure needed. Score these 5 (verified room-temp/ambient claim) or 4
+(clear step closer: new record Tc, promising new alloy family). Ordinary
+superconductor results with no bearing on the room-temp goal stay at 3 or below.
+
+MILESTONE-ONLY TOPICS:
+Some topics below are marked [MILESTONE WATCH]. For those, be EXTRA strict: accept
+ONLY a concrete, dated milestone for that specific mission/instrument -- e.g. launch,
+arrival/orbit insertion, first light, first data/detection, construction completion,
+a record, or a headline scientific result. REJECT (relevant=false) routine progress
+updates, funding/schedule news, background explainers, or generic coverage that does
+not announce a milestone just happened. These require significance 4+.
+
 SUMMARY (CRITICAL - THIS IS NOT AN ABSTRACT):
 Write a 1-2 sentence summary of the DISCOVERY/EVENT ITSELF, not the paper's methodology.
 - WHAT: Name the actual breakthrough result (e.g., "Room-temperature superconductor",
@@ -421,7 +439,11 @@ Return ONLY JSON array, no prose:
 
 
 def build_score_prompt(batch, topics):
-    tlist = "\n".join(f"- {t['name']}: {t.get('description','')}" for t in topics)
+    tlist = "\n".join(
+        f"- {t['name']}{' [MILESTONE WATCH]' if t.get('milestone_only') else ''}: "
+        f"{t.get('description','')}"
+        for t in topics
+    )
     lines = []
     for i, it in enumerate(batch):
         # Use full summary (up to 2000 chars) to give Claude more context for better summaries

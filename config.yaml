@@ -189,10 +189,50 @@ topics:
     min_significance: 3
 
   - name: Early life and archaea
-    description: Origin of life, archaea evolution, LUCA, prebiotic chemistry, extremophiles
-    keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent, early life, ancient life, microbial fossil, methanogen, Asgard archaea, eukaryogenesis, early Earth]
+    description: >
+      Origin of life, archaea evolution, LUCA, prebiotic chemistry, extremophiles.
+      Example of what to surface: the discovery of Asgard/Lokiarchaeota at Loki's
+      Castle (a deep-sea hydrothermal vent field) that reshaped the tree of life
+      and the story of how complex cells arose.
+    keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent, early life, ancient life, microbial fossil, methanogen, Asgard archaea, Lokiarchaeota, Loki's Castle, eukaryogenesis, early Earth]
     min_stage: discovery
-    min_significance: 3
+    min_significance: 2
+
+  # --- MILESTONE-ONLY WATCHES ---
+  # Specific missions/instruments where you ONLY want to hear when a concrete
+  # milestone is hit (launch, arrival, first light, first data/detection, records)
+  # -- NOT routine progress updates, funding news, or background articles.
+  # These carry milestone_only: true and a high significance bar.
+  - name: Europa mission
+    description: >
+      NASA's Europa Clipper (and related Europa exploration). Milestone watch only:
+      launch, Jupiter arrival / orbit insertion, Europa flybys, instrument first
+      data, and any detection of water plumes, subsurface ocean, or habitability
+      signs. Ignore routine mission-status updates.
+    keywords: [Europa Clipper, Europa mission, Europa flyby, Europa plume, Jupiter Icy Moons, JUICE, Europa ocean, Europa lander]
+    milestone_only: true
+    min_stage: discovery
+    min_significance: 4
+
+  - name: Hyper-Kamiokande
+    description: >
+      Hyper-Kamiokande, Japan's next-generation neutrino observatory. Milestone
+      watch only: construction completion, tank filling, first light, first neutrino
+      detection, and any proton-decay or neutrino result. Ignore routine build updates.
+    keywords: [Hyper-Kamiokande, Hyper-K, Hyperkamiokande, next-generation neutrino detector]
+    milestone_only: true
+    min_stage: discovery
+    min_significance: 4
+
+  - name: Extremely Large Telescope
+    description: >
+      ESO's Extremely Large Telescope (ELT) at Cerro Armazones, Chile. Milestone
+      watch only: dome completion, primary mirror installation, first light, and
+      first science images/results. Ignore routine construction progress reports.
+    keywords: [Extremely Large Telescope, ELT first light, ESO ELT, Cerro Armazones, world's largest telescope, ELT dome, ELT mirror]
+    milestone_only: true
+    min_stage: discovery
+    min_significance: 4
 
   # CUSTOMIZE: Add your own topics below!
   # - name: Quantum Computing
