@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30T10:57:12.919795Z",
+  "generated": "2026-08-30T11:05:20.276617Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -7,5 +7,97 @@
     "Exoplanet imaging telescopes",
     "Early life and archaea"
   ],
-  "items": []
+  "items": [
+    {
+      "id": "f8e3915e61386a54f3365927329ba1e0663798396fb1af0433aad996f1005e37",
+      "title": "A ghostly ribbon of stars reveals hidden dark matter",
+      "url": "https://www.sciencedaily.com/releases/2026/08/260823015000.htm",
+      "source": "Latest Science News -- ScienceDaily",
+      "source_type": "news",
+      "topic": "Dark matter",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "First extragalactic globular cluster stellar stream identified; used to map dark matter distribution around distant galaxy, opens new detection method.",
+      "published": "2026-08-24T12:19:34",
+      "added": "2026-08-30T11:05:20.276158Z"
+    },
+    {
+      "id": "95848e2d321e9a2c829b25ebee9d23e12e725e8b8363a7dbd82dd02424aa41aa",
+      "title": "Newton’s 300-year-old law just passed its biggest test yet",
+      "url": "https://www.sciencedaily.com/releases/2026/08/260823015019.htm",
+      "source": "Latest Science News -- ScienceDaily",
+      "source_type": "news",
+      "topic": "Dark matter",
+      "stage": "discovery",
+      "significance": 4,
+      "summary": "Gravity tested across galaxy clusters at hundreds of millions of light-years; confirms Einstein/Newton predictions, strengthens dark matter model over modified gravity.",
+      "published": "2026-08-25T01:49:06",
+      "added": "2026-08-30T11:05:20.276122Z"
+    },
+    {
+      "id": "068f11c5f8a9d9738dda9f73a58bcebdd2e7cde9fd29aa6f00b7eb77a2fd15a2",
+      "title": "Magnetic field first kills superconductor, then brings it back to life",
+      "url": "https://physicsworld.com/a/magnetic-field-first-kills-superconductor-then-brings-it-back-to-life/",
+      "source": "Physics World",
+      "source_type": "news",
+      "topic": "Superconductors",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "Re-entrant superconductivity observed in 2D material for first time; magnetic field suppresses then restores superconducting state, revealing new mechanism.",
+      "published": "2026-08-28T11:00:10",
+      "added": "2026-08-30T11:05:20.276076Z"
+    },
+    {
+      "id": "da550f06f8040423df7ce24548fecf77d5bee6a426a6e8b8192288804bb6eb5a",
+      "title": "On Cloud 9: Have astronomers discovered the first starless galaxy?",
+      "url": "https://www.space.com/astronomy/galaxies/on-cloud-9-have-astronomers-discovered-the-first-starless-galaxy",
+      "source": "Latest from Space.com",
+      "source_type": "news",
+      "topic": "Dark matter",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "First starless galaxy candidate discovered; dark matter-dominated system with minimal stars challenges formation theories and dark matter understanding.",
+      "published": "2026-08-28T16:00:00",
+      "added": "2026-08-30T11:05:20.276033Z"
+    },
+    {
+      "id": "7e27aca2dd0fea16a12824a563efac508594930b07dd13972669b88e9bea2a3e",
+      "title": "Realization of Air-Stable Two-Dimensional Superconductor Nb2Pd3Te5 With Quasi-One-Dimensional Pair Density Modulation",
+      "url": "https://arxiv.org/abs/2608.25331v1",
+      "source": "arXiv:cond-mat.supr-con",
+      "source_type": "academic",
+      "topic": "Superconductors",
+      "stage": "lab",
+      "significance": 3,
+      "summary": "First air-stable 2D superconductor Nb2Pd3Te5 synthesized with quasi-1D pair density modulation; enables robust platform for anisotropic superconducting devices.",
+      "published": "2026-08-26T03:26:58",
+      "added": "2026-08-30T11:05:20.275993Z"
+    },
+    {
+      "id": "da143e9c0b10757f0addaa4768cca8099714e78418f06563ad0f2f52f00c3bb9",
+      "title": "Electrical manipulation of oxygen stoichiometry in multiterminal YBaCuO junctions",
+      "url": "https://arxiv.org/abs/2608.26045v1",
+      "source": "arXiv:cond-mat.supr-con",
+      "source_type": "academic",
+      "topic": "Superconductors",
+      "stage": "prototype",
+      "significance": 3,
+      "summary": "Electrical control of oxygen stoichiometry demonstrated in YBa₂Cu₃O₇₋δ three-terminal junctions, enabling tunable superconducting device properties via oxygen migration.",
+      "published": "2026-08-26T17:21:54",
+      "added": "2026-08-30T11:05:20.275938Z"
+    },
+    {
+      "id": "98b8b2053f23dc32848cd2ed2d94b01d18cc9b691786b136f1cd25eb96c363d7",
+      "title": "First Plasma Commissioning and Operational Highlights from India's First Spherical Tokamak at IPR",
+      "url": "https://arxiv.org/abs/2608.26024v1",
+      "source": "arXiv:physics.plasm-ph",
+      "source_type": "academic",
+      "topic": "Nuclear fusion",
+      "stage": "prototype",
+      "significance": 3,
+      "summary": "India's first spherical tokamak commissioned at IPR; achieved first plasma experiments with Ohmic heating and microwave assist, enabling low-cost study of compact tokamak physics.",
+      "published": "2026-08-26T17:04:30",
+      "added": "2026-08-30T11:05:20.275878Z"
+    }
+  ]
 }
