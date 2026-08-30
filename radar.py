@@ -474,11 +474,11 @@ def clean_summary(s):
     # Decode HTML entities first
     s = s.replace("&rsquo;", "'").replace("&lsquo;", "'").replace("&quot;", '"')
     s = s.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
-    # Remove LaTeX math: $...$ and \(...\)
-    s = re.sub(r'\$[^$]*\$', '', s)
+    # Remove LaTeX math: $...$ and \(...\) (non-greedy)
+    s = re.sub(r'\$.*?\$', '', s)
     s = re.sub(r'\\\([^)]*\\\)', '', s)
-    # Remove LaTeX commands: \lesssim, \alpha, etc
-    s = re.sub(r'\\[a-z]+', '', s, flags=re.IGNORECASE)
+    # Remove LaTeX commands: \lesssim, \alpha, etc (uppercase and underscore variants)
+    s = re.sub(r'\\[a-zA-Z_]+', '', s)
     # Remove LaTeX braces and content
     s = re.sub(r'\{[^}]*\}', '', s)
     # Remove remaining $ signs and math-like patterns
@@ -493,9 +493,10 @@ def to_record(it):
     summary = it.get("llm_summary") or it["summary"][:280]
     title = it["title"]
     # Clean LaTeX from title too (e.g. NbSe$_2$ -> NbSe2)
-    title = re.sub(r'\$[^$]*\$', '', title)
-    title = re.sub(r'\\\w+\{[^}]*\}', '', title)
-    title = re.sub(r'\\\w+', '', title)
+    title = re.sub(r'\$.*?\$', '', title)
+    title = re.sub(r'\\[a-zA-Z_]+\{[^}]*\}', '', title)
+    title = re.sub(r'\\[a-zA-Z_]+', '', title)
+    title = re.sub(r'\{[^}]*\}', '', title)
     title = re.sub(r'[\$_^]', '', title)
     title = title.strip()
     return {
