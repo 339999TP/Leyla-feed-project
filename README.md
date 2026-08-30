@@ -85,6 +85,33 @@ This makes it update itself and gives you a URL to open anywhere.
    the `cron:` line to change that), scores new items, and commits `feed.json`. To
    run it now, go to the **Actions** tab → research-radar → **Run workflow**.
 
+## 4b. (Optional) Make the backend private, keep the page public
+
+GitHub Pages on a **private** repo needs a paid plan. To keep the code/config/
+secrets private on a free plan, use **two repos**: this one stays private
+(backend), and a small **public** repo hosts only the built site. The workflow
+already has a `Publish site to public Pages repo` step that does the copy — it
+stays dormant until you configure these:
+
+1. **Create a new public repo**, e.g. `leyla-feed-public` (empty is fine).
+2. **Make a fine-grained token** (github.com/settings/personal-access-tokens):
+   *Repository access* → only the new public repo; *Permissions* → **Contents:
+   Read and write**. In THIS repo, add it as a secret named `PAGES_DEPLOY_TOKEN`
+   (**Settings → Secrets and variables → Actions → Secrets**).
+3. In THIS repo, add a **variable** (same page → **Variables** tab) named
+   `PAGES_REPO` with value `<owner>/leyla-feed-public`.
+4. Run the workflow once (Actions → **Run workflow**). It publishes `docs/` to a
+   `gh-pages` branch on the public repo.
+5. In the **public** repo: **Settings → Pages → Deploy from a branch →
+   `gh-pages` / root**. The live URL becomes
+   `https://<owner>.github.io/leyla-feed-public/`.
+6. Now flip THIS repo to **private** (Settings → General → Danger Zone). The page
+   keeps updating on every run; the backend is hidden.
+
+Note: if you use the Cloudflare "Add topic" worker, point its `ALLOWED_ORIGIN`
+and the page's fetch at the **public** URL, and its `TOPICS_URL` at the public
+`topics.json`.
+
 ## 5. (Optional) Customize topics and sources
 
 **Add a new topic the easy way (Claude does the setup):**
