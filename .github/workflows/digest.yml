@@ -66,3 +66,19 @@ jobs:
           fi
           git commit -m "$MSG" || echo "nothing to commit"
           git push || echo "push skipped"
+
+      # --- TWO-REPO SPLIT: publish the static site to a PUBLIC Pages repo ---
+      # Lets THIS repo be private (backend: code, config, secrets) while the feed
+      # page stays public. Only runs once you set the PAGES_REPO variable and the
+      # PAGES_DEPLOY_TOKEN secret (see README "Make the backend private"). Until
+      # then it's skipped, so the single-repo setup keeps working unchanged.
+      - name: Publish site to public Pages repo
+        if: ${{ vars.PAGES_REPO != '' }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          external_repository: ${{ vars.PAGES_REPO }}   # e.g. 339999TP/leyla-feed-public
+          publish_branch: gh-pages
+          publish_dir: ./docs
+          # Keep only the built site on the public branch; no source history leaks.
+          force_orphan: true
