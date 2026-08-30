@@ -1,0 +1,45 @@
+name: research-radar
+
+# Free scheduler. Runs Mondays 07:00 UTC. Cron: minute hour dom month dow
+# Daily 07:00 -> "0 7 * * *"   |   Weekdays -> "0 7 * * 1-5"
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch: {}      # manual "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write            # lets the job commit the updated feed.json
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Carry the seen-store between runs so "new" stays meaningful.
+      - name: Restore seen-store
+        uses: actions/cache@v4
+        with:
+          path: radar_seen.sqlite
+          key: radar-seen-${{ github.run_id }}
+          restore-keys: radar-seen-
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Run digest
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python radar.py --config config.yaml
+
+      - name: Commit feed
+        run: |
+          git config user.name  radar-bot
+          git config user.email radar-bot@users.noreply.github.com
+          git add site/feed.json radar_seen.sqlite || true
+          git commit -m "feed $(date -u +%FT%H:%MZ)" || echo "nothing to commit"
+          git push || echo "push skipped"

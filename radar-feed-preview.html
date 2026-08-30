@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar — frontier feed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f5f2; --panel:#ffffff; --ink:#16191c; --muted:#5f6870;
+    --line:#e3e6e1; --line-strong:#c9cec7; --accent:#2f3aa6;
+    --serif:'Spectral',Georgia,serif;
+    --sans:'IBM Plex Sans',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+       line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  button{font-family:var(--mono);cursor:pointer}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px}
+
+  header{border-bottom:1px solid var(--line-strong);background:var(--paper);
+         position:sticky;top:0;z-index:5}
+  .head-in{display:flex;align-items:baseline;justify-content:space-between;
+           gap:16px;padding:20px 0 14px}
+  .brand .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;
+           text-transform:uppercase;color:var(--muted)}
+  .brand h1{font-family:var(--serif);font-weight:600;font-size:30px;margin:2px 0 0;
+           letter-spacing:-.01em}
+  .gen{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;
+       white-space:nowrap;line-height:1.6}
+
+  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+            padding:0 0 14px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;flex:1;min-width:0}
+  .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);
+        background:var(--panel);border-radius:999px;padding:5px 11px 5px 9px;
+        font-family:var(--mono);font-size:12px;color:var(--ink);transition:.15s}
+  .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c,#999);flex:none}
+  .chip[aria-pressed="false"]{color:var(--muted);background:transparent;
+        border-style:dashed;opacity:.7}
+  .chip[aria-pressed="false"] .dot{background:transparent;
+        box-shadow:inset 0 0 0 1.5px var(--line-strong)}
+  .chip:hover{border-color:var(--ink)}
+  .spacer{flex:1}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;
+       overflow:hidden}
+  .seg button{background:var(--panel);border:0;padding:6px 12px;font-size:12px;
+       color:var(--muted)}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .refresh{border:1px solid var(--line-strong);background:var(--panel);border-radius:7px;
+       padding:6px 13px;font-size:12px;color:var(--ink);display:inline-flex;
+       align-items:center;gap:7px}
+  .refresh:hover{border-color:var(--ink)}
+  .refresh.spin svg{animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  main{padding:22px 0 60px}
+  .count{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);
+        text-transform:uppercase;margin:0 0 14px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+        padding:16px 17px;margin:0 0 12px;transition:.15s}
+  .card:hover{border-color:var(--line-strong);transform:translateY(-1px);
+        box-shadow:0 6px 22px -16px rgba(0,0,0,.35)}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--muted);
+        display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 7px}
+  .meta .src{text-transform:uppercase;letter-spacing:.05em;color:var(--ink);
+        font-weight:500}
+  .meta .tt{display:inline-flex;align-items:center;gap:5px;color:var(--c,#666)}
+  .meta .tt .dot{width:7px;height:7px;border-radius:50%;background:var(--c,#666)}
+  .card h2{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.28;
+        margin:0 0 6px;letter-spacing:-.005em}
+  .card h2 a{text-decoration:none}
+  .card h2 a:hover{text-decoration:underline;text-underline-offset:3px}
+  .card p{margin:0 0 13px;font-size:14.5px;color:#2b3036}
+
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;
+        border-top:1px dashed var(--line);padding-top:11px}
+  .gauge{display:flex;align-items:center;gap:9px;min-width:0}
+  .ticks{display:flex;gap:3px}
+  .tick{width:20px;height:6px;border-radius:2px;background:var(--line);
+        box-shadow:inset 0 0 0 1px var(--line-strong)}
+  .tick.on{background:var(--c,#666);box-shadow:none}
+  .stage{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+        text-transform:uppercase;color:var(--c,#444);white-space:nowrap}
+  .sig{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+  .sig b{color:var(--ink);font-weight:500}
+
+  .empty{border:1px dashed var(--line-strong);border-radius:12px;padding:34px 22px;
+        text-align:center;color:var(--muted);font-size:14px}
+  .empty b{color:var(--ink);font-family:var(--serif);font-weight:600;font-size:17px;
+        display:block;margin-bottom:6px}
+
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
+        background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;
+        padding:9px 15px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  footer{border-top:1px solid var(--line);padding:16px 0 40px;font-family:var(--mono);
+        font-size:11px;color:var(--muted);line-height:1.7}
+
+  @media (max-width:560px){
+    .brand h1{font-size:24px}
+    .head-in{padding-top:16px}
+    .tick{width:15px}
+    .foot{flex-direction:column;align-items:flex-start;gap:9px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="head-in">
+      <div class="brand">
+        <div class="eyebrow">Research radar</div>
+        <h1>Frontier feed</h1>
+      </div>
+      <div class="gen" id="gen"></div>
+    </div>
+    <div class="controls">
+      <div class="chips" id="chips"></div>
+      <div class="seg" role="group" aria-label="Sort">
+        <button id="sortLatest" aria-pressed="true">Latest</button>
+        <button id="sortTop" aria-pressed="false">Top</button>
+      </div>
+      <button class="refresh" id="refresh" aria-label="Refresh feed">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        Refresh
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="count" id="count"></p>
+    <div id="feed"></div>
+  </div>
+</main>
+
+<footer><div class="wrap" id="footer"></div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+// Fallback data so the page works when opened without feed.json alongside it.
+// A live run overwrites feed.json; this embedded copy is only the safety net.
+const EMBEDDED_FEED = /*EMBEDDED_FEED*/{"generated": null, "topics": ["Nuclear fusion", "Superconductors", "Dark matter", "Exoplanet imaging telescopes", "Early life and archaea"], "items": [{"id": "3e7be5a7c67dd6140b08d4fe2d0f200022eed263336daafaa0f5cf03fbe94a0d", "title": "Rethinking the origin of life at seafloor hydrothermal vents.", "url": "https://pubmed.ncbi.nlm.nih.gov/42664031/", "source": "PubMed: origin of life", "source_type": "academic", "topic": "Early life and archaea", "stage": "discovery", "significance": 3, "summary": "Rethinking the origin of life at seafloor hydrothermal vents.", "published": "2026-09-08T00:00:00", "added": "2026-08-29T15:25:22.720112Z"}, {"id": "2e9e467ba9bed07e31a33e98c3582bcbc4f4cd7ac691568a3457b84c196d99bf", "title": "A raft of start-up firms is betting on nuclear fusion", "url": "https://www.nature.com/articles/d41586-026-02511-7", "source": "Nature", "source_type": "news", "topic": "Nuclear fusion", "stage": "discovery", "significance": 3, "summary": "Nature, Published online: 26 August 2026; doi:10.1038/d41586-026-02511-7The phenomenon that makes stars shine and hydrogen bombs explode has yet to be reliably tamed for energy generation.", "published": "2026-08-26T00:00:00", "added": "2026-08-29T15:25:22.720104Z"}, {"id": "84806e2e27f6c6a108b3c52cdd0dfc356d4287ebb20c08f16ab6dc24c30ff1d6", "title": "How will NASA’s Roman Space Telescope see exoplanets?", "url": "https://www.scientificamerican.com/article/how-will-nasas-roman-space-telescope-see-exoplanets/", "source": "Scientific American", "source_type": "news", "topic": "Exoplanet imaging telescopes", "stage": "discovery", "significance": 4, "summary": "NASA&rsquo;s newest major observatory will include the most advanced planet-imaging tech ever flown in space.", "published": "2026-08-28T10:45:00", "added": "2026-08-29T15:25:22.720095Z"}, {"id": "73e803233fddb6d11e4b40323b711ba36ed22eec4784c7cb7102e254780400ec", "title": "NASA’s Roman Space Telescope could find alien Earths—but not like you think", "url": "https://www.scientificamerican.com/article/nasas-roman-space-telescope-could-find-alien-earths-but-not-like-you-think/", "source": "Scientific American", "source_type": "news", "topic": "Exoplanet imaging telescopes", "stage": "discovery", "significance": 3, "summary": "The Roman Space Telescope will spend more than a quarter of its time staring at the Milky Way&rsquo;s bulge, a star-packed central region of our galaxy that may swarm with small, rocky exoplanets", "published": "2026-08-29T13:00:00", "added": "2026-08-29T15:25:22.720087Z"}, {"id": "03ed5b681d093d9c34d4d27c07659705cdbbcf73323cdfdcf8f7849fe97446b8", "title": "A Distant Stream of Stars May Offer New Clues to Dark Matter", "url": "https://www.universetoday.com/articles/a-distant-stream-of-stars-may-offer-new-clues-to-dark-matter", "source": "Universe Today", "source_type": "news", "topic": "Dark matter", "stage": "discovery", "significance": 3, "summary": "Dark matter continues to challenge astronomers as they work to solve the mystery of this so-far-unseen material that permeates the Universe.", "published": "2026-08-25T18:53:39", "added": "2026-08-29T15:25:22.720069Z"}, {"id": "c558498be0fe7552c359f8cf745561491e36958e40f701e0ffcaafa7f6474e09", "title": "Theory-Defying Exoplanet Atmospheres Force a Rethink of Theories", "url": "https://www.universetoday.com/articles/theory-defying-exoplanet-atmospheres-force-a-rethink-of-theories", "source": "Universe Today", "source_type": "news", "topic": "Exoplanet imaging telescopes", "stage": "discovery", "significance": 3, "summary": "The discovery of lava worlds with atmospheres is challenging our theories of how atmospheres escape, and calling into question the idea of the cosmic shoreline.", "published": "2026-08-27T19:40:25", "added": "2026-08-29T15:25:22.720052Z"}, {"id": "d9b2dbbfc6fe734d85856613009bf9119a584ebb5eebac906d47e59156c718b7", "title": "Chance gaze at old Hubble Telescope image leads to discovery that could reveal dark matter's secrets", "url": "https://www.space.com/astronomy/hubble-space-telescope/chance-gaze-at-old-hubble-telescope-image-leads-to-discovery-that-could-reveal-dark-matters-secrets", "source": "Latest from Space.com", "source_type": "news", "topic": "Dark matter", "stage": "discovery", "significance": 3, "summary": "On a morning train commute, this former scientist found a stellar surprise in an old Hubble image.", "published": "2026-08-26T15:00:00", "added": "2026-08-29T15:25:22.720043Z"}, {"id": "068f11c5f8a9d9738dda9f73a58bcebdd2e7cde9fd29aa6f00b7eb77a2fd15a2", "title": "Magnetic field first kills superconductor, then brings it back to life", "url": "https://physicsworld.com/a/magnetic-field-first-kills-superconductor-then-brings-it-back-to-life/", "source": "Physics World", "source_type": "news", "topic": "Superconductors", "stage": "discovery", "significance": 4, "summary": "“Re-entrant” superconductivity discovered in a 2D material for the first time The post Magnetic field first kills superconductor, then brings it back to life appeared first on Physics World.", "published": "2026-08-28T11:00:10", "added": "2026-08-29T15:25:22.720017Z"}, {"id": "f4680a77aaeeb9bc04e6bab607fecaf4cd9a13f54242111b112bbefc476dc857", "title": "The first major transition: Origin of life from a multilevel selection perspective", "url": "https://arxiv.org/abs/2608.22348v1", "source": "arXiv:q-bio.PE", "source_type": "academic", "topic": "Early life and archaea", "stage": "commercial", "significance": 5, "summary": "The origin of life is the first, arguably, the most important and also the most enigmatic major transition in evolution (MTE).", "published": "2026-08-23T10:27:59", "added": "2026-08-29T15:25:22.719981Z"}, {"id": "22c212fded79c3c78f1164e31a5b5619adc80e6fc301a2f407116a40924001f2", "title": "Effects of the interaction of dark matter and neutron-star matter on extreme and intermediate mass-ratio inspirals", "url": "https://arxiv.org/abs/2608.26274v1", "source": "arXiv:astro-ph.HE", "source_type": "academic", "topic": "Dark matter", "stage": "discovery", "significance": 3, "summary": "Extreme and intermediate mass-ratio inspirals in a dense dark-matter distribution have the effects of the dark matter imprinted on the orbital dynamics of and the emitted gravitational waves from thes", "published": "2026-08-26T18:00:49", "added": "2026-08-29T15:25:22.719664Z"}, {"id": "94df8aaf7b04b9d187351b00d0c3a1b344c7430c14b1e54543a7b56e5497cf30", "title": "Loop currents in Haldane's model and in time-reversal-breaking superconductors", "url": "https://arxiv.org/abs/2608.22083v1", "source": "arXiv:cond-mat.supr-con", "source_type": "academic", "topic": "Superconductors", "stage": "prototype", "significance": 3, "summary": "We present a theoretical study of optical manifestations of loop currents in Haldane's model and in time-reversal-breaking superconductors.", "published": "2026-08-22T19:06:02", "added": "2026-08-29T15:25:22.719376Z"}, {"id": "3abf30bf5ff03369c88a8701c0af10bfc51c23e50146030b80b1ee823fd82109", "title": "Weak coupling theory of nickel-based 327 superconductors", "url": "https://arxiv.org/abs/2608.22759v1", "source": "arXiv:cond-mat.supr-con", "source_type": "academic", "topic": "Superconductors", "stage": "discovery", "significance": 4, "summary": "This review provides a comprehensive survey of weak-coupling theoretical approaches applied to understand the emergent superconductivity in the pressurized nickelate bilayer system $La_{3}Ni_{2}O_{7}$", "published": "2026-08-24T03:30:14", "added": "2026-08-29T15:25:22.719368Z"}]}/*END*/;
+
+const STAGES = ["discovery","lab","prototype","commercial","scaled"];
+const TOPIC_COLORS = {
+  "Nuclear fusion":"#c4432b",
+  "Superconductors":"#1e88a8",
+  "Dark matter":"#6c4cc4",
+  "Exoplanet imaging telescopes":"#2e8b6b",
+  "Early life and archaea":"#b07a1e"
+};
+const PALETTE = ["#c4432b","#1e88a8","#6c4cc4","#2e8b6b","#b07a1e","#3341b0","#8a6d3b"];
+function colorFor(t,i){return TOPIC_COLORS[t] || PALETTE[i % PALETTE.length];}
+
+// localStorage with a memory fallback (some sandboxes block it).
+const store = (()=>{ try{ const k="__t"; localStorage.setItem(k,"1");
+  localStorage.removeItem(k); return localStorage; }catch(e){
+  const m={}; return {getItem:k=>k in m?m[k]:null, setItem:(k,v)=>m[k]=String(v)};}})();
+
+let DATA = null;
+let unfollowed = new Set();
+let sort = "latest";
+try{ unfollowed = new Set(JSON.parse(store.getItem("radar.unfollowed")||"[]")); }catch(e){}
+sort = store.getItem("radar.sort") || "latest";
+
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function relTime(iso){
+  if(!iso) return "";
+  const d=new Date(iso.replace(/Z?$/,"Z")); if(isNaN(d)) return "";
+  const s=(Date.now()-d.getTime())/1000;
+  if(s<3600) return Math.max(1,Math.round(s/60))+"m ago";
+  if(s<86400) return Math.round(s/3600)+"h ago";
+  if(s<86400*30) return Math.round(s/86400)+"d ago";
+  return d.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
+}
+function stageIdx(s){const i=STAGES.indexOf(s);return i<0?0:i;}
+
+function topics(){
+  const set = new Set((DATA.topics)||[]);
+  DATA.items.forEach(it=>set.add(it.topic));
+  return [...set].filter(Boolean);
+}
+
+function renderChips(){
+  const box=document.getElementById("chips"); box.innerHTML="";
+  topics().forEach((t,i)=>{
+    const on=!unfollowed.has(t);
+    const b=document.createElement("button");
+    b.className="chip"; b.setAttribute("aria-pressed",on?"true":"false");
+    b.style.setProperty("--c",colorFor(t,i));
+    b.innerHTML=`<span class="dot"></span>${esc(t)}`;
+    b.title=on?`Following ${t} — click to unfollow`:`Click to follow ${t}`;
+    b.onclick=()=>{ if(unfollowed.has(t)) unfollowed.delete(t); else unfollowed.add(t);
+      store.setItem("radar.unfollowed",JSON.stringify([...unfollowed]));
+      renderChips(); renderFeed(); };
+    box.appendChild(b);
+  });
+}
+
+function gauge(it,color){
+  const idx=stageIdx(it.stage);
+  let ticks=""; for(let i=0;i<5;i++) ticks+=`<span class="tick ${i<=idx?"on":""}"></span>`;
+  const label=(it.stage||"").replace(/\b\w/,c=>c.toUpperCase());
+  return `<div class="gauge" title="Maturity: ${esc(label)} (discovery → lab → prototype → commercial → scaled)">
+      <span class="ticks" style="--c:${color}">${ticks}</span>
+      <span class="stage" style="--c:${color}">${esc(it.stage||"")}</span></div>`;
+}
+function sig(n){
+  n=Math.max(1,Math.min(5,n||1));
+  let d=""; for(let i=1;i<=5;i++) d+=(i<=n?"\u25c6":"\u25c7");
+  return `<span class="sig">${d} <b>${n}</b>/5</span>`;
+}
+
+function card(it,i){
+  const color=colorFor(it.topic,i);
+  return `<article class="card">
+    <div class="meta">
+      <span class="src">${esc(it.source)}</span>
+      <span>${esc(relTime(it.added||it.published))}</span>
+      <span class="tt" style="--c:${color}"><span class="dot"></span>${esc(it.topic)}</span>
+    </div>
+    <h2><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a></h2>
+    <p>${esc(it.summary)}</p>
+    <div class="foot">${gauge(it,color)}${sig(it.significance)}</div>
+  </article>`;
+}
+
+function renderFeed(){
+  const items=(DATA.items||[]).filter(it=>!unfollowed.has(it.topic));
+  items.sort((a,b)=> sort==="top"
+    ? (b.significance-a.significance) || ((b.added||"")<(a.added||"")?-1:1)
+    : ((b.added||b.published||"")<(a.added||a.published||"")?-1:1));
+  document.getElementById("count").textContent =
+    `${items.length} item${items.length===1?"":"s"} · ${sort==="top"?"by significance":"newest first"}`;
+  const feed=document.getElementById("feed");
+  if(!items.length){
+    const allOff = topics().length && topics().every(t=>unfollowed.has(t));
+    feed.innerHTML=`<div class="empty"><b>${allOff?"Every topic is unfollowed":"Nothing here yet"}</b>${
+      allOff?"Follow a topic above to fill the feed.":"New items appear after the next scheduled run. Hit Refresh to check."}</div>`;
+    return;
+  }
+  feed.innerHTML=items.map(card).join("");
+}
+
+function renderMeta(){
+  const g=DATA.generated?("Updated "+relTime(DATA.generated)):"Sample data";
+  document.getElementById("gen").innerHTML=`${esc(g)}<br>${(DATA.items||[]).length} in archive`;
+  document.getElementById("footer").innerHTML=
+    `Generated ${DATA.generated?esc(new Date(DATA.generated).toLocaleString()):"— (embedded sample)"} · `+
+    `sources: arXiv · PubMed · ScienceDaily · Physics World · Symmetry · Space.com · `+
+    `Quanta · Scientific American · Science · Nature · Universe Today`;
+}
+
+function apply(data){ DATA=data; renderChips(); renderFeed(); renderMeta(); }
+
+let toastT;
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg;
+  t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2600); }
+
+async function loadFeed(isManual){
+  const btn=document.getElementById("refresh"); btn.classList.add("spin");
+  try{
+    const res=await fetch("feed.json?ts="+Date.now(),{cache:"no-store"});
+    if(!res.ok) throw new Error(res.status);
+    const data=await res.json();
+    const before=DATA?DATA.items.length:0;
+    apply(data);
+    if(isManual){ const d=data.items.length-before;
+      toast(d>0?`Feed updated · ${d} new`:"Feed up to date"); }
+  }catch(e){
+    if(!DATA) apply(EMBEDDED_FEED);
+    if(isManual) toast("Couldn't reach feed.json — showing last loaded");
+  }finally{ setTimeout(()=>btn.classList.remove("spin"),400); }
+}
+
+function setSort(s){ sort=s; store.setItem("radar.sort",s);
+  document.getElementById("sortLatest").setAttribute("aria-pressed",s==="latest");
+  document.getElementById("sortTop").setAttribute("aria-pressed",s==="top");
+  renderFeed(); }
+
+document.getElementById("sortLatest").onclick=()=>setSort("latest");
+document.getElementById("sortTop").onclick=()=>setSort("top");
+document.getElementById("refresh").onclick=()=>loadFeed(true);
+setSort(sort);
+loadFeed(false);
+</script>
+</body>
+</html>
