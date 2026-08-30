@@ -44,6 +44,12 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   main{padding:22px 0 60px}
   .count{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin:0 0 14px}
+  .columns{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .column{display:flex;flex-direction:column;gap:12px}
+  .column-title{font-family:var(--serif);font-weight:600;font-size:14px;padding:0 8px;color:var(--ink);position:sticky;top:70px;z-index:2;background:var(--paper);padding:8px}
+  @media (max-width:1400px){.columns{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:900px){.columns{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.columns{grid-template-columns:1fr}}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 17px;margin:0 0 12px;transition:.15s}
   .card:hover{border-color:var(--line-strong);transform:translateY(-1px);box-shadow:0 6px 22px -16px rgba(0,0,0,.35)}
   .meta{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 7px}
@@ -59,9 +65,12 @@
   .ticks{display:flex;gap:3px}
   .tick{width:20px;height:6px;border-radius:2px;background:var(--line);box-shadow:inset 0 0 0 1px var(--line-strong)}
   .tick.on{background:var(--c,#666);box-shadow:none}
-  .stage{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--c,#444);white-space:nowrap}
-  .sig{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+  .stage{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--c,#444);white-space:nowrap;cursor:help}
+  .sig{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;cursor:help}
   .sig b{color:var(--ink);font-weight:500}
+  .loading{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
+  .loading::after{content:"";animation:dots 1.5s steps(4,end) infinite;position:absolute}
+  @keyframes dots{0%,20%{content:""} 40%{content:"."} 60%{content:".."} 80%,100%{content:"..."}}
   .empty{border:1px dashed var(--line-strong);border-radius:12px;padding:34px 22px;text-align:center;color:var(--muted);font-size:14px}
   .empty b{color:var(--ink);font-family:var(--serif);font-weight:600;font-size:17px;display:block;margin-bottom:6px}
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;padding:9px 15px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s}
@@ -89,8 +98,12 @@
     <div class="controls">
       <div class="chips" id="chips"></div>
       <div class="seg" role="group" aria-label="Sort">
-        <button id="sortLatest" aria-pressed="true">Latest</button>
-        <button id="sortTop" aria-pressed="false">Top</button>
+        <button id="sortLatest" aria-pressed="true" title="Newest items first">Latest</button>
+        <button id="sortTop" aria-pressed="false" title="Most significant items first">Top</button>
+      </div>
+      <div class="seg" role="group" aria-label="Layout">
+        <button id="layoutFeed" aria-pressed="true" title="Mixed chronological feed">Feed</button>
+        <button id="layoutColumns" aria-pressed="false" title="Five topics side by side">Columns</button>
       </div>
       <button class="refresh" id="refresh" aria-label="Refresh feed">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
@@ -125,8 +138,10 @@ const store = (()=>{ try{ const k="__t"; localStorage.setItem(k,"1"); localStora
 let DATA = null;
 let unfollowed = new Set();
 let sort = "latest";
+let layout = "feed";
 try{ unfollowed = new Set(JSON.parse(store.getItem("radar.unfollowed")||"[]")); }catch(e){}
 sort = store.getItem("radar.sort") || "latest";
+layout = store.getItem("radar.layout") || "feed";
 
 function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function relTime(iso){
@@ -166,15 +181,17 @@ function renderChips(){
 function gauge(it,color){
   const idx=stageIdx(it.stage);
   let ticks=""; for(let i=0;i<5;i++) ticks+=`<span class="tick ${i<=idx?"on":""}"></span>`;
+  const stages=["Discovery (new finding)","Lab (demonstrated)","Prototype (early testing)","Commercial (in production)","Scaled (widespread)"];
   const label=(it.stage||"").replace(/\b\w/,c=>c.toUpperCase());
-  return `<div class="gauge" title="Maturity: ${esc(label)} (discovery → lab → prototype → commercial → scaled)">
+  return `<div class="gauge" title="${stages[idx] || 'Unknown'} — maturity stage of the breakthrough">
       <span class="ticks" style="--c:${color}">${ticks}</span>
       <span class="stage" style="--c:${color}">${esc(it.stage||"")}</span></div>`;
 }
 function sig(n){
   n=Math.max(1,Math.min(5,n||1));
   let d=""; for(let i=1;i<=5;i++) d+=(i<=n?"\u25c6":"\u25c7");
-  return `<span class="sig">${d} <b>${n}</b>/5</span>`;
+  const sigs=["Incremental","Notable","Significant","Major breakthrough","Landmark discovery"];
+  return `<span class="sig" title="${sigs[n-1]} significance">${d} <b>${n}</b>/5</span>`;
 }
 
 function card(it,i){
@@ -201,11 +218,28 @@ function renderFeed(){
   const feed=document.getElementById("feed");
   if(!items.length){
     const allOff = topics().length && topics().every(t=>unfollowed.has(t));
-    feed.innerHTML=`<div class="empty"><b>${allOff?"Every topic is unfollowed":"Nothing here yet"}</b>${
-      allOff?"Follow a topic above to fill the feed.":"New items appear after the next scheduled run. Hit Refresh to check."}</div>`;
+    feed.innerHTML=`<div class="empty"><b>${allOff?"Every topic is unfollowed":"Loading..."}</b>${
+      allOff?"Follow a topic above to fill the feed.":""}</div>`;
     return;
   }
-  feed.innerHTML=items.map(card).join("");
+  if(layout==="columns"){
+    const byTopic={};
+    topics().forEach(t=>byTopic[t]=[]);
+    items.forEach(it=>{if(byTopic[it.topic]) byTopic[it.topic].push(it);});
+    let html=`<div class="columns">`;
+    topics().forEach((t,i)=>{
+      const topicItems=byTopic[t]||[];
+      const color=colorFor(t,i);
+      html+=`<div class="column"><div class="column-title" style="--c:${color};color:${color}">${esc(t)}</div>`;
+      if(topicItems.length) html+=topicItems.map(card).join("");
+      else html+=`<div class="empty" style="padding:20px 8px;margin:0"><b style="font-size:13px">—</b></div>`;
+      html+=`</div>`;
+    });
+    html+=`</div>`;
+    feed.innerHTML=html;
+  } else {
+    feed.innerHTML=items.map(card).join("");
+  }
 }
 
 function renderMeta(){
@@ -224,10 +258,19 @@ function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg
   t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2600); }
 
 async function loadFeed(isManual){
-  const btn=document.getElementById("refresh"); btn.classList.add("spin");
+  const btn=document.getElementById("refresh");
+  if(isManual) btn.classList.add("spin");
+  else document.getElementById("feed").innerHTML=`<div class="loading">Loading frontier feed</div>`;
   try{
-    const res=await fetch("feed.json?ts="+Date.now(),{cache:"no-store"});
-    if(!res.ok) throw new Error(res.status);
+    const paths=["/feed.json","./feed.json"];
+    let res=null, url="";
+    for(let p of paths){
+      try{
+        res=await fetch(p+"?ts="+Date.now(),{cache:"no-store"});
+        if(res.ok){url=p;break;}
+      }catch(e){}
+    }
+    if(!res || !res.ok) throw new Error("Feed not found");
     const data=await res.json();
     const before=DATA?DATA.items.length:0;
     apply(data);
@@ -235,8 +278,8 @@ async function loadFeed(isManual){
       toast(d>0?`Feed updated · ${d} new`:"Feed up to date"); }
   }catch(e){
     if(!DATA) apply({generated:null,topics:["Nuclear fusion","Superconductors","Dark matter","Exoplanet imaging telescopes","Early life and archaea"],items:[]});
-    if(isManual) toast("Could not reach feed.json — showing sample");
-  }finally{ setTimeout(()=>btn.classList.remove("spin"),400); }
+    if(isManual) toast("Could not reach feed.json");
+  }finally{ if(isManual) setTimeout(()=>btn.classList.remove("spin"),400); }
 }
 
 function setSort(s){ sort=s; store.setItem("radar.sort",s);
@@ -244,10 +287,18 @@ function setSort(s){ sort=s; store.setItem("radar.sort",s);
   document.getElementById("sortTop").setAttribute("aria-pressed",s==="top");
   renderFeed(); }
 
+function setLayout(l){ layout=l; store.setItem("radar.layout",l);
+  document.getElementById("layoutFeed").setAttribute("aria-pressed",l==="feed");
+  document.getElementById("layoutColumns").setAttribute("aria-pressed",l==="columns");
+  renderFeed(); }
+
 document.getElementById("sortLatest").onclick=()=>setSort("latest");
 document.getElementById("sortTop").onclick=()=>setSort("top");
+document.getElementById("layoutFeed").onclick=()=>setLayout("feed");
+document.getElementById("layoutColumns").onclick=()=>setLayout("columns");
 document.getElementById("refresh").onclick=()=>loadFeed(true);
 setSort(sort);
+setLayout(layout);
 loadFeed(false);
 </script>
 </body>
