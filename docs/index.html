@@ -262,12 +262,16 @@ async function loadFeed(isManual){
   if(isManual) btn.classList.add("spin");
   else document.getElementById("feed").innerHTML=`<div class="loading">Loading frontier feed</div>`;
   try{
-    const paths=["/feed.json","./feed.json"];
-    let res=null, url="";
+    // Build path: if on GitHub Pages (path contains repo name), use full path; else relative
+    const currentPath=window.location.pathname;
+    const paths=currentPath.includes("/Leyla")
+      ?["/Leyla-feed-project/feed.json","/feed.json","./feed.json"]
+      :["/feed.json","./feed.json"];
+    let res=null;
     for(let p of paths){
       try{
         res=await fetch(p+"?ts="+Date.now(),{cache:"no-store"});
-        if(res.ok){url=p;break;}
+        if(res.ok) break;
       }catch(e){}
     }
     if(!res || !res.ok) throw new Error("Feed not found");
@@ -277,6 +281,7 @@ async function loadFeed(isManual){
     if(isManual){ const d=data.items.length-before;
       toast(d>0?`Feed updated · ${d} new`:"Feed up to date"); }
   }catch(e){
+    console.error("Feed load error:",e);
     if(!DATA) apply({generated:null,topics:["Nuclear fusion","Superconductors","Dark matter","Exoplanet imaging telescopes","Early life and archaea"],items:[]});
     if(isManual) toast("Could not reach feed.json");
   }finally{ if(isManual) setTimeout(()=>btn.classList.remove("spin"),400); }
