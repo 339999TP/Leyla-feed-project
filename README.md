@@ -85,7 +85,38 @@ This makes it update itself and gives you a URL to open anywhere.
    the `cron:` line to change that), scores new items, and commits `feed.json`. To
    run it now, go to the **Actions** tab → research-radar → **Run workflow**.
 
-## 5. (Optional) Email each digest
+## 5. (Optional) Customize topics and sources
+
+You can track any science/tech topics you care about by editing `config.yaml`:
+
+**Add a new topic:**
+```yaml
+topics:
+  - name: Quantum Computing
+    description: Quantum computers, algorithms, error correction, quantum advantage
+    keywords: [quantum computing, quantum computer, quantum algorithm, qubit, quantum gate, quantum error correction]
+    min_stage: discovery
+    min_significance: 3
+```
+
+**Add custom RSS feeds:**
+Add any mainstream science news or academic journal RSS feed to the `sources.rss` list:
+```yaml
+rss:
+  - https://your-science-news-site.com/rss/physics.xml
+  - https://research-org.org/feed/
+```
+
+**Adjust sensitivity:**
+- `min_significance: 3` = more items (include notable advances)
+- `min_significance: 4` = fewer items (only major breakthroughs)
+- Supported values: 1 (incremental) through 5 (landmark breakthrough)
+
+**On GitHub:** Edit `config.yaml` in the web editor, commit, and the next scheduled run will use your new settings. Or trigger an immediate run from the **Actions** tab.
+
+**Locally:** Edit `config.yaml`, commit, and push. GitHub Actions will pick up your changes automatically.
+
+## 6. (Optional) Email each digest
 
 Set `delivery.email.enabled: true` in the config, fill in your SMTP details, and add
 an `EMAIL_PASSWORD` secret (for Gmail, use an App Password, not your login).

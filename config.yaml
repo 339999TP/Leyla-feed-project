@@ -1,5 +1,9 @@
 # ---------------------------------------------------------------------------
 # research-radar config. Copy to config.yaml and edit.
+#
+# To add custom topics or sources, edit this file and re-run the pipeline.
+# For GitHub Actions (automatic runs), your changes will deploy automatically
+# on the next scheduled run or when triggered manually from the Actions tab.
 # ---------------------------------------------------------------------------
 
 # How far back each run looks. Match to how often you schedule it:
@@ -29,23 +33,28 @@ delivery:
     to_addrs: [you@example.com]
     # password is read from the EMAIL_PASSWORD environment variable.
 
-# --- SOURCES: curated for genuine breakthroughs and discovery announcements ---
-# Combines news (fast announcements) + arXiv (landmark papers only, heavily filtered by Claude)
-# arXiv disabled for routine papers; enabled for high-impact categories only.
+# --- SOURCES: Add your own RSS feeds here! ---
+# Sources can be: arXiv categories, PubMed queries, or RSS feed URLs
+# Quality comes from trusted sources. Add mainstream news & academic sources only.
 sources:
-  arxiv_categories:       # Only categories likely to have landmark results
-    - physics.plasm-ph    # fusion / plasma — lots of milestone announcements
-    - cond-mat.supr-con   # superconductors — high-visibility breakthroughs
-    - astro-ph.EP         # exoplanets — direct imaging, discovery announcements
+  arxiv_categories:       # https://arxiv.org/category_taxonomy
+    - physics.plasm-ph    # fusion / plasma
+    - cond-mat.supr-con   # superconductors
+    - astro-ph.EP         # exoplanets
+    # Add more arXiv categories above for additional topics
+    # Examples: astro-ph.CO (dark matter), q-bio.PE (evolution), hep-ph (particle physics)
 
-  pubmed_queries: []      # Disabled: biology breakthroughs announced in news first
+  pubmed_queries: []      # Disabled by default; add queries if you want biology/medical breakthroughs
+    # Examples:
+    # - "CRISPR gene editing breakthrough"
+    # - "cancer immunotherapy"
 
-  rss:                    # Curated sources that announce actual discoveries & events
-    # Major journals: announce breakthroughs *and* accept confirmed results
+  rss:                    # Add any mainstream science/news RSS feeds here
+    # Major journals
     - https://www.nature.com/nature.rss
     - https://www.science.org/rss/news_current.xml
 
-    # Science journalism & news (strong editorial filter for real breakthroughs)
+    # Science news & journalism
     - https://www.sciencedaily.com/rss/matter_energy/physics.xml
     - https://www.sciencedaily.com/rss/matter_energy/nuclear_energy.xml
     - https://www.sciencedaily.com/rss/space_time/dark_matter.xml
@@ -53,49 +62,65 @@ sources:
     - https://www.sciencedaily.com/rss/fossils_ruins/origin_of_life.xml
     - https://www.quantamagazine.org/feed/
     - https://www.scientificamerican.com/platform/syndication/rss/
-
-    # Astronomy: first light, landings, direct discoveries
     - https://www.space.com/feeds/all
     - https://www.universetoday.com/feed/
-
-    # Physics breakthroughs, milestones, demonstrations
     - https://physicsworld.com/feed/
     - https://www.symmetrymagazine.org/feed
 
-# --- TOPICS: what you care about + your thresholds. ---
-# min_stage: discovery | lab | prototype | commercial | scaled
-# min_significance: 1 (incremental) .. 5 (field-shifting)
-# Set to breakthroughs/events only: min_significance 4 means just landmark results
-# and concrete events (probe landings, first light, first detections, records).
-# min_stage stays "discovery" so a major DISCOVERY (e.g. a room-temp superconductor)
-# still passes; significance is the lever doing the tightening, not stage.
+    # Add your own RSS feeds here! Examples:
+    # - https://www.example.com/science/rss  (must be valid RSS)
+    # - https://news.example.org/physics/feed.xml
+    # Make sure the feed is from a reputable source and publishes science breakthroughs
+
+# --- TOPICS: Define what you care about! ---
+# Add custom topics to track. For each topic:
+#   name: Display name (shown in the feed)
+#   description: What this topic covers
+#   keywords: Keywords to match in titles/abstracts (comma-separated)
+#   min_stage: Minimum maturity (discovery|lab|prototype|commercial|scaled)
+#   min_significance: Minimum score (1-5): 1=incremental, 5=landmark
+#
+# Example custom topic:
+#   - name: Quantum Computing
+#     description: Quantum computer hardware, algorithms, and error correction
+#     keywords: [quantum computing, quantum computer, quantum algorithm, qubit, quantum error correction]
+#     min_stage: discovery
+#     min_significance: 3
+
 topics:
   - name: Nuclear fusion
-    description: Progress in fusion energy - tokamaks, stellarators, inertial confinement, net energy gain, and reactor engineering.
+    description: Fusion energy breakthroughs - tokamaks, stellarators, inertial confinement, net energy gain
     keywords: [nuclear fusion, fusion energy, fusion reactor, tokamak, stellarator, plasma confinement, inertial confinement, ignition, net energy gain]
     min_stage: discovery
     min_significance: 3
 
   - name: Superconductors
-    description: New superconducting materials and mechanisms, especially higher critical temperatures and room-temperature claims.
-    keywords: [superconductor, superconducting, superconductivity, critical temperature, room-temperature superconductor, Cooper pair, Meissner effect]
+    description: Novel superconducting materials and mechanisms - higher Tc, room-temperature claims
+    keywords: [superconductor, superconducting, superconductivity, critical temperature, room-temperature, Cooper pair, Meissner effect]
     min_stage: discovery
     min_significance: 3
 
   - name: Dark matter
-    description: Dark matter detection and theory - direct/indirect detection, axions, WIMPs, and candidate constraints.
+    description: Direct/indirect dark matter detection, axions, WIMPs, observational constraints
     keywords: [dark matter, dark matter detection, axion, WIMP, direct detection, dark matter halo, self-interacting dark matter]
     min_stage: discovery
     min_significance: 3
 
   - name: Exoplanet imaging telescopes
-    description: Direct imaging of exoplanets and the instruments that enable it - coronagraphs, ELTs, space telescopes, starshades.
-    keywords: [exoplanet, direct imaging, coronagraph, high-contrast imaging, extremely large telescope, habitable worlds observatory, starshade]
+    description: Direct imaging of exoplanets - coronagraphs, ELTs, space telescopes, starshades
+    keywords: [exoplanet, direct imaging, coronagraph, high-contrast imaging, extremely large telescope, habitable worlds observatory, starshade, Roman telescope]
     min_stage: discovery
     min_significance: 3
 
   - name: Early life and archaea
-    description: Origin of life and the biology/evolution of archaea - LUCA, prebiotic chemistry, extremophiles, deep phylogeny.
+    description: Origin of life, archaea evolution, LUCA, prebiotic chemistry, extremophiles
     keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent]
     min_stage: discovery
     min_significance: 3
+
+  # CUSTOMIZE: Add your own topics below!
+  # - name: Quantum Computing
+  #   description: Quantum computers, qubits, algorithms, error correction
+  #   keywords: [quantum computing, quantum computer, quantum algorithm, qubit, quantum error]
+  #   min_stage: discovery
+  #   min_significance: 3
