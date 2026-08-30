@@ -242,8 +242,8 @@ function card(it,i){
 function renderFeed(){
   const items=(DATA.items||[]).filter(it=>!unfollowed.has(it.topic));
   items.sort((a,b)=> sort==="top"
-    ? (b.significance-a.significance) || ((b.added||"")<(a.added||"")?-1:1)
-    : ((b.added||b.published||"")<(a.added||a.published||"")?-1:1));
+    ? (b.significance-a.significance) || ((b.added||"")<(a.added||"")?1:-1)
+    : ((b.added||b.published||"")<(a.added||a.published||"")?1:-1));
   document.getElementById("count").textContent =
     `${items.length} item${items.length===1?"":"s"} · ${sort==="top"?"by significance":"newest first"}`;
   const feed=document.getElementById("feed");
