@@ -18,7 +18,7 @@ max_per_source: 60
 
 llm:
   provider: anthropic     # mock | anthropic | openai | gemini
-  model: claude-haiku-4-5 # cheapest Claude; fine for triage. Sonnet = claude-sonnet-5
+  model: claude-haiku-4-5-20251001 # cheapest Claude; fine for triage. Sonnet = claude-sonnet-4-5
   batch_size: 10
   # API key is read from the LLM_API_KEY environment variable, never stored here.
 

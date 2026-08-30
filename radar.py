@@ -378,11 +378,14 @@ def call_anthropic(prompt, model):
         headers={"x-api-key": api_key,
                  "anthropic-version": "2023-06-01",
                  "content-type": "application/json"},
-        json={"model": model or "claude-3-5-sonnet-latest", "max_tokens": 1500,
+        json={"model": model or "claude-haiku-4-5-20251001", "max_tokens": 2000,
               "messages": [{"role": "user", "content": prompt}]},
-        timeout=90,
+        timeout=120,
     )
-    r.raise_for_status()
+    if not r.ok:
+        # Surface the API error body so failures are diagnosable in logs
+        print(f"  ! Anthropic API {r.status_code}: {r.text[:400]}", file=sys.stderr)
+        r.raise_for_status()
     return "".join(b.get("text", "") for b in r.json()["content"])
 
 
