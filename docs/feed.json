@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30T15:43:34.194710Z",
+  "generated": "2026-08-30T16:01:17.109920Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -12,6 +12,32 @@
   ],
   "items": [
     {
+      "id": "c44de76a37c2b8ec4c3fe152e2cc61b504b990d951ca11e018a3976d0c257815",
+      "title": "Scientists stunned by signs of ancient life in a place no one expected",
+      "url": "https://www.sciencedaily.com/releases/2026/06/260621111234.htm",
+      "source": "Origin of Life News -- ScienceDaily",
+      "source_type": "news",
+      "topic": "Early life and archaea",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "Ancient seafloor rocks in Morocco show chemosynthetic microbial activity hundreds of feet underwater in darkness; reveals deep-ocean microbial ecosystems were far more widespread than thought.",
+      "published": "2026-06-26T20:45:50",
+      "added": "2026-08-30T16:01:17.108140Z"
+    },
+    {
+      "id": "89be9a5b8c9be2516e195a31fc2785e95be387fedec15c11d898f817be83ecc9",
+      "title": "Enhanced Superconductivity in Multilayer FeSe Films by Simplified Molecular Beam Epitaxy",
+      "url": "https://arxiv.org/abs/2608.24710v1",
+      "source": "arXiv:cond-mat.supr-con",
+      "source_type": "academic",
+      "topic": "Superconductors",
+      "stage": "lab",
+      "significance": 3,
+      "summary": "Simplified growth method achieves enhanced superconductivity in ultrathin FeSe films at 20 K; practical advance in manufacturing high-temperature superconductors.",
+      "published": "2026-08-25T15:27:37",
+      "added": "2026-08-30T16:01:17.107320Z"
+    },
+    {
       "id": "62b3a08dceae7404e19cc34bdceda820455d8fd0a71297e2829739dba8ada7b9",
       "title": "A new recipe unlocks “impossible” nanocrystals for LEDs, implants, and superconductors",
       "url": "https://www.sciencedaily.com/releases/2026/08/260827010510.htm",
@@ -20,7 +46,7 @@
       "topic": "Superconductors",
       "stage": "lab",
       "significance": 3,
-      "summary": "Lab breakthrough: metal-nitride nanocrystals now synthesizable at practical scale; enables flexible superconducting and electronic devices.",
+      "summary": "Lab synthesis of previously impossible metal-nitride nanocrystals; enables new flexible electronics and superconductor device architectures once scarce materials now producible.",
       "published": "2026-08-30T11:45:32",
       "added": "2026-08-30T15:43:34.192183Z"
     },
@@ -72,7 +98,7 @@
       "topic": "Dark matter",
       "stage": "discovery",
       "significance": 4,
-      "summary": "Largest cosmic test yet measures gravity on record-small scales across the universe; dark matter hypothesis favored over rival MOND theory using new survey data.",
+      "summary": "Largest cosmic test yet comparing dark matter to modified gravity (MOND) using galaxy surveys and microwave background—dark matter favored at unprecedented scale.",
       "published": "2026-08-25T06:00:00",
       "added": "2026-08-30T12:01:11.253230Z"
     },
@@ -111,7 +137,7 @@
       "topic": "Early life and archaea",
       "stage": "discovery",
       "significance": 3,
-      "summary": "RNA's unique chemistry lets it form protective droplets better than DNA in hot, acidic conditions—explaining how early RNA molecules could gather and interact before cells existed.",
+      "summary": "RNA's chemical advantage in forming droplets under heat and acidity illuminates how early life molecules could self-organize before cells existed.",
       "published": "2026-08-29T16:57:39",
       "added": "2026-08-30T11:58:17.698830Z"
     },
@@ -214,8 +240,8 @@
       "source_type": "news",
       "topic": "Superconductors",
       "stage": "lab",
-      "significance": 4,
-      "summary": "First lab demonstration of quantum vacuum fluctuations enhancing superconductivity; new method to control superconducting material properties.",
+      "significance": 3,
+      "summary": "Vacuum fluctuations used to enhance superconductivity for the first time in lab; novel control mechanism demonstrated but no bearing on room-temperature goal.",
       "published": "2026-08-24T20:50:01",
       "added": "2026-08-30T11:45:28.163182Z"
     },
@@ -252,9 +278,9 @@
       "source": "Physics News - Physics News, Material Sciences, Science News, Physics",
       "source_type": "news",
       "topic": "Dark matter",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "SuperCDMS begins first scientific data collection hunting lightweight dark matter particles using ultra-sensitive underground detector.",
+      "stage": "lab",
+      "significance": 4,
+      "summary": "SuperCDMS deep-underground detector begins first scientific data collection in hunt for light dark matter particles using ultrasensitive cryogenic crystals.",
       "published": "2026-08-27T15:40:06",
       "added": "2026-08-30T11:45:28.162981Z"
     },
@@ -267,7 +293,7 @@
       "topic": "Early life and archaea",
       "stage": "discovery",
       "significance": 3,
-      "summary": "Meteorite contains organic compounds and amino acids from ancient asteroid, providing evidence of ingredients that may have seeded early life on Earth.",
+      "summary": "Rare meteorite contains salty fluids, organic compounds, and amino acids from ancient asteroid; reveals how space rocks delivered life's building blocks to early Earth.",
       "published": "2026-08-08T14:58:54",
       "added": "2026-08-30T11:45:28.162923Z"
     },
@@ -304,9 +330,9 @@
       "source": "Scientific American",
       "source_type": "news",
       "topic": "Exoplanet imaging telescopes",
-      "stage": "commercial",
+      "stage": "prototype",
       "significance": 4,
-      "summary": "Nancy Grace Roman Space Telescope successfully launched to space August 30, 2026; begins mission to survey exoplanets and dark energy.",
+      "summary": "NASA's Nancy Grace Roman Space Telescope launches to orbit; advanced infrared coronagraph enables direct exoplanet imaging and dark energy studies.",
       "published": "2026-08-30T11:26:00",
       "added": "2026-08-30T11:45:28.162312Z"
     },
@@ -330,9 +356,9 @@
       "source": "arXiv:astro-ph.EP",
       "source_type": "academic",
       "topic": "Exoplanet imaging telescopes",
-      "stage": "lab",
+      "stage": "prototype",
       "significance": 3,
-      "summary": "New coronagraph mask design achieves sub-diffraction-limit imaging; detects binary companions at extremely tight separations on Magellan telescope.",
+      "summary": "New coronagraph mask design tested on Magellan telescope achieves sub-diffraction-limit imaging; demonstrates capability to observe close companions at extreme contrast needed for Earth-like exoplanet detection.",
       "published": "2026-08-25T09:55:40",
       "added": "2026-08-30T11:45:28.161740Z"
     },
@@ -345,7 +371,7 @@
       "topic": "Exoplanet imaging telescopes",
       "stage": "lab",
       "significance": 3,
-      "summary": "Keck II telescope upgraded with new infrared polarimetry imaging modes; first light reveals spiral arms in AB Aurigae disk with unprecedented clarity.",
+      "summary": "Keck II telescope upgraded with new infrared polarimetry capability; first light images reveal spiral structure in circumstellar disk with clarity beyond prior observations.",
       "published": "2026-08-25T15:03:53",
       "added": "2026-08-30T11:45:28.161675Z"
     },
@@ -461,8 +487,8 @@
       "source_type": "news",
       "topic": "Dark matter",
       "stage": "discovery",
-      "significance": 4,
-      "summary": "First stellar stream around distant galaxy used to map dark matter distribution; opens new method to study invisible matter's structure and abundance.",
+      "significance": 3,
+      "summary": "First-ever stellar stream detected around distant galaxy; astronomers used star pattern to map invisible dark matter distribution and developed new technique to study cosmic mystery.",
       "published": "2026-08-24T12:19:34",
       "added": "2026-08-30T11:39:32.083173Z"
     },
@@ -470,12 +496,12 @@
       "id": "95848e2d321e9a2c829b25ebee9d23e12e725e8b8363a7dbd82dd02424aa41aa",
       "title": "Newton’s 300-year-old law just passed its biggest test yet",
       "url": "https://www.sciencedaily.com/releases/2026/08/260823015019.htm",
-      "source": "Latest Science News -- ScienceDaily",
+      "source": "Physics News -- ScienceDaily",
       "source_type": "news",
       "topic": "Dark matter",
       "stage": "discovery",
       "significance": 3,
-      "summary": "Largest-ever gravity test across galaxy clusters confirms Newton and Einstein's predictions, strengthening evidence that dark matter explains cosmic missing mass.",
+      "summary": "Test of gravity across hundreds of millions of light-years confirms Einstein's predictions and strengthens evidence that dark matter, not modified gravity, explains cosmic missing mass.",
       "published": "2026-08-25T01:49:06",
       "added": "2026-08-30T11:39:32.083120Z"
     },
@@ -501,7 +527,7 @@
       "topic": "Superconductors",
       "stage": "discovery",
       "significance": 3,
-      "summary": "Re-entrant superconductivity observed in 2D material for first time—magnetic field can destroy and restore superconductivity unexpectedly.",
+      "summary": "Ultrathin material exhibits rare re-entrant superconductivity—superconductivity returns after magnetic field suppresses it—opening new physics in 2D superconductors.",
       "published": "2026-08-28T11:00:10",
       "added": "2026-08-30T11:39:32.083004Z"
     },
@@ -670,7 +696,7 @@
       "topic": "Exoplanet imaging telescopes",
       "stage": "discovery",
       "significance": 3,
-      "summary": "First detection of sublimating exocomets around young star PDS 70 via sodium absorption lines in archival data, explaining water origin in inner disk.",
+      "summary": "Variable sodium absorption lines in archival data suggest sublimating exocomets around young star PDS 70, likely sourcing water observed by JWST in the planet-forming region.",
       "published": "2026-08-24T12:57:24",
       "added": "2026-08-30T11:39:32.082226Z"
     },
@@ -695,8 +721,8 @@
       "source_type": "academic",
       "topic": "Exoplanet imaging telescopes",
       "stage": "discovery",
-      "significance": 4,
-      "summary": "James Webb Space Telescope's NIRCam directly imaged five debris disk systems at high resolution, revealing water ice and dust grain structures never seen before.",
+      "significance": 3,
+      "summary": "JWST first coronagraphic images of five debris-disk systems reveal water ice and dust structure at unprecedented infrared resolution and detail.",
       "published": "2026-08-27T17:55:03",
       "added": "2026-08-30T11:39:32.082110Z"
     },
@@ -943,7 +969,7 @@
       "topic": "Superconductors",
       "stage": "lab",
       "significance": 3,
-      "summary": "New ultrathin air-stable superconductor Nb₂Pd₃Te₅ created; stays superconducting in open air—practical step toward robust superconducting electronics.",
+      "summary": "Air-stable ultrathin superconductor synthesized with unusual quasi-one-dimensional electron arrangement; opens path to practical low-dimensional superconducting devices.",
       "published": "2026-08-26T03:26:58",
       "added": "2026-08-30T11:39:32.080891Z"
     },
@@ -982,7 +1008,7 @@
       "topic": "Superconductors",
       "stage": "lab",
       "significance": 3,
-      "summary": "Electrical control of oxygen vacancies in high-temperature superconductor enables post-fabrication tuning of device properties; demonstrated in Y-shaped junction.",
+      "summary": "First demonstration of selective electrical control of oxygen vacancy migration in high-temperature superconductor junction, enabling tunable superconducting weak links.",
       "published": "2026-08-26T17:21:54",
       "added": "2026-08-30T11:39:32.080707Z"
     },
