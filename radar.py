@@ -518,6 +518,14 @@ def parse_json_array(text):
     return objs
 
 
+def parse_json_object(text):
+    text = text.strip()
+    text = re.sub(r"^```(json)?", "", text).strip()
+    text = re.sub(r"```$", "", text).strip()
+    m = re.search(r"\{.*\}", text, re.DOTALL)
+    return json.loads(m.group(0)) if m else json.loads(text)
+
+
 def call_anthropic(prompt, model):
     api_key = get_env("LLM_API_KEY")
     headers = {"x-api-key": api_key,
@@ -919,6 +927,295 @@ def run(cfg, force_mock=False):
     return path
 
 
+# ---------------------------------------------------------------------------
+# Add a topic: LLM generates keywords + sources, we validate, write config,
+# and seed the feed so the new topic shows up right away.
+# ---------------------------------------------------------------------------
+
+TOPIC_GEN_INSTRUCTIONS = """You configure a science/tech news radar that surfaces
+ONLY genuine breakthroughs and concrete events (first detections, confirmed results,
+working prototypes, mission milestones) -- not routine papers or explainer articles.
+
+Given a TOPIC NAME, return ONLY a JSON object (no prose, no markdown) shaped exactly:
+{
+  "name": "<clean display name, Title Case>",
+  "description": "<one sentence, <=140 chars: what breakthroughs this topic covers>",
+  "keywords": ["<8-14 distinctive lowercase phrases that appear in the titles/abstracts
+                of real results in this field -- specific technical terms, named methods,
+                instruments; NOT generic single words like 'energy' or 'space'>"],
+  "min_stage": "discovery",
+  "min_significance": 3,
+  "arxiv_categories": ["<0-3 REAL arXiv category ids from the official taxonomy, e.g.
+                        quant-ph, cond-mat.supr-con, astro-ph.CO, q-bio.PE; [] if none fit>"],
+  "pubmed_queries": ["<0-2 PubMed search queries, ONLY for biology/medical/chemistry
+                      topics; [] otherwise>"],
+  "rss": ["<0-4 RSS/Atom feed URLs from reputable, well-known outlets or journals that
+           actually cover this topic; only URLs you are confident exist verbatim>"]
+}
+Rules:
+- keywords: what a real breakthrough headline in this field would literally contain.
+- arxiv_categories: only ids you know are real (https://arxiv.org/category_taxonomy).
+  When unsure, return [] rather than inventing one.
+- rss: only feeds you are confident resolve at that exact URL; prefer major outlets.
+  When unsure, return [] rather than guessing a broken URL.
+- Return JSON only.
+"""
+
+
+def mock_topic_spec(name):
+    """Keyless fallback used by --dry-run: no LLM, just a minimal spec."""
+    base = name.strip().lower()
+    kws = [base] + ([base[:-1]] if base.endswith("s") and len(base) > 3 else [])
+    disp = name.strip()
+    return {
+        "name": disp.title() if disp.islower() else disp,
+        "description": f"Breakthroughs and concrete events in {disp}.",
+        "keywords": list(dict.fromkeys(k for k in kws if k)),
+        "min_stage": "discovery",
+        "min_significance": 3,
+        "arxiv_categories": [],
+        "pubmed_queries": [],
+        "rss": [],
+    }
+
+
+def generate_topic_spec(name, cfg, force_mock=False):
+    provider = "mock" if force_mock else cfg["llm"]["provider"]
+    if provider == "mock" or provider not in PROVIDERS:
+        return mock_topic_spec(name)
+    prompt = f"{TOPIC_GEN_INSTRUCTIONS}\nTOPIC NAME: {name}\n"
+    raw = PROVIDERS[provider](prompt, cfg["llm"]["model"])
+    return parse_json_object(raw)
+
+
+def validate_arxiv_category(cat):
+    try:
+        url = ("http://export.arxiv.org/api/query?"
+               f"search_query=cat:{cat}&max_results=1")
+        feed = feedparser.parse(url, agent=UA_STR)
+        return len(feed.entries) > 0
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def validate_rss_feed(url):
+    try:
+        if urlparse(url).scheme not in ("http", "https"):
+            return False
+        feed = feedparser.parse(url, agent=UA_STR)
+        return len(feed.entries) > 0
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def validate_pubmed_query(q):
+    try:
+        base = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
+        r = requests.get(f"{base}/esearch.fcgi",
+                         params={"db": "pubmed", "term": q,
+                                 "retmode": "json", "retmax": 1},
+                         headers=UA, timeout=30)
+        return bool(r.json().get("esearchresult", {}).get("idlist"))
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def write_config_additions(path, topic_block, arxiv, pubmed, rss):
+    """Append a topic + new sources to config.yaml, preserving comments/formatting."""
+    try:
+        from ruamel.yaml import YAML
+        from ruamel.yaml.comments import CommentedMap, CommentedSeq
+    except ImportError as exc:  # noqa: BLE001
+        raise SystemExit(
+            "--add-topic needs ruamel.yaml to edit the config without dropping "
+            "comments. Install it: pip install ruamel.yaml"
+        ) from exc
+
+    yaml_rt = YAML()
+    yaml_rt.preserve_quotes = True
+    yaml_rt.width = 4096
+    # Match the config's existing block style: list items indented under their
+    # key with the dash offset by 2 (e.g. "  - name" / "    - item").
+    yaml_rt.indent(mapping=2, sequence=4, offset=2)
+    with open(path, encoding="utf-8") as f:
+        data = yaml_rt.load(f)
+
+    data.setdefault("sources", {})
+    src = data["sources"]
+
+    def merge_list(key, additions, casefold=False):
+        if not additions:
+            return
+        cur = src.get(key)
+        if not isinstance(cur, list):
+            cur = CommentedSeq()
+            src[key] = cur
+        seen = {(str(x).lower() if casefold else str(x)) for x in cur}
+        for a in additions:
+            k = a.lower() if casefold else a
+            if k not in seen:
+                cur.append(a)
+                seen.add(k)
+
+    merge_list("arxiv_categories", arxiv)
+    merge_list("pubmed_queries", pubmed)
+    merge_list("rss", rss, casefold=True)
+
+    tb = CommentedMap()
+    tb["name"] = topic_block["name"]
+    tb["description"] = topic_block["description"]
+    kw = CommentedSeq(topic_block["keywords"])
+    kw.fa.set_flow_style()  # render as [a, b, c] like the existing topics
+    tb["keywords"] = kw
+    tb["min_stage"] = topic_block["min_stage"]
+    tb["min_significance"] = topic_block["min_significance"]
+
+    if not isinstance(data.get("topics"), list):
+        data["topics"] = CommentedSeq()
+    data["topics"].append(tb)
+
+    with open(path, "w", encoding="utf-8") as f:
+        yaml_rt.dump(data, f)
+
+
+def backfill_topic(cfg, topic_name, force_mock=False):
+    """Seed the feed with the just-added topic. Ignores the seen-store so items
+    already fetched for other topics can surface under the new one."""
+    topics = cfg.get("topics", [])
+    topics_by_name = {t["name"]: t for t in topics}
+    new_topic = topics_by_name.get(topic_name)
+    if not new_topic:
+        print(f"  ! could not find new topic '{topic_name}' after write")
+        return
+    con = open_store()
+    print("Backfilling feed for new topic (fetching sources)...")
+    items = gather(cfg)
+    items = [it for it in items if within_lookback(it, cfg["lookback_days"])]
+
+    fresh, seen_now = [], set()
+    for it in items:
+        k = item_key(it)
+        if k in seen_now:
+            continue
+        seen_now.add(k)
+        if candidate_topics(it, [new_topic]):
+            fresh.append(it)
+    print(f"  {len(fresh)} items match '{topic_name}' keywords")
+
+    if not force_mock:
+        fresh = enrich_fulltext(fresh)
+    scored = score_items(fresh, [new_topic], cfg, force_mock=force_mock)
+    passed = [it for it in scored if passes_thresholds(it, topics_by_name)]
+    print(f"  {len(passed)} cleared thresholds for '{topic_name}'")
+
+    for it in scored:
+        mark_seen(con, it)
+    con.commit()
+
+    records = [to_record(it) for it in passed]
+    site_dir = cfg["delivery"].get("site_dir", "./site")
+    path, n_added = merge_feed(site_dir, records, topics)
+    print(f"  feed: +{n_added} new items -> {path}")
+
+
+def load_allowlist(cfg):
+    """Curated topics.json used to gate what --add-topic will accept when
+    RADAR_ENFORCE_ALLOWLIST is set (defense in depth behind the worker)."""
+    site_dir = cfg["delivery"].get("site_dir", "./site")
+    for p in (os.path.join(site_dir, "topics.json"),
+              os.path.join("docs", "topics.json")):
+        if os.path.exists(p):
+            try:
+                with open(p, encoding="utf-8") as f:
+                    return [str(t).strip() for t in json.load(f).get("topics", [])]
+            except Exception:  # noqa: BLE001
+                return []
+    return []
+
+
+def add_topic(cfg, config_path, name, force_mock=False):
+    name = (name or "").strip()
+    if not name:
+        print("  ! --add-topic requires a topic name")
+        return
+    # Defense in depth: when enforced (the Action sets this), only exact
+    # allowlist terms are accepted, so no arbitrary text reaches the LLM.
+    if os.environ.get("RADAR_ENFORCE_ALLOWLIST"):
+        allow = load_allowlist(cfg)
+        match = next((a for a in allow if a.lower() == name.lower()), None)
+        if not match:
+            print(f"  ! '{name}' is not in the topic allowlist (docs/topics.json); "
+                  f"refusing because RADAR_ENFORCE_ALLOWLIST is set")
+            return
+        name = match  # normalize to the canonical allowlist spelling
+    existing = {t["name"].strip().lower() for t in cfg.get("topics", [])}
+    if name.lower() in existing:
+        print(f"  topic '{name}' already exists; nothing to do")
+        return
+
+    prov = "mock" if force_mock else cfg["llm"]["provider"]
+    print(f"Generating topic spec for '{name}' via provider='{prov}'...")
+    spec = generate_topic_spec(name, cfg, force_mock=force_mock)
+
+    disp = (spec.get("name") or name).strip() or name
+    keywords = [k.strip() for k in (spec.get("keywords") or []) if k and str(k).strip()]
+    if not any(k.lower() == disp.lower() for k in keywords):
+        keywords.insert(0, disp.lower())
+    keywords = list(dict.fromkeys(k.lower() for k in keywords))
+    description = (spec.get("description") or f"Breakthroughs in {disp}.").strip()
+    min_stage = spec.get("min_stage", "discovery")
+    if min_stage not in STAGE_ORDER:
+        min_stage = "discovery"
+    try:
+        min_sig = max(1, min(5, int(spec.get("min_significance", 3))))
+    except (TypeError, ValueError):
+        min_sig = 3
+
+    print(f"  description: {description}")
+    print(f"  keywords ({len(keywords)}): {', '.join(keywords)}")
+
+    new_arxiv, new_pubmed, new_rss = [], [], []
+    if not force_mock:
+        print("  validating suggested sources...")
+        for cat in (spec.get("arxiv_categories") or []):
+            cat = str(cat).strip()
+            if not cat:
+                continue
+            if validate_arxiv_category(cat):
+                new_arxiv.append(cat)
+            else:
+                print(f"    - skipped invalid arXiv category: {cat}")
+        for q in (spec.get("pubmed_queries") or []):
+            q = str(q).strip()
+            if not q:
+                continue
+            if validate_pubmed_query(q):
+                new_pubmed.append(q)
+            else:
+                print(f"    - skipped PubMed query (no results): {q}")
+        for u in (spec.get("rss") or []):
+            u = str(u).strip()
+            if not u:
+                continue
+            if validate_rss_feed(u):
+                new_rss.append(u)
+            else:
+                print(f"    - skipped unreachable RSS feed: {u}")
+    print(f"  sources added: +{len(new_arxiv)} arXiv, "
+          f"+{len(new_pubmed)} PubMed, +{len(new_rss)} RSS")
+
+    topic_block = {
+        "name": disp, "description": description, "keywords": keywords,
+        "min_stage": min_stage, "min_significance": min_sig,
+    }
+    write_config_additions(config_path, topic_block, new_arxiv, new_pubmed, new_rss)
+    print(f"  wrote {config_path} (+1 topic)")
+
+    cfg2 = load_config(config_path)
+    backfill_topic(cfg2, disp, force_mock=force_mock)
+    print(f"Done. '{disp}' is now tracked and seeded into the feed.")
+
+
 def main():
     ap = argparse.ArgumentParser(description="research-radar digest tool")
     ap.add_argument("--config", default="config.yaml")
@@ -926,10 +1223,16 @@ def main():
                     help="use the keyless mock scorer (no LLM key needed)")
     ap.add_argument("--validate-feeds", action="store_true",
                     help="check that configured RSS feeds parse, then exit")
+    ap.add_argument("--add-topic", metavar="NAME",
+                    help="use the LLM to generate keywords + sources for a new "
+                         "topic, add it to the config, and seed the feed")
     args = ap.parse_args()
     cfg = load_config(args.config)
     if args.validate_feeds:
         validate_feeds(cfg)
+        return
+    if args.add_topic:
+        add_topic(cfg, args.config, args.add_topic, force_mock=args.dry_run)
         return
     run(cfg, force_mock=args.dry_run)
 

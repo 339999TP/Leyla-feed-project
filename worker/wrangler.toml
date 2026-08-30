@@ -1,0 +1,31 @@
+name = "radar-add-topic"
+main = "add-topic-worker.js"
+compatibility_date = "2024-11-01"
+
+# --- Target repo + workflow -------------------------------------------------
+# The workflow (digest.yml) must exist on REF's branch with the `topic` input.
+[vars]
+OWNER = "339999TP"
+REPO = "Leyla-feed-project"
+WORKFLOW = "digest.yml"
+REF = "main"
+# The exact origin the page is served from (no path, no trailing slash).
+ALLOWED_ORIGIN = "https://339999tp.github.io"
+# Public URL of the deployed allowlist (same file the picker loads).
+TOPICS_URL = "https://339999tp.github.io/Leyla-feed-project/topics.json"
+# Rate limits (needs the RL KV namespace below to take effect).
+RATE_PER_IP = "5"
+RATE_GLOBAL = "50"
+RATE_WINDOW_MS = "3600000"
+
+# --- Rate-limit store -------------------------------------------------------
+# Create once:  wrangler kv namespace create RL
+# then paste the printed id here.
+[[kv_namespaces]]
+binding = "RL"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+# --- Secret (do NOT put the token here) -------------------------------------
+# Set it out-of-band:  wrangler secret put GH_TOKEN
+# Use a fine-grained PAT limited to this repo with permission:
+#   Actions: Read and write   (nothing else is required)

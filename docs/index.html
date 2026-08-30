@@ -38,6 +38,9 @@
   .chip.add:hover{color:var(--ink);border-color:var(--ink)}
   .chip .x{margin-left:2px;opacity:.55;font-size:11px;cursor:pointer;padding:0 2px}
   .chip .x:hover{opacity:1;color:var(--accent,#c4432b)}
+  .chip-add{border-style:dashed;color:var(--accent);border-color:var(--accent);gap:5px}
+  .chip-add .plus{font-size:14px;line-height:1;font-weight:600}
+  .chip-add:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
   .legend{margin:0 0 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-family:var(--mono);font-size:12.5px}
   .legend>summary{cursor:pointer;padding:11px 15px;color:var(--muted);list-style:none;font-weight:600}
   .legend>summary::-webkit-details-marker{display:none}
@@ -98,6 +101,18 @@
   @media (max-width:900px){
     .column-title{position:static;top:auto}
   }
+  @media (max-width:640px){
+    /* Header is too tall on phones to stay sticky — it would cover the feed */
+    header{position:static}
+    .column-title{position:static}
+    /* Stop the chips from collapsing into a narrow column with the sort/layout
+       controls floating over them: give chips their own full-width row so the
+       segmented controls wrap cleanly onto the next line. */
+    .controls{gap:10px}
+    .chips{flex:1 0 100%}
+    .chip{white-space:nowrap}
+    .seg,.refresh{flex:0 0 auto}
+  }
   @media (max-width:560px){
     .brand h1{font-size:24px}
     .head-in{padding-top:16px;flex-wrap:wrap;gap:4px}
@@ -107,6 +122,23 @@
     .tick{width:15px}
     .foot{flex-direction:column;align-items:flex-start;gap:9px}
   }
+  .modal[hidden]{display:none}
+  .modal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:18px}
+  .modal-backdrop{position:absolute;inset:0;background:rgba(10,12,15,.42)}
+  .modal-card{position:relative;background:var(--panel);border:1px solid var(--line-strong);border-radius:14px;padding:20px;width:100%;max-width:420px;box-shadow:0 24px 60px -24px rgba(0,0,0,.5)}
+  .modal-card h3{font-family:var(--serif);font-weight:600;font-size:20px;margin:0 0 4px}
+  .modal-sub{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.45}
+  #addInput{width:100%;font-family:var(--sans);font-size:15px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--paper);color:var(--ink)}
+  #addInput:focus{outline:none;border-color:var(--accent)}
+  .add-list{list-style:none;margin:8px 0 0;padding:0;max-height:230px;overflow:auto}
+  .add-opt{display:block;width:100%;text-align:left;background:transparent;border:0;padding:9px 11px;border-radius:7px;font-family:var(--sans);font-size:14px;color:var(--ink);cursor:pointer}
+  .add-opt:hover,.add-opt[aria-selected="true"]{background:var(--paper)}
+  .add-empty{padding:10px 11px;color:var(--muted);font-size:13px;font-family:var(--mono)}
+  .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+  .btn-ghost,.btn-primary{font-family:var(--mono);font-size:13px;padding:8px 14px;border-radius:8px;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink);cursor:pointer}
+  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn-primary:disabled{opacity:.45;cursor:not-allowed}
+  .btn-ghost:hover{border-color:var(--ink)}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -171,6 +203,20 @@
 <footer><div class="wrap" id="footer"></div></footer>
 <div class="toast" id="toast"></div>
 
+<div class="modal" id="addModal" hidden>
+  <div class="modal-backdrop" id="addBackdrop"></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="Add a topic">
+    <h3>Add a topic</h3>
+    <p class="modal-sub">Pick a recognised topic to track. Claude generates the keywords, finds sources, and seeds the feed automatically.</p>
+    <input id="addInput" type="text" placeholder="Search topics…" autocomplete="off" spellcheck="false" aria-label="Search topics">
+    <ul id="addList" class="add-list"></ul>
+    <div class="modal-actions">
+      <button type="button" id="addCancel" class="btn-ghost">Cancel</button>
+      <button type="button" id="addSubmit" class="btn-primary" disabled>Add topic</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const STAGES = ["discovery","lab","prototype","commercial","scaled"];
 const TOPIC_COLORS = {
@@ -182,6 +228,104 @@ const TOPIC_COLORS = {
 };
 const PALETTE = ["#c4432b","#1e88a8","#6c4cc4","#2e8b6b","#b07a1e","#3341b0","#8a6d3b"];
 function colorFor(t,i){return TOPIC_COLORS[t] || PALETTE[i % PALETTE.length];}
+
+// Seamless "add topic": the page only ever sends an INDEX into the curated
+// allowlist (topics.json) to a small Cloudflare Worker, which validates it and
+// triggers the GitHub Action. No free-form text reaches the pipeline/LLM, so
+// there's no prompt-injection surface. Set this to your worker URL after
+// deploying it (see worker/README.md). Left blank, the button falls back to
+// opening the Actions tab.
+const ADD_TOPIC_ENDPOINT = ""; // e.g. "https://radar-add-topic.you.workers.dev"
+const REPO = "339999TP/Leyla-feed-project";
+const WORKFLOW_FILE = "digest.yml";
+
+let ALLOWLIST = null; // [{term, i}] — i is the index in topics.json
+async function loadAllowlist(){
+  if(ALLOWLIST) return ALLOWLIST;
+  const paths=[
+    window.location.pathname.includes("/Leyla")?"/Leyla-feed-project/topics.json":null,
+    "/topics.json","./topics.json"
+  ].filter(Boolean);
+  for(const p of paths){
+    try{
+      const r=await fetch(p+"?ts="+Date.now(),{cache:"no-store"});
+      if(r.ok){ const d=await r.json();
+        ALLOWLIST=(d.topics||[]).map((term,i)=>({term:String(term),i}));
+        return ALLOWLIST; }
+    }catch(e){}
+  }
+  ALLOWLIST=[]; return ALLOWLIST;
+}
+
+let addSel=null; // {term, i}
+function openAddModal(){
+  const m=document.getElementById("addModal"); m.hidden=false;
+  addSel=null;
+  const inp=document.getElementById("addInput");
+  inp.value=""; document.getElementById("addSubmit").disabled=true;
+  loadAllowlist().then(()=>renderAddList(""));
+  setTimeout(()=>inp.focus(),30);
+}
+function closeAddModal(){ document.getElementById("addModal").hidden=true; }
+
+function renderAddList(q){
+  const box=document.getElementById("addList"); box.innerHTML="";
+  const tracked=new Set(topics().map(t=>t.toLowerCase()));
+  const ql=(q||"").trim().toLowerCase();
+  const matches=(ALLOWLIST||[])
+    .filter(o=>!tracked.has(o.term.toLowerCase()))
+    .filter(o=>!ql || o.term.toLowerCase().includes(ql))
+    .slice(0,8);
+  if(!matches.length){
+    box.innerHTML=`<li class="add-empty">${ql?"No matching topic":"Start typing…"}</li>`;
+    return;
+  }
+  matches.forEach(o=>{
+    const li=document.createElement("li");
+    const b=document.createElement("button");
+    b.type="button"; b.className="add-opt"; b.textContent=o.term;
+    if(addSel && addSel.i===o.i) b.setAttribute("aria-selected","true");
+    b.onclick=()=>{ addSel=o;
+      document.getElementById("addInput").value=o.term;
+      document.getElementById("addSubmit").disabled=false;
+      renderAddList(o.term);
+      document.getElementById("addSubmit").focus(); };
+    li.appendChild(b); box.appendChild(li);
+  });
+}
+
+async function submitAddTopic(){
+  const val=document.getElementById("addInput").value.trim().toLowerCase();
+  if(!addSel || addSel.term.toLowerCase()!==val){
+    const exact=(ALLOWLIST||[]).find(o=>o.term.toLowerCase()===val);
+    if(exact) addSel=exact; else { toast("Pick a topic from the list"); return; }
+  }
+  const sel=addSel;
+  const btn=document.getElementById("addSubmit"); btn.disabled=true;
+  if(!ADD_TOPIC_ENDPOINT){
+    // Not wired to a worker yet — fall back to the manual Actions flow.
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(sel.term); }catch(e){}
+    window.open(`https://github.com/${REPO}/actions/workflows/${WORKFLOW_FILE}`,"_blank","noopener");
+    closeAddModal();
+    toast(`Seamless add isn't configured yet — opened Actions; paste “${sel.term}”.`);
+    return;
+  }
+  try{
+    const r=await fetch(ADD_TOPIC_ENDPOINT,{method:"POST",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify({topic:sel.term,i:sel.i})});
+    if(r.ok||r.status===202){
+      closeAddModal();
+      toast(`Adding “${sel.term}” — the feed will update in a minute or two.`);
+      [60,120,180].forEach(s=>setTimeout(()=>loadFeed(false),s*1000));
+    } else if(r.status===429){
+      toast("Too many requests — try again later."); btn.disabled=false;
+    } else {
+      const d=await r.json().catch(()=>({}));
+      toast("Couldn't add topic"+(d.error?": "+d.error:"")); btn.disabled=false;
+    }
+  }catch(e){ toast("Network error adding topic"); btn.disabled=false; }
+}
 
 const store = (()=>{ try{ const k="__t"; localStorage.setItem(k,"1"); localStorage.removeItem(k); return localStorage; }catch(e){ const m={}; return {getItem:k=>k in m?m[k]:null, setItem:(k,v)=>m[k]=String(v)};}})();
 
@@ -226,20 +370,6 @@ function itemTopics(it){
   CUSTOM.forEach(c=>{ if(itemMatchesKeywords(it,c.keywords)) ts.push(c.name); });
   return ts.filter(Boolean);
 }
-function addTopic(){
-  const name=(prompt("New topic name (e.g. Quantum computing):")||"").trim();
-  if(!name) return;
-  if(topics().some(t=>t.toLowerCase()===name.toLowerCase())){ toast("That topic already exists"); return; }
-  const kw=(prompt("Keywords to match (comma-separated) — filters items already in the feed:\ne.g. qubit, quantum computer, error correction")||"").trim();
-  const keywords=kw.split(",").map(s=>s.trim()).filter(Boolean);
-  if(!keywords.length){ toast("Add at least one keyword"); return; }
-  CUSTOM.push({name,keywords});
-  store.setItem("radar.custom",JSON.stringify(CUSTOM));
-  unfollowed.delete(name);
-  renderChips(); renderFeed();
-  const n=(DATA.items||[]).filter(it=>itemMatchesKeywords(it,keywords)).length;
-  toast(`Added "${name}" · ${n} matching item${n===1?"":"s"}`);
-}
 function removeTopic(name){
   CUSTOM=CUSTOM.filter(c=>c.name!==name);
   store.setItem("radar.custom",JSON.stringify(CUSTOM));
@@ -264,10 +394,10 @@ function renderChips(){
     box.appendChild(b);
   });
   const add=document.createElement("button");
-  add.className="chip add";
-  add.textContent="\uFF0B Add topic";
-  add.title="Create a custom topic from keywords (filters items already in the feed)";
-  add.onclick=addTopic;
+  add.type="button"; add.className="chip chip-add";
+  add.innerHTML=`<span class="plus" aria-hidden="true">+</span>Add topic`;
+  add.title="Track a new topic — Claude generates keywords and finds sources";
+  add.onclick=openAddModal;
   box.appendChild(add);
 }
 
@@ -417,6 +547,18 @@ document.getElementById("sortTop").onclick=()=>setSort("top");
 document.getElementById("layoutFeed").onclick=()=>setLayout("feed");
 document.getElementById("layoutColumns").onclick=()=>setLayout("columns");
 document.getElementById("refresh").onclick=()=>loadFeed(true);
+
+// Add-topic modal
+document.getElementById("addInput").oninput=(e)=>{ addSel=null;
+  document.getElementById("addSubmit").disabled=true; renderAddList(e.target.value); };
+document.getElementById("addInput").onkeydown=(e)=>{
+  if(e.key==="Enter"){ e.preventDefault();
+    const first=document.querySelector("#addList .add-opt"); if(first) first.click(); }
+  else if(e.key==="Escape") closeAddModal();
+};
+document.getElementById("addSubmit").onclick=submitAddTopic;
+document.getElementById("addCancel").onclick=closeAddModal;
+document.getElementById("addBackdrop").onclick=closeAddModal;
 
 // Load feed immediately and only after it loads, set up the UI
 (async()=>{
