@@ -279,13 +279,15 @@ CRITICAL FILTER: Reject anything that is:
   - Background or historical context
   - Multiple items grouped together (e.g., "top 5 superconductor papers")
   - Routine mission updates, personnel changes, or administrative news
+  - Blog posts or opinion pieces
+  - Conference announcements without a concrete result
 
 ACCEPT ONLY concrete discoveries and events:
-  - First detections, first observations, first images
-  - Lab or field confirmation of a breakthrough result
+  - First detections, first observations, first images (actual data/imagery released)
+  - Lab or field confirmation of a breakthrough result (peer-reviewed or officially announced)
   - Announcement that a prototype/device works and a milestone is reached
-  - Major mission events (landing, first light, reaching a target)
-  - Confirmed records or records broken
+  - Major mission events (landing, first light, reaching a target, imagery released)
+  - Confirmed records or records broken (with verification)
   - Major policy or funding that enables a specific breakthrough
 
 For each item: decide which ONE topic it best fits, or "none".
@@ -302,24 +304,30 @@ MATURITY STAGE:
 SIGNIFICANCE (only count actual discoveries/events):
   5 = landmark breakthrough or major headline event (room-temp superconductor verified,
       fusion net energy gain confirmed, first Earth-like exoplanet image, major probe
-      lands successfully, telescope first light released)
+      lands successfully, telescope first light released, major policy breakthrough)
   4 = significant first or milestone (first detection confirmed, working demo achieved,
       mission reaches key target, record broken, major facility comes online)
-  3 = real advance but smaller scope (incremental discovery, minor record, single lab result)
-  2 = niche or preliminary (one group's claim, not yet widely confirmed)
-  1 = REJECT - not a discovery/event
+  3 = real advance but smaller scope (incremental discovery, minor record, single lab result,
+      important but niche discovery)
+  2 = specialized result (narrow field, single institution, preliminary)
+  1 = REJECT - not a discovery/event (or too preliminary)
 Heavily prefer empirical discoveries over theory. When unsure, score lower.
+Require NEWS ANNOUNCEMENT or official statement for significance 3+.
 
-SUMMARY: Write a 1-2 sentence plain-English description of the BREAKTHROUGH ITSELF.
-Describe WHAT was discovered/achieved and WHY it matters. Not just the article headline.
-Example: "Jupiter moon Io shows active volcanism; NASA's Juno probe made the first
-thermal images proving sustained geological activity at an icy moon."
-Do NOT just extract the first sentence. Synthesize the discovery from the full text.
-Max 30 words.
+SUMMARY (CRITICAL): Write a 1-2 sentence plain-English description of the BREAKTHROUGH ITSELF.
+- Describe WHAT was discovered/achieved and WHY it matters to this field.
+- Make it readable to an educated layperson, not jargon-heavy.
+- Do NOT just extract the title or first sentence. Synthesize across the text.
+- Examples:
+  "First direct image of an exoplanet in a young star system; James Webb captured the
+   infrared signature of a young, massive planet orbiting another star for the first time."
+  "Fusion reactor achieved net energy output; NIF achieved ignition and sustained fusion
+   reactions producing more energy than was input into the fuel."
+- Max 30 words. If you cannot write a clear summary, mark relevant=false.
 
 Return ONLY JSON array, no prose:
 [{"i":0,"topic":"<topic or none>","relevant":true,"stage":"discovery",
-  "significance":4,"summary":"<30 words: WHAT breakthrough, WHY matters, plain English"}]
+  "significance":4,"summary":"<30 words: WHAT breakthrough, WHY matters, plain English>"}]
 """
 
 
@@ -327,9 +335,10 @@ def build_score_prompt(batch, topics):
     tlist = "\n".join(f"- {t['name']}: {t.get('description','')}" for t in topics)
     lines = []
     for i, it in enumerate(batch):
+        # Use full summary (up to 2000 chars) to give Claude more context for better summaries
         lines.append(
             f'[{i}] source={it["source"]}\nTITLE: {it["title"]}\n'
-            f'ABSTRACT: {it["summary"][:700]}'
+            f'ABSTRACT: {it["summary"][:2000]}'
         )
     return (
         f"{SCORE_INSTRUCTIONS}\nREADER'S TOPICS:\n{tlist}\n\nITEMS:\n"
@@ -538,6 +547,18 @@ def to_record(it):
     }
 
 
+def semantic_similarity(t1, t2):
+    """Quick heuristic to detect if two titles describe the same discovery."""
+    # Normalize: lowercase, remove punctuation, split
+    def norm(t):
+        return set(re.sub(r'[^\w\s]', '', t.lower()).split())
+    w1, w2 = norm(t1), norm(t2)
+    if len(w1) < 2 or len(w2) < 2:
+        return 0
+    overlap = len(w1 & w2)
+    # If 60%+ of shorter title words overlap, likely same discovery
+    return overlap / min(len(w1), len(w2))
+
 def merge_feed(site_dir, records, topics, cap=400):
     """Append new records to the growing feed.json, newest first, deduped."""
     os.makedirs(site_dir, exist_ok=True)
@@ -550,7 +571,15 @@ def merge_feed(site_dir, records, topics, cap=400):
         except Exception:  # noqa: BLE001
             existing = []
     have = {r.get("id") for r in existing}
+    # Exact dedup
     added = [r for r in records if r["id"] not in have]
+    # Semantic dedup: if new item is same topic + similar title to recent item, skip it
+    for new in added[:]:
+        for existing_item in existing[:50]:  # Check only recent 50 items
+            if new["topic"] == existing_item["topic"]:
+                if semantic_similarity(new["title"], existing_item["title"]) > 0.6:
+                    added.remove(new)
+                    break
     items = (added + existing)
     items.sort(key=lambda r: r.get("added", ""), reverse=True)
     items = items[:cap]
