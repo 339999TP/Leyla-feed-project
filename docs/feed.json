@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30T11:05:20.276617Z",
+  "generated": "2026-08-30T11:07:21.355265Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -8,6 +8,19 @@
     "Early life and archaea"
   ],
   "items": [
+    {
+      "id": "0d4281fc0bd38203f459e9c1a37746c4387f1b986beee405ad380d86cbcbc7c4",
+      "title": "A Superconducting Phase Transition Single-Electron Transistor",
+      "url": "https://arxiv.org/abs/2608.27045v1",
+      "source": "arXiv:cond-mat.supr-con",
+      "source_type": "academic",
+      "topic": "Superconductors",
+      "stage": "lab",
+      "significance": 3,
+      "summary": "Superconducting phase-transition sensor for qubits demonstrated with 1-2 orders of magnitude sensitivity improvement over conventional devices; enables ultrasensitive charge detection for quantum computing.",
+      "published": "2026-08-27T12:31:57",
+      "added": "2026-08-30T11:07:21.354828Z"
+    },
     {
       "id": "f8e3915e61386a54f3365927329ba1e0663798396fb1af0433aad996f1005e37",
       "title": "A ghostly ribbon of stars reveals hidden dark matter",
