@@ -74,28 +74,28 @@ topics:
     description: Progress in fusion energy - tokamaks, stellarators, inertial confinement, net energy gain, and reactor engineering.
     keywords: [nuclear fusion, fusion energy, fusion reactor, tokamak, stellarator, plasma confinement, inertial confinement, ignition, net energy gain]
     min_stage: discovery
-    min_significance: 4
+    min_significance: 3
 
   - name: Superconductors
     description: New superconducting materials and mechanisms, especially higher critical temperatures and room-temperature claims.
     keywords: [superconductor, superconducting, superconductivity, critical temperature, room-temperature superconductor, Cooper pair, Meissner effect]
     min_stage: discovery
-    min_significance: 4
+    min_significance: 3
 
   - name: Dark matter
     description: Dark matter detection and theory - direct/indirect detection, axions, WIMPs, and candidate constraints.
     keywords: [dark matter, dark matter detection, axion, WIMP, direct detection, dark matter halo, self-interacting dark matter]
     min_stage: discovery
-    min_significance: 4
+    min_significance: 3
 
   - name: Exoplanet imaging telescopes
     description: Direct imaging of exoplanets and the instruments that enable it - coronagraphs, ELTs, space telescopes, starshades.
     keywords: [exoplanet, direct imaging, coronagraph, high-contrast imaging, extremely large telescope, habitable worlds observatory, starshade]
     min_stage: discovery
-    min_significance: 4
+    min_significance: 3
 
   - name: Early life and archaea
     description: Origin of life and the biology/evolution of archaea - LUCA, prebiotic chemistry, extremophiles, deep phylogeny.
     keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent]
     min_stage: discovery
-    min_significance: 4
+    min_significance: 3
