@@ -25,13 +25,21 @@ llm:
 delivery:
   site_dir: ./docs        # feed.json is written here, next to index.html
   email:
-    enabled: false
+    enabled: false          # true = email the full digest every run
     smtp_host: smtp.gmail.com
     smtp_port: 587
     username: you@example.com
     from_addr: you@example.com
     to_addrs: [you@example.com]
     # password is read from the EMAIL_PASSWORD environment variable.
+    #
+    # BREAKTHROUGH ALERTS: fire an email the moment a truly massive result lands,
+    # even if the regular digest email above is disabled. Set the score at/above
+    # which to alert (5 = landmark only; 4 = also major milestones). Comment out
+    # or remove to turn alerts off. Requires the EMAIL_PASSWORD secret + a real
+    # SMTP host/username/to_addrs above.
+    alert_significance: 5
+    # alert_to_addrs: [you@example.com]   # optional; defaults to to_addrs
 
 # --- SOURCES: Add your own RSS feeds here! ---
 # Sources can be: arXiv categories, PubMed queries, or RSS feed URLs
@@ -197,6 +205,7 @@ topics:
     keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent, early life, ancient life, microbial fossil, methanogen, Asgard archaea, Lokiarchaeota, Loki's Castle, eukaryogenesis, early Earth]
     min_stage: discovery
     min_significance: 2
+    lookback_days: 90       # sparse topic: reach further back to build depth
 
   # --- MILESTONE-ONLY WATCHES ---
   # Specific missions/instruments where you ONLY want to hear when a concrete
@@ -213,6 +222,7 @@ topics:
     milestone_only: true
     min_stage: discovery
     min_significance: 4
+    lookback_days: 180      # milestones are rare: catch a recent one
 
   - name: Hyper-Kamiokande
     description: >
@@ -223,6 +233,7 @@ topics:
     milestone_only: true
     min_stage: discovery
     min_significance: 4
+    lookback_days: 180      # milestones are rare: catch a recent one
 
   - name: Extremely Large Telescope
     description: >
@@ -233,6 +244,7 @@ topics:
     milestone_only: true
     min_stage: discovery
     min_significance: 4
+    lookback_days: 180      # milestones are rare: catch a recent one
 
   # CUSTOMIZE: Add your own topics below!
   # - name: Quantum Computing

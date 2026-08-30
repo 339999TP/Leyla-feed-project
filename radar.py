@@ -85,6 +85,7 @@ def load_config(path):
         t.setdefault("min_stage", "discovery")
         t.setdefault("min_significance", 1)
         t.setdefault("milestone_only", False)
+        t.setdefault("lookback_days", None)  # None => use the global lookback_days
     return cfg
 
 
@@ -325,6 +326,22 @@ def within_lookback(item, days):
     if item.get("published") is None:
         return True  # unknown date: keep, let LLM/thresholds decide
     return item["published"] >= utcnow() - dt.timedelta(days=days)
+
+
+def item_lookback_days(item, topics, default_days):
+    """Deepest lookback window any keyword-matching topic asks for.
+    Lets sparse/milestone topics reach further back without pulling deep
+    history for everything -- only items matching those topics' keywords
+    get the extended window; all else uses the global default."""
+    days = default_days
+    text = (item.get("title", "") + " " + item.get("summary", "")).lower()
+    for t in topics:
+        td = t.get("lookback_days")
+        if not td or td <= days:
+            continue
+        if any(kw.lower() in text for kw in t["keywords"]):
+            days = td
+    return days
 
 
 def candidate_topics(item, topics):
@@ -748,15 +765,7 @@ def merge_feed(site_dir, records, topics, cap=400):
     return path, len(added)
 
 
-def email_new(records, cfg):
-    em = cfg["delivery"].get("email", {})
-    if not em.get("enabled") or not records:
-        return
-    # Validate required email config
-    required_fields = ["from_addr", "to_addrs", "smtp_host", "username"]
-    for field in required_fields:
-        if field not in em:
-            raise ValueError(f"Email config missing required field: {field}")
+def _render_rows(records):
     rows = ""
     for r in records:
         stars = "\u2605" * r["significance"] + "\u2606" * (5 - r["significance"])
@@ -771,18 +780,72 @@ def email_new(records, cfg):
                  f'<br><small>{safe_topic} \u00b7 {stars} \u00b7 '
                  f'{safe_stage} \u00b7 {safe_source}'
                  f'</small><br>{safe_summary}</div>')
+    return rows
+
+
+def _send_email(em, subject, plain, html_body, to_addrs):
+    """Send one message. Raises if config/secret is incomplete."""
+    for field in ["from_addr", "smtp_host", "username"]:
+        if field not in em:
+            raise ValueError(f"Email config missing required field: {field}")
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Research radar \u2014 {len(records)} new"
+    msg["Subject"] = subject
     msg["From"] = em["from_addr"]
-    msg["To"] = ", ".join(em["to_addrs"])
-    msg.attach(MIMEText("New items in your radar.", "plain"))
-    msg.attach(MIMEText(f"<div>{rows}</div>", "html"))
+    msg["To"] = ", ".join(to_addrs)
+    msg.attach(MIMEText(plain, "plain"))
+    msg.attach(MIMEText(html_body, "html"))
     email_password = get_env("EMAIL_PASSWORD")
     with smtplib.SMTP(em["smtp_host"], em.get("smtp_port", 587)) as s:
         s.starttls()
         s.login(em["username"], email_password)
         s.send_message(msg)
-    print(f"  emailed {len(records)} new items to {msg['To']}")
+    return msg["To"]
+
+
+def email_new(records, cfg):
+    em = cfg["delivery"].get("email", {})
+    if not em.get("enabled") or not records:
+        return
+    if "to_addrs" not in em:
+        raise ValueError("Email config missing required field: to_addrs")
+    to = _send_email(em, f"Research radar \u2014 {len(records)} new",
+                     "New items in your radar.",
+                     f"<div>{_render_rows(records)}</div>", em["to_addrs"])
+    print(f"  emailed {len(records)} new items to {to}")
+
+
+def email_alert(records, cfg):
+    """Fire a high-priority alert for landmark results as soon as they land,
+    independent of whether the regular digest email is enabled. Gated on
+    `alert_significance` in config and the EMAIL_PASSWORD secret being present;
+    otherwise it silently no-ops so a missing secret never breaks a run."""
+    em = cfg["delivery"].get("email", {})
+    threshold = em.get("alert_significance")
+    if not threshold:
+        return
+    hits = [r for r in records if r.get("significance", 0) >= threshold]
+    if not hits:
+        return
+    if not os.environ.get("EMAIL_PASSWORD"):
+        print(f"  ! {len(hits)} breakthrough(s) >= {threshold}/5 but EMAIL_PASSWORD "
+              f"unset -- alert skipped", file=sys.stderr)
+        return
+    to_addrs = em.get("alert_to_addrs") or em.get("to_addrs")
+    if not to_addrs:
+        print("  ! alert_significance set but no to_addrs/alert_to_addrs",
+              file=sys.stderr)
+        return
+    n = len(hits)
+    subject = (f"\U0001F6A8 Breakthrough alert \u2014 {n} landmark result"
+               f"{'' if n == 1 else 's'} ({threshold}/5+)")
+    plain = f"{n} landmark result(s) at {threshold}/5 or above just landed."
+    try:
+        to = _send_email(em, subject, plain,
+                         f"<div><h2>Breakthrough alert</h2>{_render_rows(hits)}</div>",
+                         to_addrs)
+        print(f"  \U0001F6A8 alerted {n} breakthrough(s) to {to}")
+    except Exception as exc:  # noqa: BLE001  -- never let an alert break the run
+        print(f"  ! breakthrough alert failed: {exc}", file=sys.stderr)
 
 
 # ---------------------------------------------------------------------------
@@ -811,8 +874,10 @@ def run(cfg, force_mock=False):
     items = gather(cfg)
     print(f"  fetched {len(items)} raw items")
 
-    items = [it for it in items if within_lookback(it, cfg["lookback_days"])]
-    print(f"  {len(items)} within last {cfg['lookback_days']} days")
+    items = [it for it in items
+             if within_lookback(it, item_lookback_days(it, topics, cfg["lookback_days"]))]
+    print(f"  {len(items)} within lookback (default {cfg['lookback_days']}d, "
+          f"deeper for sparse topics)")
 
     fresh, seen_now = [], set()
     for it in items:
@@ -850,6 +915,7 @@ def run(cfg, force_mock=False):
     path, n_added = merge_feed(site_dir, records, topics)
     print(f"  feed: +{n_added} new items -> {path}")
     email_new(records, cfg)
+    email_alert(records, cfg)
     return path
 
 
