@@ -141,6 +141,7 @@ function relTime(iso){
 function stageIdx(s){const i=STAGES.indexOf(s);return i<0?0:i;}
 
 function topics(){
+  if(!DATA) return [];
   const set = new Set((DATA.topics)||[]);
   DATA.items.forEach(it=>set.add(it.topic));
   return [...set].filter(Boolean);
