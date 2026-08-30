@@ -183,6 +183,52 @@ def fetch_rss(urls, max_results):
     return items
 
 
+def fetch_fulltext(url, timeout=12):
+    """Fetch an article/paper page and extract readable body text.
+    Returns extracted text (best-effort) or '' on failure. Used to give the
+    LLM more than a truncated RSS blurb so it can summarize the actual finding."""
+    try:
+        r = requests.get(url, headers={"User-Agent": UA_STR}, timeout=timeout)
+        if not r.ok or "html" not in r.headers.get("content-type", "").lower():
+            return ""
+        html_text = r.text
+        # Drop scripts, styles, and other non-content blocks
+        html_text = re.sub(r"(?is)<(script|style|nav|header|footer|aside|form)[^>]*>.*?</\1>", " ", html_text)
+        # Prefer <article> or <main> body if present
+        m = re.search(r"(?is)<(article|main)[^>]*>(.*?)</\1>", html_text)
+        body = m.group(2) if m else html_text
+        # Extract paragraph text (articles are mostly <p> tags)
+        paras = re.findall(r"(?is)<p[^>]*>(.*?)</p>", body)
+        text = " ".join(paras) if paras else body
+        text = re.sub(r"(?is)<[^>]+>", " ", text)      # strip remaining tags
+        text = re.sub(r"&[a-z#0-9]+;", " ", text)       # strip HTML entities
+        text = re.sub(r"\s+", " ", text).strip()
+        return text[:4000]                              # cap for token budget
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def enrich_fulltext(items, max_items=50):
+    """For prefiltered news items with thin summaries, fetch the full article so
+    the LLM summarizes the real discovery, not a truncated headline blurb.
+    arXiv summaries are already full abstracts, so we skip those."""
+    enriched = 0
+    for it in items[:max_items]:
+        # arXiv abstracts are complete; only enrich news/web items with short blurbs
+        if it.get("source_type") == "academic":
+            continue
+        if len(it.get("summary", "")) >= 1200:
+            continue
+        full = fetch_fulltext(it.get("url", ""))
+        if full and len(full) > len(it.get("summary", "")):
+            # Keep original blurb up front, append fetched body for context
+            it["summary"] = (it.get("summary", "") + " " + full).strip()[:4000]
+            enriched += 1
+    if enriched:
+        print(f"  enriched {enriched} items with full article text")
+    return items
+
+
 def fetch_pubmed(queries, max_results):
     items = []
     base = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
@@ -373,11 +419,16 @@ def parse_json_array(text):
 
 def call_anthropic(prompt, model):
     api_key = get_env("LLM_API_KEY")
+    headers = {"x-api-key": api_key,
+               "anthropic-version": "2023-06-01",
+               "content-type": "application/json"}
+    # Identity-linked (workspace-scoped) API keys require the workspace id header.
+    workspace_id = os.environ.get("ANTHROPIC_WORKSPACE_ID")
+    if workspace_id:
+        headers["anthropic-workspace-id"] = workspace_id
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
-        headers={"x-api-key": api_key,
-                 "anthropic-version": "2023-06-01",
-                 "content-type": "application/json"},
+        headers=headers,
         json={"model": model or "claude-haiku-4-5-20251001", "max_tokens": 2000,
               "messages": [{"role": "user", "content": prompt}]},
         timeout=120,
@@ -680,6 +731,11 @@ def run(cfg, force_mock=False):
     if cfg["keyword_prefilter"]:
         fresh = [it for it in fresh if candidate_topics(it, topics)]
         print(f"  {len(fresh)} match a topic keyword (prefilter)")
+
+    # Fetch full article text for prefiltered news items so the LLM can
+    # summarize the actual discovery rather than a truncated blurb.
+    if not force_mock:
+        fresh = enrich_fulltext(fresh)
 
     provider = "mock" if force_mock else cfg["llm"]["provider"]
     print(f"Scoring with provider='{provider}'...")
