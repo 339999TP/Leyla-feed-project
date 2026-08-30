@@ -267,37 +267,50 @@ def candidate_topics(item, topics):
 # ---------------------------------------------------------------------------
 
 SCORE_INSTRUCTIONS = """You are triaging science/technology items for a reader who
-only wants genuine breakthroughs and concrete events -- not incremental progress,
-reviews, or speculation.
+ONLY wants genuine breakthroughs, discoveries, and concrete events -- not papers,
+articles, or speculation.
 
-For each item decide which ONE of the reader's topics it best fits, or "none".
-Set relevant=true ONLY if the item is really about that topic itself. An item that
-merely mentions a topic term in passing is NOT relevant -- e.g. a telescope that
-happens to use superconducting sensors is not a "Superconductors" item.
+CRITICAL FILTER: Reject anything that is:
+  - A preprint or paper describing research (even landmark papers)
+  - An article or news piece that discusses but does not announce a discovery
+  - Speculation or theory without an observational/experimental result
+  - Background or historical context
+  - Multiple items grouped together (e.g., "top 5 superconductor papers")
+  - Routine mission updates, personnel changes, or administrative news
 
-MATURITY STAGE -- how far along the development is:
-  discovery  = new finding, theory, or first observation
-  lab        = demonstrated in a lab / proof of concept
-  prototype  = working prototype, pilot, or engineering scale-up
-  commercial = product announced, on the market, or commercially available
-  scaled     = mass deployment / widespread real-world adoption
+ACCEPT ONLY concrete discoveries and events:
+  - First detections, first observations, first images
+  - Lab or field confirmation of a breakthrough result
+  - Announcement that a prototype/device works and a milestone is reached
+  - Major mission events (landing, first light, reaching a target)
+  - Confirmed records or records broken
+  - Major policy or funding that enables a specific breakthrough
 
-SIGNIFICANCE -- for a reader who wants only breakthroughs and events:
-  5 = landmark breakthrough or headline event (e.g. fusion net-energy gain, first
-      direct image of an Earth-like exoplanet, a verified room-temperature
-      superconductor, a major probe landing, or a telescope's first light)
-  4 = significant advance or real milestone event (a first-of-its-kind result, a
-      confirmed detection, a working first demonstration, a mission reaching a
-      target)
-  3 = notable but incremental
-  2 = routine progress or refinement
-  1 = review, roundup, commentary, or speculative modelling
-Prefer concrete empirical results and events over theoretical or incremental
-preprints. When unsure between two scores, choose the lower one.
+For each item: decide which ONE topic it best fits, or "none".
+Set relevant=true ONLY if it announces an actual discovery/event in that topic.
+If it's just an article *about* the topic without a concrete discovery, mark relevant=false.
 
-Return ONLY a JSON array, one object per item, no prose, no code fences:
-[{"i":0,"topic":"<topic name or none>","relevant":true,"stage":"prototype",
-  "significance":4,"summary":"<=25 word plain-English summary"}]
+MATURITY STAGE:
+  discovery  = new finding, first observation, confirmed result
+  lab        = lab demonstration or proof of concept achieved
+  prototype  = working prototype, pilot, or test succeeded
+  commercial = product launched / commercially available
+  scaled     = widespread real-world deployment
+
+SIGNIFICANCE (only count actual discoveries/events):
+  5 = landmark breakthrough or major headline event (room-temp superconductor verified,
+      fusion net energy gain confirmed, first Earth-like exoplanet image, major probe
+      lands successfully, telescope first light released)
+  4 = significant first or milestone (first detection confirmed, working demo achieved,
+      mission reaches key target, record broken, major facility comes online)
+  3 = real advance but smaller scope (incremental discovery, minor record, single lab result)
+  2 = niche or preliminary (one group's claim, not yet widely confirmed)
+  1 = REJECT - not a discovery/event
+Heavily prefer empirical discoveries over theory. When unsure, score lower.
+
+Return ONLY JSON array, no prose:
+[{"i":0,"topic":"<topic or none>","relevant":true,"stage":"discovery",
+  "significance":4,"summary":"<25 words: concrete discovery/event, plain English"}]
 """
 
 
@@ -447,7 +460,23 @@ def passes_thresholds(item, topics_by_name):
 # Feed archive (JSON) + optional email
 # ---------------------------------------------------------------------------
 
+def clean_summary(s):
+    """Remove LaTeX and excessive special characters from summary."""
+    if not s:
+        return ""
+    # Remove LaTeX math: $...$ and \(...\)
+    s = re.sub(r'\$[^$]*\$', '', s)
+    s = re.sub(r'\\\([^)]*\\\)', '', s)
+    # Remove common LaTeX commands
+    s = re.sub(r'\\[a-z]+\{[^}]*\}', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'\\[a-z]+', '', s, flags=re.IGNORECASE)
+    # Clean up extra spaces
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+
 def to_record(it):
+    summary = it.get("llm_summary") or it["summary"][:280]
     return {
         "id": item_key(it),
         "title": it["title"],
@@ -457,7 +486,7 @@ def to_record(it):
         "topic": it["topic"],
         "stage": it["stage"],
         "significance": it["significance"],
-        "summary": it.get("llm_summary") or it["summary"][:280],
+        "summary": clean_summary(summary),
         "published": it["published"].isoformat() if it.get("published") else None,
         "added": utcnow().isoformat() + "Z",
     }

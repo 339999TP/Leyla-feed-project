@@ -19,7 +19,7 @@ llm:
   # API key is read from the LLM_API_KEY environment variable, never stored here.
 
 delivery:
-  site_dir: ./site        # feed.json is written here, next to index.html
+  site_dir: ./docs        # feed.json is written here, next to index.html
   email:
     enabled: false
     smtp_host: smtp.gmail.com
@@ -29,41 +29,35 @@ delivery:
     to_addrs: [you@example.com]
     # password is read from the EMAIL_PASSWORD environment variable.
 
-# --- SOURCES: your trusted allowlist. Quality comes from restricting inputs. ---
-# All RSS feeds below were validated at build time. New Scientist does NOT expose
-# a working public RSS feed (paywalled), so it is not included. If you have a
-# feed URL via a subscription, add it and run: python radar.py --validate-feeds
+# --- SOURCES: curated for breakthroughs & discovery announcements, not papers ---
+# Focuses on where discoveries get announced (news), not academic preprints.
+# arXiv/PubMed disabled by default; re-enable only if monitoring trending announcements.
 sources:
-  arxiv_categories:       # https://arxiv.org/category_taxonomy  (academic preprints)
-    - physics.plasm-ph    # fusion / plasma
-    - cond-mat.supr-con   # superconductors
-    - astro-ph.CO         # dark matter / cosmology
-    - astro-ph.HE         # dark matter (high-energy astro)
-    - astro-ph.EP         # exoplanets
-    - astro-ph.IM         # telescope instrumentation
-    - q-bio.PE            # evolution / early life
-    # hep-ph is huge; add it for dark-matter theory if you want more volume.
+  arxiv_categories: []    # Disabled: preprints ≠ breakthroughs. Most never confirm.
 
-  pubmed_queries:         # life-sciences journals; good for archaea / origin of life
-    - archaea evolution
-    - origin of life
-    - last universal common ancestor
+  pubmed_queries: []      # Disabled: preprints ≠ breakthroughs.
 
-  rss:                    # reputable, English-language news & science writing
+  rss:                    # Curated sources that announce actual discoveries & events
+    # Major journals: announce breakthroughs *and* accept confirmed results
+    - https://www.nature.com/nature.rss
+    - https://www.science.org/rss/news_current.xml
+
+    # Science journalism & news (strong editorial filter for real breakthroughs)
     - https://www.sciencedaily.com/rss/matter_energy/physics.xml
     - https://www.sciencedaily.com/rss/matter_energy/nuclear_energy.xml
     - https://www.sciencedaily.com/rss/space_time/dark_matter.xml
     - https://www.sciencedaily.com/rss/space_time/extrasolar_planets.xml
     - https://www.sciencedaily.com/rss/fossils_ruins/origin_of_life.xml
-    - https://www.sciencedaily.com/rss/plants_animals/microbes_and_more.xml
-    - https://physicsworld.com/feed/
-    - https://www.symmetrymagazine.org/feed
-    - https://www.space.com/feeds/all
-    - https://www.universetoday.com/feed/
     - https://www.quantamagazine.org/feed/
     - https://www.scientificamerican.com/platform/syndication/rss/
-    - https://www.science.org/rss/news_current.xml
-    - https://www.nature.com/nature.rss
+
+    # Astronomy: first light, landings, direct discoveries
+    - https://www.space.com/feeds/all
+    - https://www.universetoday.com/feed/
+
+    # Physics breakthroughs, milestones, demonstrations
+    - https://physicsworld.com/feed/
+    - https://www.symmetrymagazine.org/feed
 
 # --- TOPICS: what you care about + your thresholds. ---
 # min_stage: discovery | lab | prototype | commercial | scaled
