@@ -1,13 +1,42 @@
 {
-  "generated": "2026-08-30T12:01:11.254195Z",
+  "generated": "2026-08-30T15:40:01.429193Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
     "Dark matter",
     "Exoplanet imaging telescopes",
-    "Early life and archaea"
+    "Early life and archaea",
+    "Europa mission",
+    "Hyper-Kamiokande",
+    "Extremely Large Telescope"
   ],
   "items": [
+    {
+      "id": "f953fabccbbcb452e83110a85d4843ce337fb5b36a6906cf279e9d0079e14cb1",
+      "title": "NASA’s Roman Telescope Takes Aim at Cosmic Mysteries",
+      "url": "https://www.bloomberg.com/news/videos/2026-08-30/nasa-s-roman-telescope-takes-aim-at-cosmic-mysteries-video",
+      "source": "Bloomberg Markets",
+      "source_type": "news",
+      "topic": "Exoplanet imaging telescopes",
+      "stage": "prototype",
+      "significance": 4,
+      "summary": "Nancy Grace Roman Space Telescope launched aboard SpaceX Falcon Heavy; now traveling to Lagrange Point 2 to study exoplanets, dark energy, and dark matter.",
+      "published": "2026-08-30T12:28:56",
+      "added": "2026-08-30T15:40:01.428073Z"
+    },
+    {
+      "id": "969cf3e3a5b2b91a407fb3d54b10a8d4af01d313bc9187825f4281fcfe847758",
+      "title": "The Roman telescope is about to take planet-hunting to the next level",
+      "url": "https://www.nature.com/articles/d41586-026-02662-7",
+      "source": "Nature",
+      "source_type": "news",
+      "topic": "Exoplanet imaging telescopes",
+      "stage": "prototype",
+      "significance": 4,
+      "summary": "Nancy Grace Roman Space Telescope launched successfully; will survey exoplanets and dark energy with infrared vision 40 times more sensitive than Hubble.",
+      "published": "2026-08-27T00:00:00",
+      "added": "2026-08-30T15:40:01.428027Z"
+    },
     {
       "id": "0d5986fb088449fd92acbd68d5c1a4f02dc51e56c580487f67dd4c69522a3a5e",
       "title": "New video: Largest-scale cosmic test ever favors dark matter over MOND",
