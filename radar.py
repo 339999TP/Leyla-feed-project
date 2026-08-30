@@ -468,25 +468,39 @@ def passes_thresholds(item, topics_by_name):
 # ---------------------------------------------------------------------------
 
 def clean_summary(s):
-    """Remove LaTeX and excessive special characters from summary."""
+    """Remove LaTeX, HTML entities, and special characters from summary."""
     if not s:
         return ""
+    # Decode HTML entities first
+    s = s.replace("&rsquo;", "'").replace("&lsquo;", "'").replace("&quot;", '"')
+    s = s.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
     # Remove LaTeX math: $...$ and \(...\)
     s = re.sub(r'\$[^$]*\$', '', s)
     s = re.sub(r'\\\([^)]*\\\)', '', s)
-    # Remove common LaTeX commands
-    s = re.sub(r'\\[a-z]+\{[^}]*\}', '', s, flags=re.IGNORECASE)
+    # Remove LaTeX commands: \lesssim, \alpha, etc
     s = re.sub(r'\\[a-z]+', '', s, flags=re.IGNORECASE)
-    # Clean up extra spaces
+    # Remove LaTeX braces and content
+    s = re.sub(r'\{[^}]*\}', '', s)
+    # Remove remaining $ signs and math-like patterns
+    s = re.sub(r'[\$_^]', '', s)
+    # Clean up extra spaces and line breaks
+    s = re.sub(r'[\n\r]+', ' ', s)
     s = re.sub(r'\s+', ' ', s).strip()
     return s
 
 
 def to_record(it):
     summary = it.get("llm_summary") or it["summary"][:280]
+    title = it["title"]
+    # Clean LaTeX from title too (e.g. NbSe$_2$ -> NbSe2)
+    title = re.sub(r'\$[^$]*\$', '', title)
+    title = re.sub(r'\\\w+\{[^}]*\}', '', title)
+    title = re.sub(r'\\\w+', '', title)
+    title = re.sub(r'[\$_^]', '', title)
+    title = title.strip()
     return {
         "id": item_key(it),
-        "title": it["title"],
+        "title": title,
         "url": it["url"],
         "source": it["source"],
         "source_type": it.get("source_type", ""),
