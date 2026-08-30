@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30T11:58:17.701449Z",
+  "generated": "2026-08-30T12:01:11.254195Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -9,6 +9,45 @@
   ],
   "items": [
     {
+      "id": "0d5986fb088449fd92acbd68d5c1a4f02dc51e56c580487f67dd4c69522a3a5e",
+      "title": "New video: Largest-scale cosmic test ever favors dark matter over MOND",
+      "url": "https://bigthink.com/starts-with-a-bang/cosmic-test-dark-matter-mond/",
+      "source": "Big Think",
+      "source_type": "news",
+      "topic": "Dark matter",
+      "stage": "discovery",
+      "significance": 4,
+      "summary": "Largest cosmic test yet measures gravity on record-small scales across the universe; dark matter hypothesis favored over rival MOND theory using new survey data.",
+      "published": "2026-08-25T06:00:00",
+      "added": "2026-08-30T12:01:11.253230Z"
+    },
+    {
+      "id": "5a71f5caa059ede3e528b9fab2cf1f7a20c59f53b20ffc1d9c6d3abfd6ea875d",
+      "title": "Planets Hurry To Form Before the Protoplanetary Disk Dissipates",
+      "url": "https://www.universetoday.com/articles/planets-hurry-to-form-before-the-protoplanetary-disk-dissipates",
+      "source": "Universe Today",
+      "source_type": "news",
+      "topic": "Exoplanet imaging telescopes",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "JWST/MIRI observations reveal how magnetic jets and photoevaporative winds clear gas from planet-forming disks over time.",
+      "published": "2026-08-27T15:52:19",
+      "added": "2026-08-30T12:01:11.253068Z"
+    },
+    {
+      "id": "676bc6e1a60c864e3bf5b06e4bef04442a26373177c6233b711b32e59a6e6b5f",
+      "title": "James Webb Space Telescope observes 72 stars and finds planet formation is a race against time",
+      "url": "https://www.space.com/astronomy/james-webb-space-telescope/james-webb-space-telescope-observes-72-stars-and-finds-planet-formation-is-a-race-against-time",
+      "source": "Latest from Space.com",
+      "source_type": "news",
+      "topic": "Exoplanet imaging telescopes",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "James Webb study of 72 young stars reveals planets form in tight race against disk gas dispersal; new understanding of planet formation timescales.",
+      "published": "2026-08-27T21:00:00",
+      "added": "2026-08-30T12:01:11.253040Z"
+    },
+    {
       "id": "cdcb0ac5efd46c5a44f587948c3e6028ef1cb5983a6a9b700efff88e4b0efebb",
       "title": "One Tiny Chemical Difference in RNA Could Help Explain the Origins of Life",
       "url": "https://scitechdaily.com/one-tiny-chemical-difference-in-rna-could-help-explain-the-origins-of-life/",
@@ -17,7 +56,7 @@
       "topic": "Early life and archaea",
       "stage": "discovery",
       "significance": 3,
-      "summary": "RNA's chemical structure enables better droplet formation under early Earth conditions than DNA—new insight into how life's molecules could self-organize before cells existed.",
+      "summary": "RNA's unique chemistry lets it form protective droplets better than DNA in hot, acidic conditions—explaining how early RNA molecules could gather and interact before cells existed.",
       "published": "2026-08-29T16:57:39",
       "added": "2026-08-30T11:58:17.698830Z"
     },
@@ -121,7 +160,7 @@
       "topic": "Superconductors",
       "stage": "lab",
       "significance": 4,
-      "summary": "First demonstration that quantum vacuum fluctuations can enhance superconductivity; major advance in controlling matter at quantum level, published in Nature.",
+      "summary": "Vacuum fluctuations used to enhance superconductivity for first time, demonstrating new method to control quantum states in superconductors.",
       "published": "2026-08-24T20:50:01",
       "added": "2026-08-30T11:45:28.163182Z"
     },
@@ -145,9 +184,9 @@
       "source": "Physics News - Physics News, Material Sciences, Science News, Physics",
       "source_type": "news",
       "topic": "Superconductors",
-      "stage": "lab",
+      "stage": "discovery",
       "significance": 3,
-      "summary": "Scientists demonstrate nickel-based materials regain superconductivity under strong magnetic fields, opening path toward practical superconductors operable in extreme conditions.",
+      "summary": "Nickel-based materials regain superconductivity under strong magnetic fields, opening path to superconductors working in extreme conditions.",
       "published": "2026-08-26T14:40:04",
       "added": "2026-08-30T11:45:28.163043Z"
     },
@@ -160,7 +199,7 @@
       "topic": "Dark matter",
       "stage": "discovery",
       "significance": 3,
-      "summary": "SuperCDMS dark matter detector begins collecting first data from 24 ultracold crystals buried underground; milestone in hunt for invisible matter comprising most of universe's mass.",
+      "summary": "SuperCDMS detector begins collecting first data hunting for light dark matter particles using ultracold crystals deep underground.",
       "published": "2026-08-27T15:40:06",
       "added": "2026-08-30T11:45:28.162981Z"
     },
@@ -212,7 +251,7 @@
       "topic": "Exoplanet imaging telescopes",
       "stage": "commercial",
       "significance": 4,
-      "summary": "Nancy Grace Roman Space Telescope launched to orbit. First major observatory designed to directly image exoplanets and probe dark energy.",
+      "summary": "Nancy Grace Roman Space Telescope successfully launched to space August 30, 2026; begins mission to survey exoplanets and dark energy.",
       "published": "2026-08-30T11:26:00",
       "added": "2026-08-30T11:45:28.162312Z"
     },
@@ -576,7 +615,7 @@
       "topic": "Exoplanet imaging telescopes",
       "stage": "discovery",
       "significance": 3,
-      "summary": "First detection of sublimating exocomets around young star PDS 70 via sodium absorption lines in archival data; reveals source of water in planet-forming region.",
+      "summary": "First detection of sublimating exocomets around young star PDS 70 via sodium absorption lines in archival data, explaining water origin in inner disk.",
       "published": "2026-08-24T12:57:24",
       "added": "2026-08-30T11:39:32.082226Z"
     },
