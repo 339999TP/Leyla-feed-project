@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30T16:03:18.557079Z",
+  "generated": "2026-08-31T15:00:45.003532Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -11,6 +11,45 @@
     "Extremely Large Telescope"
   ],
   "items": [
+    {
+      "id": "91cdcbce4d4da4df62ab6f7ffee777bc6ed1d6d1ff63ff980b8bc2c1bd9a3c53",
+      "title": "A Clearer View of HAT-P-1 b: JWST NIRSpec G395H Reveals Water, Carbon Dioxide, and Possibly Hydrogen Sulfide",
+      "url": "https://arxiv.org/abs/2608.28538v1",
+      "source": "arXiv:astro-ph.EP",
+      "source_type": "academic",
+      "topic": "Exoplanet imaging telescopes",
+      "stage": "discovery",
+      "significance": 4,
+      "summary": "JWST directly detected water, carbon dioxide, and possibly hydrogen sulfide in hot Jupiter atmosphere; demonstrates first high-resolution molecular inventory across infrared enabling new insights into exoplanet composition.",
+      "published": "2026-08-28T17:13:07",
+      "added": "2026-08-31T15:00:45.002712Z"
+    },
+    {
+      "id": "4ddbd0482097ad432475c22e556bf5d50b48ea184a89e189fb6addd6527dbda5",
+      "title": "Two-dimensional quantum Griffith singularity in three-dimensional ZrN superconducting films",
+      "url": "https://arxiv.org/abs/2608.28166v1",
+      "source": "arXiv:cond-mat.supr-con",
+      "source_type": "academic",
+      "topic": "Superconductors",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "First observation of 2D quantum critical behavior in 3D superconducting films; reveals disorder-driven phase transitions and rare-region effects near superconductor-insulator boundary.",
+      "published": "2026-08-28T10:29:55",
+      "added": "2026-08-31T15:00:45.002668Z"
+    },
+    {
+      "id": "dd3d8435f6eb00bc8ca4e32c0fcdf2a9875777c352e6cd9d1d69601c98e4b909",
+      "title": "Real-time virtual circuits for plasma shape control via neural network emulators: experimental demonstration on MAST Upgrade",
+      "url": "https://arxiv.org/abs/2608.28468v1",
+      "source": "arXiv:physics.plasm-ph",
+      "source_type": "academic",
+      "topic": "Nuclear fusion",
+      "stage": "lab",
+      "significance": 3,
+      "summary": "Real-time AI-based plasma shape control validated on MAST Upgrade tokamak; replaces manual schedules with live neural network predictions, simplifying tokamak operation.",
+      "published": "2026-08-28T15:55:27",
+      "added": "2026-08-31T15:00:45.002561Z"
+    },
     {
       "id": "c44de76a37c2b8ec4c3fe152e2cc61b504b990d951ca11e018a3976d0c257815",
       "title": "Scientists stunned by signs of ancient life in a place no one expected",
@@ -434,9 +473,9 @@
       "source": "arXiv:physics.plasm-ph",
       "source_type": "academic",
       "topic": "Nuclear fusion",
-      "stage": "prototype",
+      "stage": "lab",
       "significance": 3,
-      "summary": "Real-time neural network control of plasma shape on TCV tokamak demonstrated improved plasma shaping and adaptive response, reducing reliance on dense diagnostics.",
+      "summary": "AI-based inverse plasma shaping control demonstrated on TCV tokamak; neural network learns real-time magnetic coil commands, enabling flexible plasma control with fewer diagnostics.",
       "published": "2026-08-25T02:09:41",
       "added": "2026-08-30T11:45:28.160036Z"
     },
@@ -449,7 +488,7 @@
       "topic": "Nuclear fusion",
       "stage": "prototype",
       "significance": 3,
-      "summary": "India's first spherical tokamak achieved first plasma at IPR using Ohmic heating and microwave systems, enabling low-cost studies of compact tokamak physics and non-inductive startup.",
+      "summary": "India's first spherical tokamak achieves first plasma; new low-cost fusion research platform commissioned for non-inductive startup and plasma physics studies.",
       "published": "2026-08-26T17:04:30",
       "added": "2026-08-30T11:45:28.159961Z"
     },
