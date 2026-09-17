@@ -64,8 +64,19 @@ jobs:
           else
             MSG="feed $(date -u +%FT%H:%MZ)"
           fi
-          git commit -m "$MSG" || echo "nothing to commit"
-          git push || echo "push skipped"
+          git commit -m "$MSG" || { echo "nothing to commit"; exit 0; }
+          # Push, but if the remote moved since checkout (a concurrent commit),
+          # rebase our feed commit on top and retry instead of silently dropping
+          # the update. Fail loud only if every attempt fails.
+          for i in 1 2 3 4 5; do
+            if git push; then
+              echo "pushed on attempt $i"; exit 0
+            fi
+            echo "push rejected; rebasing on origin/main (attempt $i)"
+            git pull --rebase --autostash origin main || true
+          done
+          echo "ERROR: feed committed but could not push after retries" >&2
+          exit 1
 
       # --- TWO-REPO SPLIT: publish the static site to a PUBLIC Pages repo ---
       # Lets THIS repo be private (backend: code, config, secrets) while the feed
