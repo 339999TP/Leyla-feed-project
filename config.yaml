@@ -215,6 +215,20 @@ topics:
     min_significance: 2
     lookback_days: 90       # sparse topic: reach further back to build depth
 
+  - name: Oort Cloud
+    description: The Sun's distant comet reservoir - long-period comets, inner Oort cloud / sednoids, and objects arriving from it
+    keywords: [Oort cloud, Oort cloud object, long-period comet, long period comet, dynamically new comet, inner Oort cloud, sednoid, Sedna-like object, comet reservoir, distant comet]
+    min_stage: discovery
+    min_significance: 3
+    lookback_days: 90       # sparse topic: reach further back to build depth
+
+  - name: Trans-Neptunian objects
+    description: Icy bodies beyond Neptune - Kuiper Belt objects, dwarf planets, scattered-disk and detached objects, extreme TNOs, and Planet Nine evidence
+    keywords: [trans-Neptunian object, trans-Neptunian, transneptunian, TNO, Kuiper Belt, Kuiper Belt object, KBO, scattered disk, detached object, plutino, dwarf planet, extreme trans-Neptunian object, Planet Nine, Sedna, Eris, Makemake, Haumea, Quaoar]
+    min_stage: discovery
+    min_significance: 3
+    lookback_days: 90       # sparse topic: reach further back to build depth
+
   # --- MILESTONE-ONLY WATCHES ---
   # Specific missions/instruments where you ONLY want to hear when a concrete
   # milestone is hit (launch, arrival, first light, first data/detection, records)
