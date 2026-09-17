@@ -1,16 +1,31 @@
 {
-  "generated": "2026-09-14T13:50:56.727285Z",
+  "generated": "2026-09-17T08:17:46.438980Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
     "Dark matter",
     "Exoplanet imaging telescopes",
     "Early life and archaea",
+    "Oort Cloud",
+    "Trans-Neptunian objects",
     "Europa mission",
     "Hyper-Kamiokande",
     "Extremely Large Telescope"
   ],
   "items": [
+    {
+      "id": "ad0acc796ce479962652be8362f6d6120023f363c93dc40007bac726122e7c61",
+      "title": "For Trans-Neptunian Objects, The Past Is Written On Their Surface",
+      "url": "https://www.universetoday.com/articles/for-trans-neptunian-objects-the-past-is-written-on-their-surface",
+      "source": "Universe Today",
+      "source_type": "news",
+      "topic": "Trans-Neptunian objects",
+      "stage": "discovery",
+      "significance": 3,
+      "summary": "James Webb discovered surface colors reveal whether distant icy bodies formed near the Sun or beyond Neptune, preserving their formation history.",
+      "published": "2026-09-16T17:25:22",
+      "added": "2026-09-17T08:17:46.438453Z"
+    },
     {
       "id": "47324623c006785bad1d2ffffa3b1b906ba9f8e190e20ad8cf48e5d897a32170",
       "title": "Archaea as 'flexitarians': Ammonia-oxidizing microbes also feed on amino acids",
