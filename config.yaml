@@ -182,27 +182,27 @@ sources:
 topics:
   - name: Nuclear fusion
     description: Fusion energy breakthroughs - tokamaks, stellarators, inertial confinement, net energy gain
-    keywords: [nuclear fusion, fusion energy, fusion reactor, tokamak, stellarator, plasma confinement, inertial confinement, ignition, net energy gain]
+    keywords: [nuclear fusion, fusion energy, fusion reactor, tokamak, stellarator, plasma confinement, inertial confinement, ignition, net energy gain, fusion, fusion power, fusion breakeven, magnetic confinement, laser fusion, ITER, NIF, SPARC, deuterium, tritium, fusion plasma, first plasma, fusion milestone]
     min_stage: discovery
-    min_significance: 3
+    min_significance: 2
 
   - name: Superconductors
     description: Novel superconducting materials and mechanisms - higher Tc, room-temperature claims
-    keywords: [superconductor, superconducting, superconductivity, critical temperature, room-temperature, Cooper pair, Meissner effect]
+    keywords: [superconductor, superconducting, superconductivity, critical temperature, room-temperature, Cooper pair, Meissner effect, high-temperature superconductor, high-Tc, hydride superconductor, cuprate, nickelate, iron-based superconductor, superconducting magnet, zero resistance, flux pinning, unconventional superconductivity, quantum material, LK-99]
     min_stage: discovery
-    min_significance: 3
+    min_significance: 2
 
   - name: Dark matter
     description: Direct/indirect dark matter detection, axions, WIMPs, observational constraints
-    keywords: [dark matter, dark matter detection, axion, WIMP, direct detection, dark matter halo, self-interacting dark matter]
+    keywords: [dark matter, dark matter detection, axion, WIMP, direct detection, dark matter halo, self-interacting dark matter, dark matter particle, dark matter candidate, sterile neutrino, dark photon, dark sector, gravitational lensing, galaxy rotation curve, LUX-ZEPLIN, LZ experiment, XENON, primordial black hole, dark matter map, MACHO]
     min_stage: discovery
-    min_significance: 3
+    min_significance: 2
 
   - name: Exoplanet imaging telescopes
     description: Direct imaging of exoplanets - coronagraphs, ELTs, space telescopes, starshades
-    keywords: [exoplanet, direct imaging, coronagraph, high-contrast imaging, extremely large telescope, habitable worlds observatory, starshade, Roman telescope, JWST, exoplanet atmosphere, biosignature, protoplanetary disk, planet formation]
+    keywords: [exoplanet, direct imaging, coronagraph, high-contrast imaging, extremely large telescope, habitable worlds observatory, starshade, Roman telescope, JWST, exoplanet atmosphere, biosignature, protoplanetary disk, planet formation, exoplanet discovery, transiting exoplanet, super-Earth, habitable zone, TESS, radial velocity, exomoon, directly imaged planet, planetary atmosphere, exoplanet spectroscopy, rocky planet]
     min_stage: discovery
-    min_significance: 3
+    min_significance: 2
 
   - name: Early life and archaea
     description: >
@@ -210,23 +210,23 @@ topics:
       Example of what to surface: the discovery of Asgard/Lokiarchaeota at Loki's
       Castle (a deep-sea hydrothermal vent field) that reshaped the tree of life
       and the story of how complex cells arose.
-    keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent, early life, ancient life, microbial fossil, methanogen, Asgard archaea, Lokiarchaeota, Loki's Castle, eukaryogenesis, early Earth]
+    keywords: [archaea, archaeon, origin of life, abiogenesis, last universal common ancestor, LUCA, prebiotic chemistry, extremophile, hydrothermal vent, early life, ancient life, microbial fossil, methanogen, Asgard archaea, Lokiarchaeota, Loki's Castle, eukaryogenesis, early Earth, stromatolite, oldest fossil, RNA world, protocell, first life, Archean, deep biosphere, tree of life, microbial mat, early cell]
     min_stage: discovery
     min_significance: 2
     lookback_days: 90       # sparse topic: reach further back to build depth
 
   - name: Oort Cloud
     description: The Sun's distant comet reservoir - long-period comets, inner Oort cloud / sednoids, and objects arriving from it
-    keywords: [Oort cloud, Oort cloud object, long-period comet, long period comet, dynamically new comet, inner Oort cloud, sednoid, Sedna-like object, comet reservoir, distant comet]
+    keywords: [Oort cloud, Oort cloud object, long-period comet, long period comet, dynamically new comet, inner Oort cloud, sednoid, Sedna-like object, comet reservoir, distant comet, comet, cometary, new comet, Oort, interstellar comet, giant comet, distant solar system]
     min_stage: discovery
-    min_significance: 3
+    min_significance: 2
     lookback_days: 90       # sparse topic: reach further back to build depth
 
   - name: Trans-Neptunian objects
     description: Icy bodies beyond Neptune - Kuiper Belt objects, dwarf planets, scattered-disk and detached objects, extreme TNOs, and Planet Nine evidence
-    keywords: [trans-Neptunian object, trans-Neptunian, transneptunian, TNO, Kuiper Belt, Kuiper Belt object, KBO, scattered disk, detached object, plutino, dwarf planet, extreme trans-Neptunian object, Planet Nine, Sedna, Eris, Makemake, Haumea, Quaoar]
+    keywords: [trans-Neptunian object, trans-Neptunian, transneptunian, TNO, Kuiper Belt, Kuiper Belt object, KBO, scattered disk, detached object, plutino, dwarf planet, extreme trans-Neptunian object, Planet Nine, Sedna, Eris, Makemake, Haumea, Quaoar, outer solar system, minor planet, centaur, Pluto, Charon, Orcus, Gonggong, distant object, ninth planet]
     min_stage: discovery
-    min_significance: 3
+    min_significance: 2
     lookback_days: 90       # sparse topic: reach further back to build depth
 
   # --- MILESTONE-ONLY WATCHES ---
