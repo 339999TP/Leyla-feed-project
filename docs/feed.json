@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-17T08:17:46.438980Z",
+  "generated": "2026-09-21T13:51:55.984507Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -714,19 +714,6 @@
       "summary": "India's first spherical tokamak achieves first plasma; new low-cost fusion research platform commissioned for non-inductive startup and plasma physics studies.",
       "published": "2026-08-26T17:04:30",
       "added": "2026-08-30T11:45:28.159961Z"
-    },
-    {
-      "id": "a1f2253472b63179eb051dee340a63cf38ae25d451b38c2942f8fb61f00dc858",
-      "title": "NASA’s Webb telescope discovers giant planet hiding in one of astronomy’s most famous systems",
-      "url": "https://www.sciencedaily.com/releases/2026/07/260722032111.htm",
-      "source": "Extrasolar Planets News -- ScienceDaily",
-      "source_type": "news",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "discovery",
-      "significance": 4,
-      "summary": "JWST detected giant planet hidden in dust disk using molecular fingerprints—demonstrates new method for finding hidden exoplanets.",
-      "published": "2026-07-23T05:58:04",
-      "added": "2026-08-30T11:39:32.083295Z"
     },
     {
       "id": "e03fc9b7339d51bb2e396f00b1a59b576f9648c44a34af2c7c27cd405c331eb8",
