@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-28T15:15:37.467692Z",
+  "generated": "2026-10-05T15:48:43.117395Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -638,19 +638,6 @@
       "added": "2026-08-30T11:45:28.161675Z"
     },
     {
-      "id": "a6dfe1b157976f4b58c2c889dc3115ef952f65714d06ff8774559b43c25b10e9",
-      "title": "Cryogenic focused-ion-beam microstructuring enabling quantitative -axis transport measurements in TlBaCuO",
-      "url": "https://arxiv.org/abs/2608.02344v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "New cryogenic fabrication method resolves three-decade transport measurement discrepancy in cuprate superconductor, improving measurement accuracy quantitatively.",
-      "published": "2026-08-03T14:58:02",
-      "added": "2026-08-30T11:45:28.161487Z"
-    },
-    {
       "id": "d880345a96a78c1f97d6cc384770baf380d3e5dc3afb9fb7d71d813a98d7d7ee",
       "title": "High-power TCV scenario for conventional and alternative divertor studies",
       "url": "https://arxiv.org/abs/2608.18939v1",
@@ -961,97 +948,6 @@
       "summary": "JWST first coronagraphic images of five debris-disk systems reveal water ice and dust structure at unprecedented infrared resolution and detail.",
       "published": "2026-08-27T17:55:03",
       "added": "2026-08-30T11:39:32.082110Z"
-    },
-    {
-      "id": "2c0a99e4f7617beb99e0d49629f987cc783dc769be916858d92a0eed6d6b7775",
-      "title": "Pressure-induced concurrent amorphization and superconductivity in topological material NbNiTe5",
-      "url": "https://arxiv.org/abs/2608.02342v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "Superconductivity emerges in topological material under high pressure coinciding with structural disorder; critical temperature increases to 1.4 K under extreme compression.",
-      "published": "2026-08-03T14:57:09",
-      "added": "2026-08-30T11:39:32.082042Z"
-    },
-    {
-      "id": "315aa1d8395a1ec74f095f691ed612e2ff3306889cb9a73960f3c4b23a2eb2e6",
-      "title": "Emergence of Double-Dome Superconductivity in the Pressurized Dirac Semimetal BaMg2Bi2",
-      "url": "https://arxiv.org/abs/2608.02394v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "Pressurized bismuth compound shows rare double-dome superconductivity with critical temperatures reaching 7.22 K; reveals two distinct mechanisms—Lifshitz transition and structural phase change.",
-      "published": "2026-08-03T15:38:01",
-      "added": "2026-08-30T11:39:32.081983Z"
-    },
-    {
-      "id": "46bce24a6a8cc380c2d22ce336b41fabd98710bb6ccd37d0c0354c9c701797bc",
-      "title": "Superconducting dome due to the Fano-Feshbach shape resonance in artificial high-Tc superlattices",
-      "url": "https://arxiv.org/abs/2608.02501v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "Artificial superlattice design confirms predicted superconducting dome by tuning quantum geometry; maps full phase diagram from underdoped to overdoped regimes using high magnetic fields.",
-      "published": "2026-08-03T17:04:02",
-      "added": "2026-08-30T11:39:32.081921Z"
-    },
-    {
-      "id": "87258855272aafe9bf423afb54e1098db8133c716eea5b51005319d953f9d9cd",
-      "title": "Pressure-induced Superconductivity in Thermoelectric Semiconductor Mg3Sb2",
-      "url": "https://arxiv.org/abs/2608.03058v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "High pressure converts thermoelectric semiconductor into superconductor with 3.3 K critical temperature through structural phase transition.",
-      "published": "2026-08-04T03:20:07",
-      "added": "2026-08-30T11:39:32.081861Z"
-    },
-    {
-      "id": "fcb383ddfe4b63035ed6128ec79ed61d9f5ece6c80af0a4f483a29ba991c5bfa",
-      "title": "Pressure induced magnetic-field-free superconducting diode effect in NbSe2 flake",
-      "url": "https://arxiv.org/abs/2608.03072v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "Pressure induces nonreciprocal superconductivity in NbSe₂ without magnetic field or heterostructures, challenging existing theoretical models.",
-      "published": "2026-08-04T03:37:53",
-      "added": "2026-08-30T11:39:32.081809Z"
-    },
-    {
-      "id": "0ed859f53e174f1cac083a33fee848bd5e65740684ad5bf7f04683136be8b169",
-      "title": "Surface-Selective Probe of Spin-Triplet Superconductivity in Rhombohedral Graphene",
-      "url": "https://arxiv.org/abs/2608.03870v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "Evidence for spin-triplet superconductivity in multilayer graphene using proximity-induced spin-orbit coupling as a surface probe.",
-      "published": "2026-08-04T16:10:52",
-      "added": "2026-08-30T11:39:32.081746Z"
-    },
-    {
-      "id": "9b9ec87d637e85219a6fc875e8655a37e95451ef66b0291e72acb28aaf88a8a8",
-      "title": "Thermodynamic phase transition, pairing symmetry and Fermi surface topology in Ruddlesden-Popper nickelate films",
-      "url": "https://arxiv.org/abs/2608.03908v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 4,
-      "summary": "Direct measurement of superconducting order parameter in nickelate films confirms nodeless pairing and thermodynamic phase transition without pseudogap.",
-      "published": "2026-08-04T16:36:50",
-      "added": "2026-08-30T11:39:32.081693Z"
     },
     {
       "id": "9a8cb2257dba2cce3438434ba8142f3df0df4b5138e5613593e74daf7c5e310e",
