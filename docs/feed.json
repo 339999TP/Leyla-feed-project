@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-05T15:48:43.117395Z",
+  "generated": "2026-10-12T16:39:32.936523Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -482,19 +482,6 @@
       "added": "2026-08-30T11:50:56.479583Z"
     },
     {
-      "id": "462d96ed92cf52950193940b493dfa96cc4188cd24a5d8c76b415146a6bc06c1",
-      "title": "Temperature-tunable spin-wave refraction using superconducting control elements",
-      "url": "https://arxiv.org/abs/2608.06555v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "Superconductors used to achieve tunable spin-wave refraction and wavefront shaping in magnetic thin films, demonstrated experimentally; enables new control method for microwave signal processing.",
-      "published": "2026-08-06T20:12:38",
-      "added": "2026-08-30T11:50:56.478755Z"
-    },
-    {
       "id": "00e59847ea8456258dcf7fa9ab03e83f3535e1fea0a90ccbb38c747d54eb6748",
       "title": "Vacuum-fluctuation-enhanced superconductivity demonstrated for the first time",
       "url": "https://phys.org/news/2026-08-vacuum-fluctuation-superconductivity.html",
@@ -558,19 +545,6 @@
       "summary": "Meteorite recovered from New Jersey contains ancient salty fluids, organic compounds, and amino acids from a primitive asteroid—evidence that space rocks delivered life's building blocks to early Earth.",
       "published": "2026-08-08T14:58:54",
       "added": "2026-08-30T11:45:28.162923Z"
-    },
-    {
-      "id": "cce661147517a244558a9bafd0cdea47bad09fd5af2cdeb7bf1d3d1af4034e12",
-      "title": "Transit-based exoplanet survey finds its first microlensing exoplanet",
-      "url": "https://physicsworld.com/a/transit-based-exoplanet-survey-finds-its-first-microlensing-exoplanet/",
-      "source": "Physics World",
-      "source_type": "news",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "TESS space telescope discovered its first exoplanet using microlensing method, demonstrating a new detection technique for finding distant planets.",
-      "published": "2026-08-11T13:00:30",
-      "added": "2026-08-30T11:45:28.162606Z"
     },
     {
       "id": "da550f06f8040423df7ce24548fecf77d5bee6a426a6e8b8192288804bb6eb5a",
@@ -950,45 +924,6 @@
       "added": "2026-08-30T11:39:32.082110Z"
     },
     {
-      "id": "9a8cb2257dba2cce3438434ba8142f3df0df4b5138e5613593e74daf7c5e310e",
-      "title": "Effects of high-pressure synthesis on phase formation and superconducting properties of PrFeAsO1-xFx",
-      "url": "https://arxiv.org/abs/2608.08083v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "High-pressure synthesis increased transition temperature by up to 6 K in iron-based superconductor; demonstrates improved superconducting performance through optimized material preparation.",
-      "published": "2026-08-08T12:06:06",
-      "added": "2026-08-30T11:39:32.081624Z"
-    },
-    {
-      "id": "19a917a0d901ef7a9fbf4dc8faa390d89bce61e18fc2f61ba182c9d95956874e",
-      "title": "Yttrium Superhydrides Revisited: Advanced Experimental and Theoretical Studies of YH, YH and YH",
-      "url": "https://arxiv.org/abs/2608.11428v2",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "Lab characterization of yttrium hydrides at extreme pressure confirms superconductivity up to 237 K, but rules out room-temperature superconductivity in binary compounds.",
-      "published": "2026-08-11T20:51:09",
-      "added": "2026-08-30T11:39:32.081564Z"
-    },
-    {
-      "id": "4726781679a836510f01ae5421b153d1349c5ac21eee1519ba8c9d54311a0dcf",
-      "title": "The nature of the \"pseudogap\" in the insulating phase of highly disordered superconductors",
-      "url": "https://arxiv.org/abs/2608.12508v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "First direct spectroscopic evidence that Cooper pairs survive and strengthen deep in the insulating phase of disordered superconductor films, resolving decades-old pseudogap puzzle.",
-      "published": "2026-08-12T18:36:16",
-      "added": "2026-08-30T11:39:32.081499Z"
-    },
-    {
       "id": "c8d0951c0106c0153b68152be7290f41d5fd4a31fee4eab906065f812fddb63f",
       "title": "Simplified Silicon Nitride Nanomembrane Circuits for van der Waals Integration",
       "url": "https://arxiv.org/abs/2608.14158v1",
@@ -1182,19 +1117,6 @@
       "summary": "New encapsulation method using aluminum oxide preserves superconducting properties in fragile 2D materials while simplifying device fabrication—enabling practical quantum material devices.",
       "published": "2026-08-27T17:18:30",
       "added": "2026-08-30T11:39:32.080497Z"
-    },
-    {
-      "id": "1b6bd6a9ee91370ca7a7cde13fc7c64c0e38559a6a2167ecc8696895fb7a5788",
-      "title": "Characterization of a prototype parallel-plate U fission chamber with DD and DT fusion neutron sources",
-      "url": "https://arxiv.org/abs/2608.07466v1",
-      "source": "arXiv:physics.plasm-ph",
-      "source_type": "academic",
-      "topic": "Nuclear fusion",
-      "stage": "prototype",
-      "significance": 3,
-      "summary": "Uranium fission chamber prototype for SPARC tokamak validated with real fusion neutron sources; confirms neutron detection reliability for future fusion reactor.",
-      "published": "2026-08-07T17:58:40",
-      "added": "2026-08-30T11:39:32.080411Z"
     }
   ]
 }
