@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-12T16:39:32.936523Z",
+  "generated": "2026-10-19T14:33:35.675409Z",
   "topics": [
     "Nuclear fusion",
     "Superconductors",
@@ -469,19 +469,6 @@
       "added": "2026-08-30T11:50:56.480048Z"
     },
     {
-      "id": "ec3bef4fe7f53f15c29f61a20b9cd6d0210156b0baa6ef79cce0d8e541d6dcb5",
-      "title": "The Roman Coronagraph Community Participation Program: early calibration plan and pilot observation of a companion",
-      "url": "https://arxiv.org/abs/2608.17348v1",
-      "source": "arXiv:astro-ph.EP",
-      "source_type": "academic",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "prototype",
-      "significance": 3,
-      "summary": "Roman Space Telescope Coronagraph Instrument launches soon and will attempt first imaging of giant planets in visible reflected light using new high-contrast technique.",
-      "published": "2026-08-18T04:11:50",
-      "added": "2026-08-30T11:50:56.479583Z"
-    },
-    {
       "id": "00e59847ea8456258dcf7fa9ab03e83f3535e1fea0a90ccbb38c747d54eb6748",
       "title": "Vacuum-fluctuation-enhanced superconductivity demonstrated for the first time",
       "url": "https://phys.org/news/2026-08-vacuum-fluctuation-superconductivity.html",
@@ -612,19 +599,6 @@
       "added": "2026-08-30T11:45:28.161675Z"
     },
     {
-      "id": "d880345a96a78c1f97d6cc384770baf380d3e5dc3afb9fb7d71d813a98d7d7ee",
-      "title": "High-power TCV scenario for conventional and alternative divertor studies",
-      "url": "https://arxiv.org/abs/2608.18939v1",
-      "source": "arXiv:physics.plasm-ph",
-      "source_type": "academic",
-      "topic": "Nuclear fusion",
-      "stage": "prototype",
-      "significance": 3,
-      "summary": "TCV tokamak achieved record heat flux to divertor (100 MW/m²), ten times higher than prior TCV experiments, under reactor-relevant conditions.",
-      "published": "2026-08-19T14:07:50",
-      "added": "2026-08-30T11:45:28.160231Z"
-    },
-    {
       "id": "36e922e781ac1b2ad770f2b8ac85c6cf98c696c5f35ba684d20d36bd7327cf54",
       "title": "Reinforcement learning for vertical position control on the EXL-50U spherical tokamak",
       "url": "https://arxiv.org/abs/2608.20901v1",
@@ -675,19 +649,6 @@
       "summary": "India's first spherical tokamak achieves first plasma; new low-cost fusion research platform commissioned for non-inductive startup and plasma physics studies.",
       "published": "2026-08-26T17:04:30",
       "added": "2026-08-30T11:45:28.159961Z"
-    },
-    {
-      "id": "e03fc9b7339d51bb2e396f00b1a59b576f9648c44a34af2c7c27cd405c331eb8",
-      "title": "World’s first superconducting quantum heat engine could help unlock massive quantum computers",
-      "url": "https://www.sciencedaily.com/releases/2026/08/260814011041.htm",
-      "source": "Physics News -- ScienceDaily",
-      "source_type": "news",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "First superconducting quantum heat engine demonstrated; converts heat to useful work near absolute zero, potential application for reducing quantum computer noise.",
-      "published": "2026-08-14T12:56:01",
-      "added": "2026-08-30T11:39:32.083233Z"
     },
     {
       "id": "f8e3915e61386a54f3365927329ba1e0663798396fb1af0433aad996f1005e37",
@@ -794,71 +755,6 @@
       "added": "2026-08-30T11:39:32.082730Z"
     },
     {
-      "id": "9d8506fd392a0eef7966675ada762888d24a2c661919c8ffdb9519144556e394",
-      "title": "No Helium Detected in LHS 1140 b from Four JWST NIRISS/SOSS Transits",
-      "url": "https://arxiv.org/abs/2608.13473v1",
-      "source": "arXiv:astro-ph.EP",
-      "source_type": "academic",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "JWST failed to detect helium in LHS 1140 b's atmosphere across four separate transit observations, contradicting earlier ground-based claims and constraining the planet's atmospheric composition.",
-      "published": "2026-08-13T16:58:27",
-      "added": "2026-08-30T11:39:32.082667Z"
-    },
-    {
-      "id": "e889168f97fe63d7d7f7745ff1c3cbc60f42b0e492556f312d881f1cad797fdd",
-      "title": "GEMS JWST: Hold on to your HATS(-6 b), a sub-solar metallicity giant planet with water, methane and ammonia in its atmosphere",
-      "url": "https://arxiv.org/abs/2608.16990v1",
-      "source": "arXiv:astro-ph.EP",
-      "source_type": "academic",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "JWST directly detected water, methane, and ammonia in atmosphere of Saturn-mass exoplanet HATS-6 b orbiting an M dwarf, revealing unexpectedly low metallicity composition.",
-      "published": "2026-08-17T18:00:07",
-      "added": "2026-08-30T11:39:32.082606Z"
-    },
-    {
-      "id": "d91f3926d17f27be3463e0779cfb0e3f2e430e4d6263a0f5006aabcb419ac639",
-      "title": "No Persistent Helium Absorption in LHS 1140 b: Four JWST/NIRISS SOSS Transits and Multi-epoch Stellar He I Variability",
-      "url": "https://arxiv.org/abs/2608.19120v1",
-      "source": "arXiv:astro-ph.EP",
-      "source_type": "academic",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "JWST observations of temperate exoplanet LHS 1140 b find no persistent atmospheric escape signature, contradicting earlier high-resolution detection and revealing stellar variability complications.",
-      "published": "2026-08-19T17:16:59",
-      "added": "2026-08-30T11:39:32.082529Z"
-    },
-    {
-      "id": "d2eb14bee27a7051da38bba741443e9906a24a503d03a3fff3b56c1add4bdcea",
-      "title": "Shaping SHAPE - A spectro-polarimeter onboard Chandrayaan-3 to observe Earth as an Exoplanet",
-      "url": "https://arxiv.org/abs/2608.19371v1",
-      "source": "arXiv:astro-ph.EP",
-      "source_type": "academic",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "prototype",
-      "significance": 3,
-      "summary": "SHAPE spectro-polarimeter on Chandrayaan-3 orbiter now operational, measuring Earth's disc-integrated light as test case for characterizing distant Earth-like exoplanets.",
-      "published": "2026-08-19T18:39:44",
-      "added": "2026-08-30T11:39:32.082466Z"
-    },
-    {
-      "id": "bad39a989e874c8e1426d07c45bb9e842d6a823a70721c731b8a744ebbc3e9c6",
-      "title": "Asymmetric Aerosol Distribution on the Terminators of the Warm Saturn WASP-69 b Revealed by JWST NIRISS/SOSS",
-      "url": "https://arxiv.org/abs/2608.19756v1",
-      "source": "arXiv:astro-ph.EP",
-      "source_type": "academic",
-      "topic": "Exoplanet imaging telescopes",
-      "stage": "discovery",
-      "significance": 3,
-      "summary": "JWST detected asymmetric cloud patterns on warm Saturn exoplanet WASP-69b, showing how aerosols condense and evaporate across temperature zones—revealing exoplanet atmospheric dynamics directly.",
-      "published": "2026-08-20T08:01:26",
-      "added": "2026-08-30T11:39:32.082408Z"
-    },
-    {
       "id": "6c860bc1100c69cdc99981f806627a201196b1db4db167beae27ad9cdd21e433",
       "title": "A Highly Reflective Atmosphere on the Lava World TOI-561b Revealed by JWST/NIRSpec Phase Curve",
       "url": "https://arxiv.org/abs/2608.21519v1",
@@ -922,84 +818,6 @@
       "summary": "JWST first coronagraphic images of five debris-disk systems reveal water ice and dust structure at unprecedented infrared resolution and detail.",
       "published": "2026-08-27T17:55:03",
       "added": "2026-08-30T11:39:32.082110Z"
-    },
-    {
-      "id": "c8d0951c0106c0153b68152be7290f41d5fd4a31fee4eab906065f812fddb63f",
-      "title": "Simplified Silicon Nitride Nanomembrane Circuits for van der Waals Integration",
-      "url": "https://arxiv.org/abs/2608.14158v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "prototype",
-      "significance": 3,
-      "summary": "Fragile cuprate superconductor preserved and electrically integrated without damaging it—demonstrates clean assembly method for delicate quantum materials.",
-      "published": "2026-08-14T10:13:17",
-      "added": "2026-08-30T11:39:32.081375Z"
-    },
-    {
-      "id": "af68be496211cc0363c91a3b4b9858923875eb909efbc86499a08c7d2176fd85",
-      "title": "Superconducting Hydride Mg2RhH6 Experimentally Achieved at Lower Pressure",
-      "url": "https://arxiv.org/abs/2608.15745v2",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "discovery",
-      "significance": 4,
-      "summary": "New hydride superconductor synthesized and achieves 29 K at accessible 53 GPa pressure—first superconductor near 30 K at readily reachable pressure conditions.",
-      "published": "2026-08-16T13:51:02",
-      "added": "2026-08-30T11:39:32.081322Z"
-    },
-    {
-      "id": "ec2ce8b4856ef5ac8894c25a7244332dcdc830f21f1e945beeb31b63a920e6e4",
-      "title": "Demonstration of a scalable all-solid-state refrigerator exploiting diffusion geometries and limiting interfacial conductances at temperatures below 1 kelvin",
-      "url": "https://arxiv.org/abs/2608.17125v2",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "prototype",
-      "significance": 4,
-      "summary": "First solid-state superconductor-based refrigerator cools entire silicon chip below 1 kelvin; demonstrates scalable phonon cooling using over 1,000 junction pairs.",
-      "published": "2026-08-17T21:02:25",
-      "added": "2026-08-30T11:39:32.081266Z"
-    },
-    {
-      "id": "8213c68b51167b44e4252ce6adda4e37449143169f18b23b64443f4434f1c084",
-      "title": "Bridging ambient- and high-pressure superconductivity in LaLnNiO films",
-      "url": "https://arxiv.org/abs/2608.17745v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "Ambient-pressure superconductivity up to 42 K achieved in strained nickelate films, enhanced to 67–73 K under high pressure; bridges two regimes of bilayer nickelate superconductivity.",
-      "published": "2026-08-18T13:09:14",
-      "added": "2026-08-30T11:39:32.081203Z"
-    },
-    {
-      "id": "af92df267831ce136a8fea93ca9744bc0b71f95117db10671b7da81668102c7a",
-      "title": "Synthesis and stability of high- LaH films at high pressures",
-      "url": "https://arxiv.org/abs/2608.18865v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "Synthesis and confirmation of high-temperature superconductor LaH₁₀ films with 247 K critical temperature at 176 GPa; stable over 300 days.",
-      "published": "2026-08-19T12:36:13",
-      "added": "2026-08-30T11:39:32.081139Z"
-    },
-    {
-      "id": "38b8ff2217fb34f70c400efc03e86f46cf9564c4775c521315e324956938b6e7",
-      "title": "Large Field-Free Superconducting Diode Effect with Nonmonotonic Polarity Reversals in NbSe/CrBr Heterostructures",
-      "url": "https://arxiv.org/abs/2608.19099v1",
-      "source": "arXiv:cond-mat.supr-con",
-      "source_type": "academic",
-      "topic": "Superconductors",
-      "stage": "lab",
-      "significance": 3,
-      "summary": "Lab-demonstrated field-free superconducting diode effect with 35.7% efficiency in van der Waals heterostructure, programmable by magnetic field history.",
-      "published": "2026-08-19T16:51:23",
-      "added": "2026-08-30T11:39:32.081079Z"
     },
     {
       "id": "cb41162c0bdcc790abccabe61cdd953688bacb5993af5f22ea382b262cca7e00",
